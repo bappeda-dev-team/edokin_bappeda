@@ -29,4 +29,7 @@ class DashboardController extends Controller
     public function bab1(){
         return view('layouts.admin.bab1.index');
     }
+    public function create_bab1(){
+        return view('layouts.admin.bab1.create');
+    }
 }

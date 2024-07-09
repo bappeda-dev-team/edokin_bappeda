@@ -7,6 +7,8 @@
     <div class="section-header">
       <h1>BAB I</h1>
     </div>
-    <h5>Ini Halaman BAB 1</h5>
+    <a href="/dashboard/create-bab1">
+      <button class="btn btn-primary">Tambah <i class="fas fa-plus-circle"></i></button>
+    </a>
   </section>
 @endsection

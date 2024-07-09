@@ -18,5 +18,6 @@ Route::get('/dashboard/pegawai', [App\Http\Controllers\DashboardController::clas
 Route::get('/dashboard/kata-pengantar', [App\Http\Controllers\DashboardController::class, 'pengantar'])->name('layouts.admin.katapengantar.index');
 Route::get('/dashboard/daftar-isi', [App\Http\Controllers\DashboardController::class, 'daftar'])->name('layouts.admin.daftarisi.index');
 Route::get('/dashboard/bab1', [App\Http\Controllers\DashboardController::class, 'bab1'])->name('layouts.admin.bab1.index');
+Route::get('/dashboard/create-bab1', [App\Http\Controllers\DashboardController::class, 'create_bab1'])->name('layouts.admin.bab1.create');
 
 
