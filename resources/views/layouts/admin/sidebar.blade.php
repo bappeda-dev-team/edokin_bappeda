@@ -16,9 +16,11 @@
                     <li id="menu-pegawai"><a class="nav-link" href="/dashboard/pegawai">Pegawai</a></li>
                 </ul>
             </li>
+            <li class="menu-header" style="font-size: 14px;">Renstra</li>
             <li class="dropdown" id="menu-renstra">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th"></i> <span>Renstra</span></a>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th"></i> <span>2025-2026</span></a>
                 <ul class="dropdown-menu">
+                    
                     <li id="menu-kata-pengantar"><a class="nav-link" href="/dashboard/kata-pengantar">Kata Pengantar</a></li>
                     <li id="menu-daftar-isi"><a class="nav-link" href="/dashboard/daftar-isi">Daftar Isi</a></li>
                     <li id="menu-bab1"><a class="nav-link" href="/dashboard/bab1">BAB 1</a></li>
