@@ -7,14 +7,14 @@
     <div class="section-header">
         <h1>BAB I</h1>
     </div>
-    <a href="{{ route('bab1.create') }}">
+    <a href="{{ route('bab3.create') }}">
         <button class="btn btn-primary">Tambah <i class="fas fa-plus-circle"></i></button>
     </a>
     <div class="row mt-4">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>BAB 1</h4>
+                    <h4>BAB 3</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -31,17 +31,17 @@
                             </thead>
                             <tbody>
                                 @php $i=1 @endphp
-                                @foreach($bab1 as $bab_1)
+                                @foreach($bab3 as $bab_3)
                                 <tr>
                                     <td class="text-center">{{ $i++ }}</td>
-                                    <td>{{ $bab_1->nama_bab }}</td>
-                                    <td>{{ $bab_1->jenis->jenis ?? 'N/A' }}</td>
-                                    <td>{{ $bab_1->tahun->tahun ?? 'N/A' }}</td> <!-- Menampilkan Tahun -->
+                                    <td>{{ $bab_3->nama_bab }}</td>
+                                    <td>{{ $bab_3->jenis->jenis ?? 'N/A' }}</td>
+                                    <td>{{ $bab_3->tahun->tahun ?? 'N/A' }}</td> <!-- Menampilkan Tahun -->
                                     <td>
                                         @php
                                             $selectedOpd = null;
                                             foreach ($data_opd as $opd) {
-                                                if ($opd['kode_opd'] == $bab_1->kode_opd) {
+                                                if ($opd['kode_opd'] == $bab_3->kode_opd) {
                                                     $selectedOpd = $opd;
                                                     break;
                                                 }
@@ -50,10 +50,10 @@
                                         {{ $selectedOpd['kode_opd'] ?? 'N/A' }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('bab1.show', $bab_1->id) }}" class="btn btn-info" data-id="{{ $bab_1->id }}"><i class="fa fa-eye"></i> Show</a>
-                                        <a href="{{ route('bab1.edit', $bab_1->id) }}" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>
-                                        <form action="{{ route('bab1.destroy', $bab_1->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
+                                        <a href="" class="btn btn-info" data-id=""><i class="fa fa-eye"></i> Show</a>
+                                        <a href="" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>
+                                        <form action="{{ route('bab3.destroy', $bab_3->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger mx-2">Hapus <i class="fas fa-trash"></i></button>
                                         </form>

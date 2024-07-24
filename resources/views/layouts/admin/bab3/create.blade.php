@@ -7,13 +7,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4>BAB 1</h4>
+                <h4>BAB 3</h4>
             </div>
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab1.index') }}">
+                <a href="{{ route('layouts.admin.bab3.index') }}">
                     <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
-                <form action="{{ route('bab1.store') }}" method="POST">
+                <form action="{{ route('bab3.store') }}" method="POST">
                     @csrf
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Bab</label>
@@ -59,37 +59,25 @@
                     </div>
 
                     <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">1.1 Latar Belakang</label>
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.1 Permasalahan Pelayanan Perangkat Daerah</label>
                         <div class="col-sm-12 col-md-10">
-                            <textarea name="latar_belakang" class="summernote"></textarea>
+                            <textarea name="permasalahan_pelayanan" class="summernote"></textarea>
                         </div>
                     </div>
                     
                     <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">1.2 Dasar Hukum Penyusunan</label>
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis</label>
                         <div class="col-sm-12 col-md-10">
-                            <textarea name="dasar_hukum" class="summernote"></textarea>
+                            <textarea name="isu_strategis" class="summernote"></textarea>
                         </div>
                     </div>
 
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">1.3 Maksud dan Tujuan</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="maksud_tujuan" class="summernote"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">1.4 Sistematika Penulisan</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="sistematika_penulisan" class="summernote"></textarea>
-                        </div>
-                    </div>
+                    
 
                     <div class="form-group row mb-4">
                         <div class="col-12 d-flex justify-content-center align-items-center">
                             <button type="submit" class="btn btn-success btn-lg mx-2">Submit</button>
-                            <a href="{{ route('layouts.admin.bab1.index') }}" class="btn btn-danger btn-lg mx-2">Cancel</a>
+                            <a href="{{ route('layouts.admin.bab3.index') }}" class="btn btn-danger btn-lg mx-2">Cancel</a>
                         </div>
                     </div>
                 </form>

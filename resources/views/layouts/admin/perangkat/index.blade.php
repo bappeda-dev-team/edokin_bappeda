@@ -3,53 +3,50 @@
 @section('title', 'Dashboard E-DOKIN')
 
 @section('content')
-  <section class="section">
+<section class="section">
     <div class="section-header">
-      <h1>Perangkat Daerah</h1>
+        <h1>Perangkat Daerah</h1>
     </div>
     <div class="container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <h4>Tabel Perangkat Daerah</h4>
+        <div class="card">
+            <div class="card-header">
+                <h4>Tabel Perangkat Daerah</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="table-1">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Kode OPD</th>
+                                <th>Nama OPD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($data_opd as $opd)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $opd['kode_opd'] ?? 'N/A' }}</td>
+                                    <td>{{ $opd['nama_opd'] ?? 'N/A' }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="text-center">No data available.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>           
         </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-striped table-md">
-              <tr>
-                <th>No.</th>
-                <th>Nama</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Irwansyah Saputra</td>
-                <td>2017-01-09</td>
-                <td><div class="badge badge-success">Active</div></td>
-                <td><a href="#" class="btn btn-secondary">Detail</a></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="card-footer text-right">
-          <nav class="d-inline-block">
-            <ul class="pagination mb-0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-              </li>
-              <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">2</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#table-1').DataTable();
+    });
+</script>
 @endsection

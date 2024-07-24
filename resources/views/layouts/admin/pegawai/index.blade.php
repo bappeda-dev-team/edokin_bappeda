@@ -3,53 +3,56 @@
 @section('title', 'Dashboard E-DOKIN')
 
 @section('content')
-  <section class="section">
+<section class="section">
     <div class="section-header">
-      <h1>Pegawai</h1>
+        <h1>Daftar Pegawai</h1>
     </div>
     <div class="container-fluid">
-      <div class="card">
-        <div class="card-header">
-          <h4>Tabel Pegawai</h4>
+        <div class="card">
+            <div class="card-header">
+                <h4>Tabel Pegawai</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="table-1">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>NIP</th>
+                                <th>Nama</th>
+                                <th>Jabatan</th>
+                                <th>Nama Pangkat</th>
+                                <th>Nama Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($filteredData as $employee)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $employee['nip'] ?? 'N/A' }}</td>
+                                    <td>{{ $employee['nama'] ?? 'N/A' }}</td>
+                                    <td>{{ $employee['jabatan'] ?? 'N/A' }}</td>
+                                    <td>{{ $employee['pangkat'] ?? 'N/A' }}</td>
+                                    <td>{{ $employee['unit_name'] ?? 'N/A' }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">No data available.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>           
         </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-striped table-md">
-              <tr>
-                <th>No.</th>
-                <th>Nama</th>
-                <th>Created At</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Irwansyah Saputra</td>
-                <td>2017-01-09</td>
-                <td><div class="badge badge-success">Active</div></td>
-                <td><a href="#" class="btn btn-secondary">Detail</a></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="card-footer text-right">
-          <nav class="d-inline-block">
-            <ul class="pagination mb-0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-              </li>
-              <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">2</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#table-1').DataTable();
+    });
+</script>
 @endsection

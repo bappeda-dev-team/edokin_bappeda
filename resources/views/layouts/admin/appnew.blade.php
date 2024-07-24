@@ -16,6 +16,11 @@
   <link rel="stylesheet" href="{{asset('style/dist/assets/modules/weather-icon/css/weather-icons-wind.min.css')}}">
   <link rel="stylesheet" href="{{asset('style/dist/assets/modules/summernote/summernote-bs4.css')}}">
 
+      <!-- CSS Libraries -->
+  <link rel="stylesheet" href="{{asset('style/dist/assets/modules/datatables/datatables.min.css')}}">
+  <link rel="stylesheet" href="{{asset('style/dist/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href="{{asset('style/dist/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css')}}">
+
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('style/dist/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{asset('style/dist/assets/css/components.css')}}">
@@ -79,6 +84,16 @@
   <!-- Template JS File -->
   <script src="{{asset('style/dist/assets/js/scripts.js')}}"></script>
   <script src="{{asset('style/dist/assets/js/custom.js')}}"></script>
+<!-- JS Libraies -->
+<script src="{{asset('style/dist/assets/modules/datatables/datatables.min.js')}}"></script>
+<script src="{{asset('style/dist/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('style/dist/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js')}}"></script>
+<script src="{{asset('style/dist/assets/modules/jquery-ui/jquery-ui.min.js')}}"></script>
+
+<!-- Page Specific JS File -->
+<script src="{{asset('style/dist/assets/js/page/modules-datatables.js')}}"></script>
+
+ 
 
   {{-- <script>
     // Mendapatkan semua elemen dengan kelas "nav-link"
