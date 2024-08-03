@@ -40,7 +40,7 @@
                                     <td>
                                         @php
                                             $selectedOpd = null;
-                                            foreach ($data_opd as $opd) {
+                                            foreach ($urusan_opd as $opd) {
                                                 if ($opd['kode_opd'] == $bab_1->kode_opd) {
                                                     $selectedOpd = $opd;
                                                     break;

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\PerangkatOPD;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -9,22 +9,20 @@ class OPDController extends Controller
 {
     public function perangkat()
     {
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/daftar_opd';
+        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
         $response = Http::withHeaders([
             'Accept' => 'application/json',
         ])->post($apiUrl);
 
         if ($response->successful()) {
-            $daftar_opd = $response->json();
-            if (isset($daftar_opd['results'])) {
-                $data_opd = $daftar_opd['results'];
-            } else {
-                $data_opd = [];
-            }
+            $urusan_opd = $response->json();
+            $urusan_opd = $urusan_opd['results'] ?? [];
         } else {
-            $data_opd = [];
+            \Log::error('Failed to fetch Urusan OPD data: ' . $response->body());
+            $urusan_opd = []; // Initialize as empty array in case of failure
         }
 
-        return view('layouts.admin.perangkat.index', ['data_opd' => $data_opd]);
+        // Use compact() to pass the variable to the view
+        return view('layouts.admin.perangkat.index', compact('urusan_opd'));
     }
 }

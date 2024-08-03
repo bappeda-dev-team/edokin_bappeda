@@ -18,6 +18,8 @@ class Bab1 extends Model
     protected $fillable = [
         'kode_opd', // Tambahkan ini jika 'kode_opd' juga dapat diisi secara massal
         'nama_bab',
+        'bidang1',
+        'bidang2',
         'jenis_id',
         'tahun_id',
         'latar_belakang',

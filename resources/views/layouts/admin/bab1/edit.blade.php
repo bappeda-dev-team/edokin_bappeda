@@ -60,7 +60,7 @@
                 <div class="col-sm-12 col-md-4">
                     <select name="kode_opd" class="form-control selectric" required>
                         <option value="">Pilih Kode</option>
-                        @foreach($data_opd as $opd)
+                        @foreach($urusan_opd as $opd)
                             <option value="{{ $opd['kode_opd'] }}" {{ $bab1->kode_opd == $opd['kode_opd'] ? 'selected' : '' }}>
                                 {{ $opd['kode_opd'] }}
                             </option>
