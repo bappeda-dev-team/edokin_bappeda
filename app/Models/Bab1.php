@@ -16,16 +16,14 @@ class Bab1 extends Model
     // pilih -> jenis -> 'Renstra'
 
     protected $fillable = [
-        'kode_opd', // Tambahkan ini jika 'kode_opd' juga dapat diisi secara massal
         'nama_bab',
+        'jenis_id',
+        'nama_opd',
+        'bidang_urusan',
         'bidang1',
         'bidang2',
-        'jenis_id',
+        'kode_opd',
         'tahun_id',
-        'latar_belakang',
-        'dasar_hukum',
-        'maksud_tujuan',
-        'sistematika_penulisan',
     ];
 
     public function tahun()

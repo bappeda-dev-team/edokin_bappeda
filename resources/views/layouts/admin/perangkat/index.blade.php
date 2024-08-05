@@ -23,7 +23,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data_opd as $opd)
+                            @forelse ($urusan_opd as $opd)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $opd['kode_opd'] ?? 'N/A' }}</td>

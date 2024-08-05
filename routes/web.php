@@ -45,3 +45,7 @@ Route::delete('/dashboard/delete-bab3/{id}', [Bab3Controller::class, 'destroy'])
 Route::get('/dashboard/bab1/export-pdf/{id}', [Bab1Controller::class, 'exportPdf'])->name('bab1.exportPdf');
 Route::get('/dashboard/bab1/export-word/{id}', [Bab1Controller::class, 'exportWord'])->name('bab1.exportWord');
 
+// Route::delete('/dashboard/delete-bab1/{id}', [Bab1Controller::class, 'destroy'])->name('bab1.destroy');
+Route::get('/api/urusan_opd/{kode_opd}', [Bab1Controller::class, 'getUrusanOpd']);
+
+

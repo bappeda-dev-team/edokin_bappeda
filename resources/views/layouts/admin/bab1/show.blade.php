@@ -146,7 +146,7 @@
                             @endif
                         </ol> --}}
                        
-                        <ol>
+                        {{-- <ol>
                             @if(isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']))
                                 @foreach($selectedOpd['urusan_opd'] as $urusan)
                                     @if(isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd']) && count($urusan['bidang_urusan_opd']) > 0)
@@ -158,10 +158,43 @@
                             @else
                                 <li>No data available</li>
                             @endif
+                        </ol> --}}
+                        <ol>
+                            @if (isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']) && count($selectedOpd['urusan_opd']) > 0)
+                                @foreach ($selectedOpd['urusan_opd'] as $urusan)
+                                    @if (isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd']) && count($urusan['bidang_urusan_opd']) > 0)
+                                        @foreach ($urusan['bidang_urusan_opd'] as $index => $bidang)
+                                            @if ($index == 0)
+                                                <li>
+                                                    {{ $bidang['bidang_urusan'] ?? 'N/A' }}
+                                                    {{-- Tambahkan data dari bidang1 --}}
+                                                    @if (isset($bidang1))
+                                                        - {{ $bidang1 }}
+                                                    @endif
+                                                </li>
+                                            @elseif ($index == 1)
+                                                <li>
+                                                    {{ $bidang['bidang_urusan'] ?? 'N/A' }}
+                                                    {{-- Tambahkan data dari bidang2 --}}
+                                                    @if (isset($bidang2))
+                                                        - {{ $bidang2 }}
+                                                    @endif
+                                                </li>
+                                            @else
+                                                <li>{{ $bidang['bidang_urusan'] ?? 'N/A' }}</li>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            @else
+                                <li>No data available</li>
+                            @endif
                         </ol>
+                        
+
                         <p class="indent">Rencana Strategis Perangkat Daerah Tahun 2024-2026 yang disusun telah selaras dengan Rencana Pembangunan Daerah (RPD) Tahun 2026-2026. 
                             Renstra PD merupakan potret dari Rencana strategis dari masing-masing Perangkat Daerah selama 2 (dua) tahun yang telah disusun melalui 
-                            berbagai tahapan dan telah melibatkan unsur<p class="indent"> masyarakat dan stakeholder, Renstra PD yang disusun juga telah mengakomodir dokumen perencanaan Kementerian/Lembaga sebagai bagian dari kewenangan 
+                            berbagai tahapan dan telah melibatkan unsur masyarakat dan stakeholder, Renstra PD yang disusun juga telah mengakomodir dokumen perencanaan Kementerian/Lembaga sebagai bagian dari kewenangan 
                                 serta tugas dan pokok dan fungsi serta kewenangan Perangkat Daerah. Renstra PD akan menjadi dasar acuan penyusunan rencana kerja tahunan Perangkat Daerah.</p>
                         <br>
                         <h4>1.2. Dasar Hukum Penyusunan</h4>
@@ -169,6 +202,58 @@
                         <ol style="list-style-type: lower-alpha">
                             <li>dsfg</li>
                         </ol>
+                        <h4>1.3. Maksud dan Tujuan</h4>
+                        <p class="indent">Maksud disusunnya Rencana Strategis Perangkat Daerah adalah :</p>
+                        <ol>
+                            <li>Memberikan gambaran kinerja Perangkat Daerah pada renstra tahun sebelumnya yaitu renstra tahun 2019-2024;</li>
+                            <li>Memberikan gambaran rencana strategis Perangkat Daerah pada Tahun 2025-2026;</li>
+                            <li>sebagai pedoman Perangkat Daerah dalam menyusun kebijakan program, kegiatan, sub kegiatan serta tolok ukur dari kinerja penyelenggaraan pemerintahan daerah selama tahun 2025-2026.</li>
+                        </ol>
+                        <p class="indent">Tujuan disusunnya Rencana Kerja Perangkat Daerah adalah </p>
+                        <ol>
+                            <li>sebagai acuan pelaksanaan program, kegiatan dan sub kegiatan, serta sebagai pedoman penyusunan Rencana Kerja (Renja) Perangkat Daerah yang mengedepankan pelaksanaan akuntabilitas kinerja dalam mencapai tujuan pembangunan.</li>
+                            <li>Tersedianya dokumen perencanaan tahunan yang disusun sebagai dasar Perengkat Daerah menyusun Renja Perangkat Daerah pada Tahun 2025 dan Tahun 2026.</li>
+                        </ol>
+                        <h4>1.4. Sistematika Penulisan</h4>
+                        <p class="indent">Dengan berpedoman pada Peraturan Menteri Dalam Negeri Republik Indonesia Nomor 86 Tahun 2017 sistematika penyusunan Rencana Strategis Perangkat Daerah (Renstra PD) sebagai berikut :</p>
+                        <p class="indent">Penetapan Renstra Oleh Kepala Perangkat Daerah</p>
+                        <p class="indent">Daftar Isi</p>
+
+                        <p class="indent">BAB I&emsp;: Pendahuluan</p>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;1.1. Latar Belakang</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;1.2. Dasar Hukum Penyusunan</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;1.3. Maksud dan Tujuan</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;1.4. Sistematika Penilaian</li>
+
+                        <p class="indent">BAB II&emsp;: Gambaran Pelayanan Perangkat Daerah</p>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;2.1. Tugas, Fungsi, dan Struktur Perangkat Daerah</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;2.2. Sumber Daya Perangkat Daerah</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;2.3. Kinerja Pelayanan Perangkat Daerah</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;2.4. Kelompok Sasaran</li>
+
+
+                        <p class="indent">BAB III&emsp;: Permasalahan dan Isu Strategis Perangkat Daerah</p>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;3.1. Permasalahan Pelayanan Perangkat Daerah</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;3.2. Isu Strategis</li>
+                
+                        <p class="indent">BAB IV&emsp;: Tujuan dan Sasaran Jangka Menengah Perangkat Daerah</p>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;4.1. Tujuan dan Sasaran Renstra PD Tahun 2025-2026</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;4.2. Cascading Kinerja PD</li>
+                
+                        <p class="indent">BAB V&emsp;: Strategi dan Arah Kebijakan</p>
+
+                        <p class="indent">BAB VI&emsp;: Rencana Program, Kegiatan, dan Sub Kegiatan serta Pendanaan</p>
+                 
+                        <p class="indent">BAB VII&emsp;: Kinerja Penyelanggaraan Bidang Urusan</p>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;7.1. Penentuan target keberhasilan pencapaian tujuan dan sasaran Renstra PD Tahun 2025-2026 melalui Indikator Kinerja Utama (IKU) PD</li>
+                        <li class="indent1" style=" list-style-type: none;">&emsp;7.2. Penentuan target kinerja penyelenggaraan urusan pemerintahan daerah Tahun 2025-2026 melalui Indikator Kinerja Kunci (IKK) PD</li>
+
+                        <p class="indent">BAB VIII&emsp;: Penutup</p>
+                    
+                        
+                                          
+                
+                            
                     </div>
                 </div>
             </div>
