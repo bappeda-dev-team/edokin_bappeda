@@ -15,6 +15,7 @@
                 </a>
                 <form action="{{ route('bab1.store') }}" method="POST">
                     @csrf
+                    <!-- Form Fields -->
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Bab</label>
                         <div class="col-sm-12 col-md-4">
@@ -49,7 +50,7 @@
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
                         <div class="col-sm-12 col-md-4">
-                            <select name="kode_opd" class="form-control selectric" required>
+                            <select name="kode_opd" id="kode_opd" class="form-control selectric" required>
                                 <option value="">Pilih Kode OPD</option>
                                 @foreach($urusan_opd as $opd)
                                     <option value="{{ $opd['kode_opd'] }}">{{ $opd['kode_opd'] }}</option>
@@ -71,14 +72,14 @@
                             <input type="text" name="bidang_urusan" id="bidang_urusan" class="form-control" readonly>
                         </div>
                     </div>
-                    
+
                     {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea name="bidang_urusan" id="bidang_urusan" class="summernote" readonly></textarea>
                         </div>
                     </div> --}}
-                    
+
 
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
@@ -86,7 +87,7 @@
                             <textarea name="bidang1" class="summernote"></textarea>
                         </div>
                     </div>
-                    
+
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
                         <div class="col-sm-12 col-md-10">
@@ -100,13 +101,6 @@
                             <textarea name="dasar_hukum" class="summernote"></textarea>
                         </div>
                     </div>
-
-                    {{-- <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">1.4 Sistematika Penulisan</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="sistematika_penulisan" class="summernote"></textarea>
-                        </div>
-                    </div> --}}
 
                     <div class="form-group row mb-4">
                         <div class="col-12 d-flex justify-content-center align-items-center">
@@ -127,11 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const kodeOpdSelect = document.querySelector('select[name="kode_opd"]');
     const namaOpdInput = document.getElementById('nama_opd');
     const bidangUrusanInput = document.getElementById('bidang_urusan');
-
     if (kodeOpdSelect) {
         kodeOpdSelect.addEventListener('change', function () {
             const kodeOpd = this.value;
-
             if (kodeOpd) {
                 fetch(`/api/urusan_opd/${kodeOpd}`)
                     .then(response => response.json())
@@ -143,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             bidangUrusanInput.value = '';
                         } else {
                             namaOpdInput.value = data.nama_opd || '';
-
                             // Display bidang_urusan
                             bidangUrusanInput.value = data.bidang_urusan || '';
                         }
@@ -159,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
     // Initialize Summernote after DOM is loaded
     document.addEventListener('DOMContentLoaded', function () {
         const summernoteElements = document.querySelectorAll('.summernote');
@@ -173,6 +163,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
 </script>
 @endsection

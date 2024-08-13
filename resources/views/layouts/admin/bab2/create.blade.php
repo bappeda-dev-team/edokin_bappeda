@@ -3,186 +3,165 @@
 @section('title', 'Dashboard E-DOKIN')
 
 @section('content')
-
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4>BAB 2</h4>
+                <h4>BAB 1</h4>
             </div>
             <div class="card-body">
-                <div class="text-center">
-                    <h4>2.1 Tugas, Fungsi dan Struktur Organisasi Perangkat Daerah</h4>
-                </div>
-                <textarea name="latar_belakang" class="summernote"></textarea>
-            </div>
-            <div class="text-center">
-                <h4>Bagan organisasi</h4>
-            </div>
-            <div class="tree">
-                <ul>
-                    <li>
-                        <a href="#">[Text]</a>
-                        <ul>
-                            <li>
-                                <a href="#">[Text]</a>
-                                <!--<ul>-->
-                                <!--    <li><a href="#">[Text]</a></li>-->
-                                <!--    <li><a href="#">[Text]</a></li>-->
-                                <!--</ul>-->
-                            </li>
-                            <li>
-                                <a href="#">[Text]</a>
-                                <!--<ul>-->
-                                <!--    <li><a href="#">[Text]</a></li>-->
-                                <!--</ul>-->
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="card-body">
-                <div class="text-center">
-                    <h4>2.2 Sumber Daya Perangkat Daerah</h4>
-                </div>
-                <textarea name="dasar_hukum" class="summernote"></textarea>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                    <h4>2.3 Kinerja Pelayanan Perangkat Daerah</h4>
-                </div>
-                <textarea name="maksud_tujuan" class="summernote"></textarea>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                    <h4>2.4 Kelompok Sasaran Layanan</h4>
-                </div>
-                <textarea name="sistematika_penulisan" class="summernote"></textarea>
-            </div>
-            <div class="form-group row mb-4">
-                <div class="col-12 d-flex justify-content-center align-items-center">
-                    <button type="submit" class="btn btn-success btn-lg mx-2">Submit</button>
-                    <a href="{{ route('layouts.admin.bab2.index') }}" class="btn btn-danger btn-lg mx-2">Cancel</a>
-                </div>
+                <a href="{{ route('layouts.admin.bab1.index') }}">
+                    <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
+                </a>
+                <form action="{{ route('bab1.store') }}" method="POST">
+                    @csrf
+                    <!-- Form Fields -->
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Bab</label>
+                        <div class="col-sm-12 col-md-4">
+                            <input type="text" name="nama_bab" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Jenis</label>
+                        <div class="col-sm-12 col-md-4">
+                            <select name="jenis_id" class="form-control selectric" required>
+                                <option value="">Pilih Jenis</option>
+                                @foreach($jenis as $item)
+                                    <option value="{{ $item->id }}">{{ $item->jenis }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tahun</label>
+                        <div class="col-sm-12 col-md-4">
+                            <select name="tahun_id" class="form-control selectric" required>
+                                <option value="">Pilih Tahun</option>
+                                @foreach($tahun as $year)
+                                    <option value="{{ $year->id }}">{{ $year->tahun }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
+                        <div class="col-sm-12 col-md-4">
+                            <select name="kode_opd" id="kode_opd" class="form-control selectric" required>
+                                <option value="">Pilih Kode OPD</option>
+                                @foreach($urusan_opd as $opd)
+                                    <option value="{{ $opd['kode_opd'] }}">{{ $opd['kode_opd'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
+                        <div class="col-sm-12 col-md-4">
+                            <input type="text" name="nama_opd" id="nama_opd" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan</label>
+                        <div class="col-sm-12 col-md-4">
+                            <input type="text" name="bidang_urusan" id="bidang_urusan" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    {{-- <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea name="bidang_urusan" id="bidang_urusan" class="summernote" readonly></textarea>
+                        </div>
+                    </div> --}}
+
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea name="bidang1" class="summernote"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea name="bidang2" class="summernote"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Dasar Hukum</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea name="dasar_hukum" class="summernote"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <div class="col-12 d-flex justify-content-center align-items-center">
+                            <button type="submit" class="btn btn-success btn-lg mx-2">Submit</button>
+                            <a href="{{ route('layouts.admin.bab1.index') }}" class="btn btn-danger btn-lg mx-2">Cancel</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .tree ul {
-        padding-top: 20px; 
-        position: relative;
-        transition: all 0.5s;
-        -webkit-transition: all 0.5s;
-        -moz-transition: all 0.5s;
-    }
-
-    .tree li {
-        float: left; 
-        text-align: center;
-        list-style-type: none;
-        position: relative;
-        padding: 20px 5px 0 5px;
-        transition: all 0.5s;
-        -webkit-transition: all 0.5s;
-        -moz-transition: all 0.5s;
-    }
-
-    .tree li::before, .tree li::after {
-        content: '';
-        position: absolute; 
-        top: 0; 
-        right: 50%;
-        border-top: 1px solid #ccc;
-        width: 50%; 
-        height: 20px;
-    }
-
-    .tree li::after {
-        right: auto; 
-        left: 50%;
-        border-left: 1px solid #ccc;
-    }
-
-    .tree li:only-child::after, .tree li:only-child::before {
-        display: none;
-    }
-
-    .tree li:only-child { 
-        padding-top: 0;
-    }
-
-    .tree li:first-child::before, .tree li:last-child::after {
-        border: 0 none;
-    }
-
-    .tree li:last-child::before {
-        border-right: 1px solid #ccc;
-        border-radius: 0 5px 0 0;
-        -webkit-border-radius: 0 5px 0 0;
-        -moz-border-radius: 0 5px 0 0;
-    }
-
-    .tree li:first-child::after {
-        border-radius: 5px 0 0 0;
-        -webkit-border-radius: 5px 0 0 0;
-        -moz-border-radius: 5px 0 0 0;
-    }
-
-    .tree ul ul::before {
-        content: '';
-        position: absolute; 
-        top: 0; 
-        left: 50%;
-        border-left: 1px solid #ccc;
-        width: 0; 
-        height: 20px;
-    }
-
-    .tree li a {
-        border: 1px solid #ccc;
-        padding: 5px 10px;
-        text-decoration: none;
-        color: #666;
-        font-family: arial, verdana, tahoma;
-        font-size: 11px;
-        display: inline-block;
-        border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        transition: all 0.5s;
-        -webkit-transition: all 0.5s;
-        -moz-transition: all 0.5s;
-    }
-
-    .tree li a:hover, .tree li a:hover + ul li a {
-        background: #c8e4f8; 
-        color: #000; 
-        border: 1px solid #94a0b4;
-    }
-
-    .tree li a:hover + ul li::after, 
-    .tree li a:hover + ul li::before, 
-    .tree li a:hover + ul::before, 
-    .tree li a:hover + ul ul::before {
-        border-color:  #94a0b4;
-    }
-</style> 
+@endsection
 
 @section('scripts')
 <script>
-    $(document).ready(function() {
-        $('.summernote').summernote({
-            height: 300,   // set the height of the editor
-            minHeight: null, // set minimum height of the editor
-            maxHeight: null, // set maximum height of the editor
-            focus: true     // set focus to editable area after initializing summernote
+document.addEventListener('DOMContentLoaded', function () {
+    const kodeOpdSelect = document.querySelector('select[name="kode_opd"]');
+    const namaOpdInput = document.getElementById('nama_opd');
+    const bidangUrusanInput = document.getElementById('bidang_urusan');
+    if (kodeOpdSelect) {
+        kodeOpdSelect.addEventListener('change', function () {
+            const kodeOpd = this.value;
+            if (kodeOpd) {
+                fetch(`/api/urusan_opd/${kodeOpd}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('API Response:', data); // Debug: log API response
+                        if (data.error) {
+                            console.error('API Error:', data.error);
+                            namaOpdInput.value = '';
+                            bidangUrusanInput.value = '';
+                        } else {
+                            namaOpdInput.value = data.nama_opd || '';
+                            // Display bidang_urusan
+                            bidangUrusanInput.value = data.bidang_urusan || '';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        namaOpdInput.value = '';
+                        bidangUrusanInput.value = '';
+                    });
+            } else {
+                namaOpdInput.value = '';
+                bidangUrusanInput.value = '';
+            }
+        });
+    }
+    // Initialize Summernote after DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        const summernoteElements = document.querySelectorAll('.summernote');
+        summernoteElements.forEach(el => {
+            $(el).summernote({
+                height: 300,   // set the height of the editor
+                minHeight: null, // set minimum height of the editor
+                maxHeight: null, // set maximum height of the editor
+                focus: true     // set focus to editable area after initializing summernote
+            });
         });
     });
+});
 </script>
-@endsection
-
-
 @endsection

@@ -24,6 +24,8 @@ class Bab1 extends Model
         'bidang2',
         'kode_opd',
         'tahun_id',
+        'dasar_hukum',
+        // 'kode_bidang_urusan'
     ];
 
     public function tahun()

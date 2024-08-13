@@ -20,6 +20,7 @@
                                 <th>No.</th>
                                 <th>Kode OPD</th>
                                 <th>Nama OPD</th>
+                                <th>Urusan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,6 +29,29 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $opd['kode_opd'] ?? 'N/A' }}</td>
                                     <td>{{ $opd['nama_opd'] ?? 'N/A' }}</td>
+                                    <td>
+                                        @if(!empty($opd['urusan_opd']))
+                                            @foreach($opd['urusan_opd'] as $urusan)
+                                                <strong>{{ $urusan['urusan'] ?? 'No Urusan Available' }}</strong>
+                                                @if(!empty($urusan['bidang_urusan_opd']))
+                                                    <ul>
+                                                        @foreach($urusan['bidang_urusan_opd'] as $bidang)
+                                                            <li>{{ $bidang['bidang_urusan'] ?? 'No Bidang Urusan Available' }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                @else
+                                                    <p>No Bidang Urusan Available</p>
+                                                @endif
+                                                @if (!$loop->last)
+                                                    <br>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            No Urusan Available
+                                        @endif
+                                    </td>
+                                    
+
                                 </tr>
                             @empty
                                 <tr>

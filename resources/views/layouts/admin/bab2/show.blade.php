@@ -66,12 +66,23 @@
                 </a>
                 
                 <div class="document-content">
-                    <h1>BAB I</h1>
-                    <h1>PENDAHULUAN</h1>
-                    <h4>1.1. Latar Belakang</h4>
-                    <p class="indent">Rencana Strategis Perangkat Daerah (Renstra PD) merupakan dokumen perencanaan yang dibuat setiap 5 (lima) tahun sebagai tindaklanjut telah ditetapkannya dokumen 
-                    Rencana Pembangunan Daerah (RPD) atau Rencana Pembangunan Jangka Menengah Daerah (RPJMD). Penyusunan Renstra PD tidak lepas dari peran stakeholder serta 
-                    Masyarakat. Tahapan penyusunan Renstra PD tertuang dalam pasal 108 sampai dengan pasal 124 Peraturan Menteri Dalam Negeri Nomor 86 Tahun 2017, dimulai dari tahapan:</p>
+                    <h1>BAB II</h1>
+                    <h1>HASIL EVALUASI RENJA PERANGKAT DAERAH TAHUN LALU</h1>
+                    <h4>2.1. Tugas, Fungsi dan Struktur Organisasi Perangkat Daerah</h4>
+                    <p class="indent">  @php
+                        $selectedOpd = null;
+                        foreach ($urusan_opd as $opd) {
+                            if ($opd['kode_opd'] == $bab1->kode_opd) {
+                                $selectedOpd = $opd;
+                                break;
+                            }
+                        }
+                    @endphp
+
+                    <p> {{ $selectedOpd['nama_opd'] ?? 'N/A' }} mengelola urusan Perencanaan serta Penelitian dan Pengembangan 
+                        yang telah dibentuk sesuai Peraturan Daerah Kota Madiun Nomor 3 Tahun 2016 tentang Pembentukan dan Susunan Perangkat Daerah sebagaimana telah diubah terakhir dengan Peraturan Daerah Kota Madiun Nomor 8 Tahun 2020.</p>
+                </ol>
+                <p class="indent">Tugas {{ $selectedOpd['nama_opd'] ?? 'N/A' }} : Dengan rincian tugas :</p>
                     <div class="list">
                         <ol style="list-style-type: lower-alpha">
                             <li>
@@ -191,8 +202,7 @@
                             @endif
                         </ol>
                         
-                        
-                        
+    
                         
 
                         <p class="indent">Rencana Strategis Perangkat Daerah Tahun 2024-2026 yang disusun telah selaras dengan Rencana Pembangunan Daerah (RPD) Tahun 2026-2026. 

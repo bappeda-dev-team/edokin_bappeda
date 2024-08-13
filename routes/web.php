@@ -47,5 +47,9 @@ Route::get('/dashboard/bab1/export-word/{id}', [Bab1Controller::class, 'exportWo
 
 // Route::delete('/dashboard/delete-bab1/{id}', [Bab1Controller::class, 'destroy'])->name('bab1.destroy');
 Route::get('/api/urusan_opd/{kode_opd}', [Bab1Controller::class, 'getUrusanOpd']);
+// Route::get('/api/bidang_urusan/{kode_bidang_urusan}', [Bab1Controller::class, 'getBidangUrusan']);
+// Route::get('/get-bidang-urusan/{kode_opd}', [Bab1Controller::class, 'getUrusanOpd']);
+// Route::get('/get-nama-bidang-urusan/{kode_bidang_urusan}', [Bab1Controller::class, 'getNamaBidangUrusan']);
+
 
 

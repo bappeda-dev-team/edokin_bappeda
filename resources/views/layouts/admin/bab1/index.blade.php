@@ -36,16 +36,10 @@
                                     <td class="text-center">{{ $i++ }}</td>
                                     <td>{{ $bab_1->nama_bab }}</td>
                                     <td>{{ $bab_1->jenis->jenis ?? 'N/A' }}</td>
-                                    <td>{{ $bab_1->tahun->tahun ?? 'N/A' }}</td> <!-- Menampilkan Tahun -->
+                                    <td>{{ $bab_1->tahun->tahun ?? 'N/A' }}</td>
                                     <td>
                                         @php
-                                            $selectedOpd = null;
-                                            foreach ($urusan_opd as $opd) {
-                                                if ($opd['kode_opd'] == $bab_1->kode_opd) {
-                                                    $selectedOpd = $opd;
-                                                    break;
-                                                }
-                                            }
+                                            $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab_1->kode_opd);
                                         @endphp
                                         {{ $selectedOpd['kode_opd'] ?? 'N/A' }}
                                     </td>

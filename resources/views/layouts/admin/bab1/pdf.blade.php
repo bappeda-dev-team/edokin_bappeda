@@ -4,7 +4,7 @@
     <title>Download BAB I</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Georgia, 'Times New Roman', Times, serif;
             line-height: 1.5;
             margin: 20px;
         }
