@@ -1,6 +1,6 @@
 @extends('layouts.admin.main')
 
-@section('title', 'Detail BAB I')
+@section('title', 'Detail BAB IV')
 
 <style>
     body {
@@ -45,34 +45,135 @@
         text-indent: 90px; /* Adjust the value as needed */
         margin-left: 20px; /* Adjust the left margin if needed */
     }
+    table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid black; /* Garis border hitam */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* tr:hover {
+            background-color: #f1f1f1;
+        } */
+
+       
 </style>
 
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>Detail BAB I</h1>
+        <h1>Detail BAB IV</h1>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab1.index') }}">
+                <a href="{{ route('layouts.admin.bab3.index') }}">
                     <button class="btn btn-primary mb-3"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
-                <a href="{{ route('bab1.exportPdf', $bab1->id) }} "target="_blank">
+                {{-- <a href="{{ route('bab3.exportPdf', $bab3->id) }} "target="_blank">
                     <button class="btn btn-danger mb-3"><i class="fa fa-file-pdf"></i> Export to PDF </button>
-                </a>
-                <a href="{{ route('bab1.exportWord', $bab1->id) }}">
+                </a> --}}
+                {{-- <a href="{{ route('bab3.exportWord', $bab3->id) }}">
                     <button class="btn btn-success mb-3"><i class="fa fa-file-word"></i> Export to Word </button>
-                </a>
+                </a> --}}
                 
                 <div class="document-content">
-                    <h1>BAB I</h1>
-                    <h1>PENDAHULUAN</h1>
-                    <h4>1.1. Latar Belakang</h4>
-                    <p class="indent">Rencana Strategis Perangkat Daerah (Renstra PD) merupakan dokumen perencanaan yang dibuat setiap 5 (lima) tahun sebagai tindaklanjut telah ditetapkannya dokumen 
-                    Rencana Pembangunan Daerah (RPD) atau Rencana Pembangunan Jangka Menengah Daerah (RPJMD). Penyusunan Renstra PD tidak lepas dari peran stakeholder serta 
-                    Masyarakat. Tahapan penyusunan Renstra PD tertuang dalam pasal 108 sampai dengan pasal 124 Peraturan Menteri Dalam Negeri Nomor 86 Tahun 2017, dimulai dari tahapan:</p>
-                    <div class="list">
+                    <h1>BAB IV</h1>
+                    <h1>TUJUAN DAN SASARAN</h1><br>
+                    <h4>4.1. Tujuan dan Sasaran Rentra Perangkat Daerah Kota Madiun Tahun 2025-2026</h4>
+                    @php
+                                $selectedOpd = null;
+                                foreach ($urusan_opd as $opd) {
+                                    if ($opd['kode_opd'] == $bab4->kode_opd) {
+                                        $selectedOpd = $opd;
+                                        break;
+                                    }
+                                }
+                            @endphp
+
+                            <p class="indent">Dalam mengukur keberhasilan suatu organisasi diperlukan Tujuan dan Sasaran Perangkat Daerah, sehingga pelaksanaan pembangunan khususnya pada 
+                                <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> dapat terarah. Keberhasilan untuk mencapai tujuan dan sasaran tersebut akan mendukung pencapaian Tujuan dan Sasaran RPJMD/RPD Kota Madiun. 
+                                Tujuan dan sasaran perangkat daerah beserta indikator kinerjanya disajikan dalam tabel berikut:</p>
+                        </ol>
+                        <p style="text-align: center">Tabel 4.1.</p>
+                        <p style="text-align: center">Tujuan dan Sasaran Jangka Menengah Pelayanan Perangkat Daerah</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th rowspan="3" class="text-center">No.</th>
+                                    <th rowspan="3" class="text-center">Tujuan</th>
+                                    <th rowspan="3" class="text-center">Sasaran</th>
+                                    <th rowspan="3" class="text-center">Indikator Tujuan/Sasaran</th>
+                                    <th colspan="5" class="text-center">Target Kinerja Tujuan/Sasaran pada Tahun ke-</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">1</th>
+                                    <th class="text-center">2</th>
+                                    <th class="text-center">3</th>
+                                    <th class="text-center">4</th>
+                                    <th class="text-center">5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data['tujuan_opd'] as $index => $tujuan)
+                                    @foreach ($tujuan['indikator_tujuan'] as $indikator)
+                                        <tr>
+                                            <td class="text-center">{{ $index + 1 }}</td>
+                                            <td>{{ $tujuan['tujuan'] }}</td>
+                                            <td>{{ '-' /* Sasaran tidak ada di API, jadi gunakan '-' atau data lain yang sesuai */ }}</td>
+                                            <td>{{ $indikator['indikator'] }}</td>
+                        
+                                            @foreach (range(1, 5) as $i)
+                                                @php
+                                                    $tahunTarget = (string) (2020 + $i); // Menghitung tahun sesuai dengan index
+                                                    $target = collect($indikator['target_tujuan'])->firstWhere('tahun', $tahunTarget);
+                                                @endphp
+                                                <td class="text-center">
+                                                    @if ($target)
+                                                        {{ $target['target'] }} {{ $target['satuan'] }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                        
+                        <p class="indent">Sebagaimana tabel di atas 
+                            maka terdapat permasalahan-permasalahan pelayanan dan faktor-faktor yang mempengaruhi permasalahan tersebut yaitu :</p>
+
+                    <h4>3.2. Isu Strategis</h4>
+                    <p class="indent">Identifikasi hasil reviu faktor-faktor pelayanan perangkat daerah 
+                        yang mempengaruhi permasalahan pelayanan perangkat daerah ditinjau dari :</p>
+                        <ol>
+                            <li>Gambaran pelayanan perangkat daerah </li>
+                            <li>Sasaran jangka menengah pada renstra Kementerian/Lembaga</li>
+                            <li>Sasaran jangka menengah dari renstra Perangkat Daerah provinsi</li>
+                            <li>Implikasi RTRW bagi pelayanan Perangkat Daerah</li>
+                            <li>Implikasi KLHS bagi pelayanan Perangkat Daerah</li>
+                        </ol>
+                        <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis 
+                            dengan metode USG (Urgency, Seriousness dan Growth), maka isu strategis dinas/badan <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan  ditangani  dalam renstra selama ….. tahun dan prioritas penanganannnya pada tahun rencana adalah :</p>    
+
+                    {{-- <div class="list">
                         <ol style="list-style-type: lower-alpha">
                             <li>
                                 persiapan penyusunan renstra:
@@ -133,33 +234,9 @@
                                 }
                             @endphp
 
-                            <p> 
-                                <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Kota Madiun mengelola urusan dan bidang urusan sebagai berikut :</p>
+                            <p> {{ $selectedOpd['nama_opd'] ?? 'N/A' }} Kota Madiun mengelola urusan dan bidang urusan sebagai berikut :</p>
                         </ol>
-                        {{-- <ol>
-                            @if(isset($selectedOpd['bidang_urusan']) && is_array($selectedOpd['bidang_urusan']))
-                                @foreach($selectedOpd['bidang_urusan'] as $urusan)
-                                    <li>{{ $urusan['urusan'] ?? 'N/A' }}</li>
-                                    <p>{{ $bab1->nama_bab ?? 'N/A' }}</p>
-                                @endforeach
-                            @else
-                                <li>No data available</li>
-                            @endif
-                        </ol> --}}
-                       
-                        {{-- <ol>
-                            @if(isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']))
-                                @foreach($selectedOpd['urusan_opd'] as $urusan)
-                                    @if(isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd']) && count($urusan['bidang_urusan_opd']) > 0)
-                                        @foreach($urusan['bidang_urusan_opd'] as $bidang)
-                                            <li>{{ $bidang['bidang_urusan'] ?? 'N/A' }}</li>
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                            @else
-                                <li>No data available</li>
-                            @endif
-                        </ol> --}}
+                        
                         <ol>
                             @if (isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']) && count($selectedOpd['urusan_opd']) > 0)
                                 @foreach ($selectedOpd['urusan_opd'] as $urusan)
@@ -167,30 +244,22 @@
                                         @foreach ($urusan['bidang_urusan_opd'] as $index => $bidang)
                                             @if ($index == 0)
                                                 <li>
-                                                    <span style="color: rgb(11, 242, 11);">
-                                                        {{ $bidang['bidang_urusan'] ?? 'N/A' }}
-                                                    </span>
-                                                    {{-- Tambahkan data dari bidang1 --}}
+                                                    {{ $bidang['bidang_urusan'] ?? 'N/A' }}
+                                                 
                                                     @if (isset($bidang1))
                                                         - {{ $bidang1 }}
                                                     @endif
                                                 </li>
                                             @elseif ($index == 1)
                                                 <li>
-                                                    <span style="color: rgb(11, 242, 11);">
-                                                        {{ $bidang['bidang_urusan'] ?? 'N/A' }}
-                                                    </span>
-                                                    {{-- Tambahkan data dari bidang2 --}}
+                                                    {{ $bidang['bidang_urusan'] ?? 'N/A' }}
+                                                    
                                                     @if (isset($bidang2))
                                                         - {{ $bidang2 }}
                                                     @endif
                                                 </li>
                                             @else
-                                                <li>
-                                                    <span style="color: rgb(11, 242, 11);">
-                                                        {{ $bidang['bidang_urusan'] ?? 'N/A' }}
-                                                    </span>
-                                                </li>
+                                                <li>{{ $bidang['bidang_urusan'] ?? 'N/A' }}</li>
                                             @endif
                                         @endforeach
                                     @endif
@@ -210,8 +279,7 @@
                                 serta tugas dan pokok dan fungsi serta kewenangan Perangkat Daerah. Renstra PD akan menjadi dasar acuan penyusunan rencana kerja tahunan Perangkat Daerah.</p>
                         <br>
                         <h4>1.2. Dasar Hukum Penyusunan</h4>
-                        <p class="indent">Dalam penyusunan renstra 
-                            <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Kota Madiun Tahun 2025-2026, peraturan yang digunakan sebagai landasan hukum adalah : </p>
+                        <p class="indent">Dalam penyusunan renstra {{ $selectedOpd['nama_opd'] ?? 'N/A' }} Kota Madiun Tahun 2025-2026, peraturan yang digunakan sebagai landasan hukum adalah : </p>
                         <ol style="list-style-type: lower-alpha">
                             <li>dsfg</li>
                         </ol>
@@ -267,7 +335,7 @@
                                           
                 
                             
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

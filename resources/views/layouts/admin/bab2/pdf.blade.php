@@ -1,79 +1,73 @@
-@extends('layouts.admin.main')
-
-@section('title', 'Detail BAB II')
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-    }
-    .section {
-        margin: 20px 0;
-    }
-    .section h1 {
-        font-size: 24px;
-        margin-bottom: 10px;
-        text-align: center;
-    }
-    .section h2 {
-        font-size: 20px;
-        margin-bottom: 8px;
-        text-align: center;
-    }
-    .section p {
-        margin: 5px 0;
-    }
-    .list {
-        margin: 10px 0;
-    }
-    .list ul {
-        list-style-type: disc;
-        margin-left: 20px;
-    }
-    .list ol {
-        /* list-style-type: lower-alpha; */
-        margin-left: 20px;
-    }
-    .list ul ul {
-        list-style-type: circle;
-    }
-    .indent {
-        text-indent: 48px; /* Adjust the value as needed */
-        margin-left: 20px; /* Adjust the left margin if needed */
-    }
-    .indent1 {
-        text-indent: 90px; /* Adjust the value as needed */
-        margin-left: 20px; /* Adjust the left margin if needed */
-    }
-
-
-    .list-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px; /* Space between items */
-    }
-
-    .spacer {
-        padding-right: 900px; /* Prevents the colon from shrinking */
-    }
-</style>
-
-@section('content')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download BAB II</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .section {
+            margin: 20px 0;
+        }
+        .section h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .section p {
+            margin: 5px 0;
+        }
+        .list {
+            margin: 10px 0;
+        }
+        .list ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .list ol {
+            /* list-style-type: lower-alpha; */
+            margin-left: 20px;
+        }
+        .list ul ul {
+            list-style-type: circle;
+        }
+        .indent {
+            text-indent: 48px; /* Adjust the value as needed */
+            margin-left: 20px; /* Adjust the left margin if needed */
+        }
+        .indent1 {
+            text-indent: 90px; /* Adjust the value as needed */
+            margin-left: 20px; /* Adjust the left margin if needed */
+        }
+    
+    
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px; /* Space between items */
+        }
+    
+        .spacer {
+            padding-right: 900px; /* Prevents the colon from shrinking */
+        }
+    </style>
+</head>
+<body>
 <section class="section">
-    <div class="section-header">
-        <h1>Detail BAB II</h1>
-    </div>
     <div class="row">
         <div class="col-12">
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab2.index') }}">
-                    <button class="btn btn-primary mb-3"><i class="fa fa-arrow-left"></i> Back </button>
-                </a>
-                <a href="{{ route('bab2.exportPdf', $bab2->id) }} "target="_blank">
+                {{-- <a href="{{ route('bab1.exportPdf', $bab1->id) }} "target="_blank">
                     <button class="btn btn-danger mb-3"><i class="fa fa-file-pdf"></i> Export to PDF </button>
                 </a>
-                {{-- <a href="{{ route('bab2.exportWord', $bab1->id) }}">
+                <a href="{{ route('bab1.exportWord', $bab1->id) }}">
                     <button class="btn btn-success mb-3"><i class="fa fa-file-word"></i> Export to Word </button>
                 </a> --}}
                 
@@ -106,11 +100,11 @@
                         }
                     @endphp
 
-                    <p class="indent"><span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> mengelola bidang urusan <span style="color: rgb(11, 242, 11);">{{ $bidangUrusanText }} </span>
+                    <p class="indent">{{ $selectedOpd['nama_opd'] ?? 'N/A' }} mengelola bidang urusan {{ $bidangUrusanText }} 
                         yang telah dibentuk sesuai Peraturan Daerah Kota Madiun Nomor 3 Tahun 2016 tentang Pembentukan dan Susunan Perangkat Daerah sebagaimana telah diubah terakhir dengan Peraturan Daerah Kota Madiun Nomor 8 Tahun 2020.</p>
                 </p>
                 </ol>
-                <p class="indent">Tugas <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan rincian tugas :</p>
+                <p class="indent">Tugas {{ $selectedOpd['nama_opd'] ?? 'N/A' }} Dengan rincian tugas :</p>
                     <div class="list">
                         <ol style="list-style-type: none">
                             <ul style="list-style-type: none; padding-left: 0;">
@@ -129,7 +123,7 @@
                             </ul>
                         </ol>
                     </div>
-                    <p class="indent">Fungsi <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan rincian tugas :</p>
+                    <p class="indent">Fungsi {{ $selectedOpd['nama_opd'] ?? 'N/A' }} Dengan rincian tugas :</p>
                     <div class="list">
                         <ol style="list-style-type: none">
                             <ul style="list-style-type: none; padding-left: 0;">
@@ -149,7 +143,7 @@
                         </ol>
                     </div>
                     <h4>2.2 Sumber Daya Perangkat Daerah</h4>
-                    <p class="indent"><span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> 
+                    <p class="indent">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}
                         memiliki sumber daya manusia yang bertugas dalam pengembangan organisasi dengan rincian personil sebagai berikut:
                     </p>
                     <p style="text-align: center">Tabel 2.1</p>
@@ -285,30 +279,6 @@
                             
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-@endsection
-
-@section('styles')
-<style>
-    .document-content {
-        margin-top: 20px;
-        padding: 15px; /* Padding for content spacing */
-        border: 1px solid #ddd; /* Border to match form editor styling */
-        border-radius: 4px; /* Rounded corners to match form editor */
-        background-color: #f9f9f9; /* Background color to match form editor */
-    }
-    .document-content p {
-        font-size: 1rem;
-        line-height: 1.6;
-        margin-top: 10px;
-        margin-bottom: 10px; /* Ensure spacing between paragraphs */
-    }
-    .btn-primary {
-        margin-bottom: 20px;
-    }
-    
-</style>
-@endsection
+            </section>
+        </body>
+        </html>

@@ -4,23 +4,22 @@ namespace App\Http\Controllers;
 
 use Mpdf\Mpdf;
 
-use App\Models\Bab1;
+use App\Models\Bab5;
 use App\Models\Jenis;
 use App\Models\TahunDokumen;
-use App\Models\FetchOpd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Shared\Html;
 
-class Bab1Controller extends Controller
+class Bab5Controller extends Controller
 {
 
     
     public function index()
     {
-        $bab1 = Bab1::with('jenis')->get();
+        $bab5 = Bab5::with('jenis')->get();
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -33,7 +32,7 @@ class Bab1Controller extends Controller
             $urusan_opd = [];
         }
 
-        return view('layouts.admin.bab1.index', compact('bab1', 'jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.admin.bab5.index', compact('bab5', 'jenis', 'urusan_opd', 'tahun'));
     }
 
   
@@ -49,7 +48,7 @@ class Bab1Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab1.create', compact('jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.admin.bab5.create', compact('jenis', 'urusan_opd', 'tahun'));
     }
 
     public function store(Request $request)
@@ -59,8 +58,8 @@ class Bab1Controller extends Controller
             'jenis_id' => 'required',
             'nama_opd' => 'required',
             'bidang_urusan' => 'required',
-            'bidang1'=>'nullable|string',
-            'bidang2'=>'nullable|string',
+            'bidang1'=>'required',
+            'bidang2'=>'required',
             'kode_opd' => 'required|string',
             // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'required',
@@ -72,12 +71,12 @@ class Bab1Controller extends Controller
 
         Bab1::create($request->all());
 
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 created successfully');
+        return redirect()->route('layouts.admin.bab5.index')->with('success', 'BAB 5 created successfully');
     }
 
     public function edit($id)
     {
-        $bab1 = Bab1::findOrFail($id);
+        $bab5 = Bab5::findOrFail($id);
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -86,7 +85,7 @@ class Bab1Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab1.edit', compact('bab1', 'jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.admin.bab5.edit', compact('bab5', 'jenis', 'urusan_opd', 'tahun'));
     }
 
     public function update(Request $request, $id)
@@ -96,8 +95,8 @@ class Bab1Controller extends Controller
             'jenis_id' => 'required|exists:jenis,id',
             'nama_opd' => 'required|string',
             'bidang_urusan' => 'required|string',
-            'bidang1'=> 'nullable|string',
-            'bidang2'=> 'nullable|string',
+            'bidang1'=> 'required|string',
+            'bidang2'=> 'required|string',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             // 'kode_bidang_urusan'=>'required|string',
@@ -107,17 +106,17 @@ class Bab1Controller extends Controller
             // 'sistematika_penulisan' => 'required|string',
         ]);
 
-        $bab1 = Bab1::findOrFail($id);
+        $bab5 = Bab5::findOrFail($id);
 
-        $bab1->update($request->all());
+        $bab5->update($request->all());
 
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 updated successfully');
+        return redirect()->route('layouts.admin.bab5.index')->with('success', 'BAB 5 updated successfully');
     }
 
     public function destroy($id)
     {
-        $bab1 = Bab1::findOrFail($id);
-        $bab1->delete();
+        $bab5 = Bab5::findOrFail($id);
+        $bab5->delete();
 
         return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 deleted successfully');
     }
@@ -125,7 +124,7 @@ class Bab1Controller extends Controller
    
     public function show($id)
     {
-        $bab1 = Bab1::with('jenis')->findOrFail($id);
+        $bab5 = Bab5::with('jenis')->findOrFail($id);
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
         
         // Use GET if POST is not required
@@ -136,11 +135,11 @@ class Bab1Controller extends Controller
         }
     
         $urusan_opd = $response->json()['results'] ?? [];
-        $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab1->kode_opd);
+        $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab5->kode_opd);
     
         $selectedBidangUrusan = [];
         if ($selectedOpd) {
-            $kodeBidangUrusan = is_array($bab1->kode_bidang_urusan) ? $bab1->kode_bidang_urusan : [$bab1->kode_bidang_urusan];
+            $kodeBidangUrusan = is_array($bab5->kode_bidang_urusan) ? $bab5->kode_bidang_urusan : [$bab5->kode_bidang_urusan];
     
             foreach ($selectedOpd['bidang_urusan'] ?? [] as $bidang) {
                 if (in_array($bidang['kode_bidang_urusan'] ?? '', $kodeBidangUrusan)) {
@@ -149,8 +148,8 @@ class Bab1Controller extends Controller
             }
         }
     
-        return view('layouts.admin.bab1.show', [
-            'bab1' => $bab1,
+        return view('layouts.admin.bab5.show', [
+            'bab5' => $bab5,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
         ]);
@@ -161,8 +160,8 @@ class Bab1Controller extends Controller
     public function exportPdf($id)
     {
         try {
-            // Fetch the Bab1 record
-            $bab1 = Bab1::findOrFail($id);
+            // Fetch the Bab5 record
+            $bab5 = Bab5::findOrFail($id);
     
             // API URL and fetching data
             $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
@@ -176,7 +175,7 @@ class Bab1Controller extends Controller
             $urusan_opd = $response->json()['results'] ?? [];
     
             // Render HTML view
-            $html = view('layouts.admin.bab1.pdf', compact('bab1', 'urusan_opd'))->render();
+            $html = view('layouts.admin.bab5.pdf', compact('bab5', 'urusan_opd'))->render();
     
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
@@ -188,7 +187,7 @@ class Bab1Controller extends Controller
     
             // Write HTML to PDF
             $mpdf->WriteHTML($html);
-            $fileName = 'bab1-' . $id . '.pdf';
+            $fileName = 'bab5-' . $id . '.pdf';
     
             // Return PDF response
             return $mpdf->Output($fileName, 'I');
@@ -202,29 +201,80 @@ class Bab1Controller extends Controller
 
     
 
+    // public function exportWord($id)
+    // {
+    //     try {
+    //         // Fetch the Bab1 record
+    //         $bab1 = Bab1::findOrFail($id);
+
+    //         // API URL and fetching data
+    //         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+    //         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
+
+    //         if (!$response->successful()) {
+    //             throw new \Exception('Failed to fetch data from API');
+    //         }
     
+    //         // Parse API response
+    //         $urusan_opd = $response->json()['results'] ?? [];
+    
+    //         // Render HTML view
+    //         $html = view('layouts.admin.bab1.word', compact('bab1', 'urusan_opd'))->render();
+    
+    //         // Initialize PhpWord
+    //         $phpWord = new PhpWord();
+    
+    //         // Add a section to the Word document
+    //         $section = $phpWord->addSection();
+    
+    //         // Convert HTML to plain text for Word document
+    //         $text = strip_tags($html); // You may need more complex parsing here based on your needs
+    
+    //         // Add text to the section
+    //         $section->addText($text);
+    
+    //         // Save the Word document
+    //         $fileName = 'bab1-' . $id . '.docx';
+    //         $tempFile = storage_path('app/' . $fileName);
+    //         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+    //         $objWriter->save($tempFile);
+    
+    //         // Return Word document response
+    //         return response()->download($tempFile)->deleteFileAfterSend(true);
+    
+    //     } catch (\Exception $e) {
+    //         // Log error and return JSON response
+    //         \Log::error('Word generation error: ' . $e->getMessage());
+    //         return response()->json(['error' => 'Unable to generate Word document: ' . $e->getMessage()], 500);
+    //     }
+    // }
     public function exportWord($id)
 {
-    $bab1 = Bab1::findOrFail($id);
-    $kode_opd = $bab1->kode_opd;
+    $bab5 = Bab5::findOrFail($id);
 
-    $selectedOpd = FetchOpd::data_opd($kode_opd);
+    // API URL and fetching data
+    $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+    $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
+    $urusan_opd = $response->json();
 
+    // Debug API response
+    // dd($urusan_opd);
+
+    $phpWord = new \PhpOffice\PhpWord\PhpWord();
+    $section = $phpWord->addSection();
 
     // Render HTML from Blade view
-    $htmlContent = view('layouts.admin.bab1.word', compact('bab1', 'selectedOpd'))->render();
+    $htmlContent = view('layouts.admin.bab5.word', compact('bab5', 'urusan_opd'))->render();
 
     // Simplify HTML and handle unsupported tags
     $allowedTags = '<p><h1><h2><h3><h4><h5><h6><ul><ol><li><b><i><u><strong><em>';
     $htmlContent = strip_tags($htmlContent, $allowedTags);
 
     // Convert HTML to Word format
-    $phpWord = new \PhpOffice\PhpWord\PhpWord();
-    $section = $phpWord->addSection();
     \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent, false, false);
 
     // Save the Word file
-    $fileName = 'Bab_I_Pendahuluan.docx';
+    $fileName = 'Bab_V_Strategi_dan_arah.docx';
     $tempFile = tempnam(sys_get_temp_dir(), $fileName);
 
     $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
@@ -232,9 +282,6 @@ class Bab1Controller extends Controller
 
     return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
 }
-
-    
-
 
 
 

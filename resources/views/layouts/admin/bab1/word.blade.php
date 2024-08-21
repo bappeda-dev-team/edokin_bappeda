@@ -120,35 +120,23 @@
                     </li>
                 </ol>
             </div>
-
-            @php
-                $selectedOpd = null;
-                if (isset($urusan_opd) && is_array($urusan_opd)) {
-                    foreach ($urusan_opd as $opd) {
-                        if (isset($opd['kode_opd']) && $opd['kode_opd'] == $bab1->kode_opd) {
-                            $selectedOpd = $opd;
-                            break;
-                        }
-                    }
-                }
-            @endphp
-
-            <p class="indent">{{ $selectedOpd['nama_opd'] ?? 'N/A' }} Kota Madiun mengelola urusan dan bidang urusan sebagai berikut:</p>
-
-            <ol>
-                @if(isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']))
-                    @foreach($selectedOpd['urusan_opd'] as $urusan)
-                        @if(isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd']) && count($urusan['bidang_urusan_opd']) > 0)
-                            @foreach($urusan['bidang_urusan_opd'] as $bidang)
-                                <li>{{ $bidang['bidang_urusan'] ?? 'N/A' }}</li>
-                            @endforeach
-                        @endif
-                    @endforeach
-                @else
-                    <li>No data available</li>
-                @endif
-            </ol>
-
+        
+        <p class="indent">{{ $selectedOpd['nama_opd'] ?? 'N/A' }} Kota Madiun mengelola urusan dan bidang urusan sebagai berikut:</p>
+        
+        <ol>
+            @if(isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']))
+                @foreach($selectedOpd['urusan_opd'] as $urusan)
+                    @if(isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd']) && count($urusan['bidang_urusan_opd']) > 0)
+                        @foreach($urusan['bidang_urusan_opd'] as $bidang)
+                            <li>{{ $bidang['bidang_urusan'] ?? 'N/A' }}</li>
+                        @endforeach
+                    @endif
+                @endforeach
+            @else
+                <li>No data available</li>
+            @endif
+        </ol>
+        
             <p class="indent">Rencana Strategis Perangkat Daerah Tahun 2024-2026 yang disusun telah selaras dengan Rencana Pembangunan Daerah (RPD) Tahun 2026-2026. Renstra PD merupakan potret dari Rencana strategis dari masing-masing Perangkat Daerah selama 2 (dua) tahun yang telah disusun melalui berbagai tahapan dan telah melibatkan unsur masyarakat dan stakeholder, Renstra PD yang disusun juga telah mengakomodir dokumen perencanaan Kementerian/Lembaga sebagai bagian dari kewenangan serta tugas dan pokok dan fungsi serta kewenangan Perangkat Daerah. Renstra PD akan menjadi dasar acuan penyusunan rencana kerja tahunan Perangkat Daerah.</p>
 
             <h4>1.2. Dasar Hukum Penyusunan</h4>

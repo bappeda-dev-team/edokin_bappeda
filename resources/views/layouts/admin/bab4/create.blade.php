@@ -10,10 +10,10 @@
                 <h4>BAB 3</h4>
             </div>
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab3.index') }}">
+                <a href="{{ route('layouts.admin.bab4.index') }}">
                     <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
-                <form action="{{ route('bab3.store') }}" method="POST">
+                <form action="{{ route('bab4.store') }}" method="POST">
                     @csrf
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Bab</label>
@@ -57,62 +57,20 @@
                             </select>
                         </div>
                     </div>
-
-                    {{-- <div class="form-group row mb-4">
+{{-- 
+                    <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.1 Permasalahan Pelayanan Perangkat Daerah</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea name="permasalahan_pelayanan" class="summernote"></textarea>
                         </div>
-                    </div> --}}
+                    </div>
                     
                     <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian 1)</label>
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis</label>
                         <div class="col-sm-12 col-md-10">
-                            <textarea name="uraian1" class="summernote"></textarea>
+                            <textarea name="isu_strategis" class="summernote"></textarea>
                         </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian 2)</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="uraian2" class="summernote"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian 3)</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="uraian3" class="summernote"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian 4)</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="uraian4" class="summernote"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian 5)</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="uraian5" class="summernote"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Isu Strategis 1)</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="isu_strategis1" class="summernote"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Isu Strategis 2)</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="isu_strategis2" class="summernote"></textarea>
-                        </div>
-                    </div>
+                    </div> --}}
 
                     
 

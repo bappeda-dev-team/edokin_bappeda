@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bab3 extends Model
+class Bab4 extends Model
 {
     use HasFactory;
 
     // Nama tabel yang sesuai di database
-    protected $table = 'bab3';
+    protected $table = 'bab4s';
 
     // Kolom yang dapat diisi mass-assignable
     protected $fillable = [
@@ -18,13 +18,9 @@ class Bab3 extends Model
         'jenis_id',
         'kode_opd',
         'tahun_id',
-        'uraian1',
-        'uraian2',
-        'uraian3',
-        'uraian4',
-        'uraian5',
-        'isu_strategis1',
-        'isu_strategis2',
+        'tujuan_opd',
+        'indikator_opd',
+        'sasaran_opd',
     ];
 
     // Definisikan relasi dengan model Jenis (jika ada)

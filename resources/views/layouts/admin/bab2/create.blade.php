@@ -7,13 +7,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4>BAB 1</h4>
+                <h4>BAB 2</h4>
             </div>
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab1.index') }}">
+                <a href="{{ route('layouts.admin.bab2.index') }}">
                     <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
-                <form action="{{ route('bab1.store') }}" method="POST">
+                <form action="{{ route('bab2.store') }}" method="POST">
                     @csrf
                     <!-- Form Fields -->
                     <div class="form-group row mb-4">
@@ -81,14 +81,14 @@
                     </div> --}}
 
 
-                    <div class="form-group row mb-4">
+                    {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea name="bidang1" class="summernote"></textarea>
                         </div>
-                    </div>
+                    </div> --}}
 
-                    <div class="form-group row mb-4">
+                    {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea name="bidang2" class="summernote"></textarea>
@@ -100,12 +100,12 @@
                         <div class="col-sm-12 col-md-10">
                             <textarea name="dasar_hukum" class="summernote"></textarea>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group row mb-4">
                         <div class="col-12 d-flex justify-content-center align-items-center">
                             <button type="submit" class="btn btn-success btn-lg mx-2">Submit</button>
-                            <a href="{{ route('layouts.admin.bab1.index') }}" class="btn btn-danger btn-lg mx-2">Cancel</a>
+                            <a href="{{ route('layouts.admin.bab2.index') }}" class="btn btn-danger btn-lg mx-2">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const kodeOpdSelect = document.querySelector('select[name="kode_opd"]');
     const namaOpdInput = document.getElementById('nama_opd');
     const bidangUrusanInput = document.getElementById('bidang_urusan');
+
     if (kodeOpdSelect) {
         kodeOpdSelect.addEventListener('change', function () {
             const kodeOpd = this.value;
@@ -135,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             bidangUrusanInput.value = '';
                         } else {
                             namaOpdInput.value = data.nama_opd || '';
-                            // Display bidang_urusan
                             bidangUrusanInput.value = data.bidang_urusan || '';
                         }
                     })
@@ -150,17 +150,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    // Initialize Summernote after DOM is loaded
-    document.addEventListener('DOMContentLoaded', function () {
-        const summernoteElements = document.querySelectorAll('.summernote');
-        summernoteElements.forEach(el => {
-            $(el).summernote({
-                height: 300,   // set the height of the editor
-                minHeight: null, // set minimum height of the editor
-                maxHeight: null, // set maximum height of the editor
-                focus: true     // set focus to editable area after initializing summernote
-            });
-        });
+
+    // Initialize Summernote for all elements with the class 'summernote'
+    $('.summernote').summernote({
+        height: 300,   // set the height of the editor
+        minHeight: null, // set minimum height of the editor
+        maxHeight: null, // set maximum height of the editor
+        focus: true     // set focus to editable area after initializing summernote
     });
 });
 </script>

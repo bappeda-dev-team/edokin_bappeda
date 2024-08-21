@@ -5,7 +5,7 @@
 @section('content')
 <section class="section">
     <div class="section-header">
-        <h1>BAB I</h1>
+        <h1>BAB III</h1>
     </div>
     <a href="{{ route('bab3.create') }}">
         <button class="btn btn-primary">Tambah <i class="fas fa-plus-circle"></i></button>
@@ -50,8 +50,8 @@
                                         {{ $selectedOpd['kode_opd'] ?? 'N/A' }}
                                     </td>
                                     <td>
-                                        <a href="" class="btn btn-info" data-id=""><i class="fa fa-eye"></i> Show</a>
-                                        <a href="" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>
+                                        <a href="{{ route('bab3.show', $bab_3->id) }}" class="btn btn-info" data-id=""><i class="fa fa-eye"></i> Show</a>
+                                        <a href="{{ route('bab3.edit', $bab_3->id) }}" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>
                                         <form action="{{ route('bab3.destroy', $bab_3->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                             @method('DELETE')

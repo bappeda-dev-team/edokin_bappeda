@@ -3,24 +3,20 @@
 namespace App\Http\Controllers;
 
 use Mpdf\Mpdf;
-
-use App\Models\Bab1;
+use App\Models\Bab4;
 use App\Models\Jenis;
 use App\Models\TahunDokumen;
-use App\Models\FetchOpd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Shared\Html;
 
-class Bab1Controller extends Controller
+class Bab4Controller extends Controller
 {
-
-    
     public function index()
     {
-        $bab1 = Bab1::with('jenis')->get();
+        $bab4 = Bab4::with('jenis')->get();
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -33,60 +29,54 @@ class Bab1Controller extends Controller
             $urusan_opd = [];
         }
 
-        return view('layouts.admin.bab1.index', compact('bab1', 'jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.admin.bab4.index', compact('bab4', 'jenis', 'urusan_opd', 'tahun'));
     }
-
-  
-
 
     public function create()
     {
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/daftar_opd';
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
 
-        $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
+        $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab1.create', compact('jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.admin.bab4.create', compact('jenis', 'data_opd', 'tahun'));
     }
+
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_bab' => 'required',
             'jenis_id' => 'required',
-            'nama_opd' => 'required',
-            'bidang_urusan' => 'required',
-            'bidang1'=>'nullable|string',
-            'bidang2'=>'nullable|string',
+            // 'nama_opd' => 'required',
+            // 'bidang_urusan' => 'required',
+            // 'bidang1' => 'required',
+            // 'bidang2' => 'required',
             'kode_opd' => 'required|string',
-            // 'kode_bidang_urusan'=>'required|string',
-            'tahun_id' => 'required',
-            // 'latar_belakang' => 'required',
-            'dasar_hukum' => 'required',
-            // 'maksud_tujuan' => 'required',
-            // 'sistematika_penulisan' => 'required',
+            // 'tahun_id' => 'required',
+            // 'dasar_hukum' => 'required',
         ]);
 
-        Bab1::create($request->all());
+        Bab4::create($request->all());
 
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 created successfully');
+        return redirect()->route('layouts.admin.bab4.index')->with('success', 'BAB 4 created successfully');
     }
 
     public function edit($id)
     {
-        $bab1 = Bab1::findOrFail($id);
+        $bab4 = Bab4::findOrFail($id);
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
+        $response = Http::withHeaders(['Accept' => 'application/json'])->get($apiUrl);
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab1.edit', compact('bab1', 'jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.admin.bab4.edit', compact('bab4', 'jenis', 'urusan_opd', 'tahun'));
     }
 
     public function update(Request $request, $id)
@@ -94,196 +84,176 @@ class Bab1Controller extends Controller
         $request->validate([
             'nama_bab' => 'required|string|max:255',
             'jenis_id' => 'required|exists:jenis,id',
-            'nama_opd' => 'required|string',
-            'bidang_urusan' => 'required|string',
-            'bidang1'=> 'nullable|string',
-            'bidang2'=> 'nullable|string',
+            // 'nama_opd' => 'required|string',
+            // 'bidang_urusan' => 'required|string',
+            // 'bidang1' => 'required|string',
+            // 'bidang2' => 'required|string',
             'kode_opd' => 'required|string',
-            'tahun_id' => 'required|exists:tahun_dokumen,id',
-            // 'kode_bidang_urusan'=>'required|string',
-            // 'latar_belakang' => 'required|string',
-            'dasar_hukum' => 'required|string',
-            // 'maksud_tujuan' => 'required|string',
-            // 'sistematika_penulisan' => 'required|string',
+            // 'tahun_id' => 'required|exists:tahun_dokumen,id',
+            // 'dasar_hukum' => 'required|string',
         ]);
 
-        $bab1 = Bab1::findOrFail($id);
+        $bab4 = Bab4::findOrFail($id);
+        $bab4->update($request->all());
 
-        $bab1->update($request->all());
-
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 updated successfully');
+        return redirect()->route('layouts.admin.bab4.index')->with('success', 'BAB 4 updated successfully');
     }
 
     public function destroy($id)
     {
-        $bab1 = Bab1::findOrFail($id);
-        $bab1->delete();
+        $bab4 = Bab4::findOrFail($id);
+        $bab4->delete();
 
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 deleted successfully');
+        return redirect()->route('layouts.admin.bab4.index')->with('success', 'BAB 4 deleted successfully');
     }
 
-   
     public function show($id)
     {
-        $bab1 = Bab1::with('jenis')->findOrFail($id);
+        $bab4 = Bab4::with('jenis')->findOrFail($id);
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-        
-        // Use GET if POST is not required
+
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-    
+
         if (!$response->successful()) {
             abort(500, 'Failed to fetch data from API');
         }
-    
+
         $urusan_opd = $response->json()['results'] ?? [];
-        $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab1->kode_opd);
-    
+        $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab4->kode_opd);
+
         $selectedBidangUrusan = [];
         if ($selectedOpd) {
-            $kodeBidangUrusan = is_array($bab1->kode_bidang_urusan) ? $bab1->kode_bidang_urusan : [$bab1->kode_bidang_urusan];
-    
+            $kodeBidangUrusan = is_array($bab4->kode_bidang_urusan) ? $bab4->kode_bidang_urusan : [$bab4->kode_bidang_urusan];
+
             foreach ($selectedOpd['bidang_urusan'] ?? [] as $bidang) {
                 if (in_array($bidang['kode_bidang_urusan'] ?? '', $kodeBidangUrusan)) {
                     $selectedBidangUrusan[] = $bidang;
                 }
             }
         }
-    
-        return view('layouts.admin.bab1.show', [
-            'bab1' => $bab1,
+
+        return view('layouts.admin.bab4.show', [
+            'bab4' => $bab4,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
         ]);
     }
-    
 
-    
     public function exportPdf($id)
     {
         try {
-            // Fetch the Bab1 record
-            $bab1 = Bab1::findOrFail($id);
-    
-            // API URL and fetching data
+            $bab4 = Bab4::findOrFail($id);
+
             $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-            $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-            
+            $response = Http::withHeaders(['Accept' => 'application/json'])->get($apiUrl);
+
             if (!$response->successful()) {
                 throw new \Exception('Failed to fetch data from API');
             }
-    
-            // Parse API response
+
             $urusan_opd = $response->json()['results'] ?? [];
-    
-            // Render HTML view
-            $html = view('layouts.admin.bab1.pdf', compact('bab1', 'urusan_opd'))->render();
-    
-            // Initialize MPDF
-            $mpdf = new \Mpdf\Mpdf([
+
+            $html = view('layouts.admin.bab4.pdf', compact('bab4', 'urusan_opd'))->render();
+
+            $mpdf = new Mpdf([
                 'mode' => 'utf-8',
                 'format' => 'A4',
                 'orientation' => 'P',
                 'tempDir' => storage_path('app/temp'),
             ]);
-    
-            // Write HTML to PDF
+
             $mpdf->WriteHTML($html);
-            $fileName = 'bab1-' . $id . '.pdf';
-    
-            // Return PDF response
+            $fileName = 'bab4-' . $id . '.pdf';
+
             return $mpdf->Output($fileName, 'I');
-            
         } catch (\Exception $e) {
-            // Log error and return JSON response
             \Log::error('PDF generation error: ' . $e->getMessage());
             return response()->json(['error' => 'Unable to generate PDF: ' . $e->getMessage()], 500);
         }
     }
 
-    
-
-    
     public function exportWord($id)
-{
-    $bab1 = Bab1::findOrFail($id);
-    $kode_opd = $bab1->kode_opd;
-
-    $selectedOpd = FetchOpd::data_opd($kode_opd);
-
-
-    // Render HTML from Blade view
-    $htmlContent = view('layouts.admin.bab1.word', compact('bab1', 'selectedOpd'))->render();
-
-    // Simplify HTML and handle unsupported tags
-    $allowedTags = '<p><h1><h2><h3><h4><h5><h6><ul><ol><li><b><i><u><strong><em>';
-    $htmlContent = strip_tags($htmlContent, $allowedTags);
-
-    // Convert HTML to Word format
-    $phpWord = new \PhpOffice\PhpWord\PhpWord();
-    $section = $phpWord->addSection();
-    \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent, false, false);
-
-    // Save the Word file
-    $fileName = 'Bab_I_Pendahuluan.docx';
-    $tempFile = tempnam(sys_get_temp_dir(), $fileName);
-
-    $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save($tempFile);
-
-    return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
-}
-
-    
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-
-    public function getUrusanOpd($kode_opd)
     {
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-        $response = Http::timeout(30)->withHeaders(['Accept' => 'application/json'])
-                ->post($apiUrl, ['kode_opd' => $kode_opd]);
+        try {
+            $bab4 = Bab4::findOrFail($id);
 
-        if (!$response->successful()) {
-            return response()->json(['error' => 'Failed to fetch data from API'], 500);
-        }
+            $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+            $response = Http::withHeaders(['Accept' => 'application/json'])->get($apiUrl);
 
-        $data = $response->json();
-        $urusan_opd = collect($data['results'] ?? []);
-        $opd = $urusan_opd->firstWhere('kode_opd', $kode_opd);
-
-        if (!$opd) {
-            return response()->json(['error' => 'OPD not found'], 404);
-        }
-
-        // Extract bidang_urusan from the nested structure
-        $bidang_urusan = '';
-        if (isset($opd['urusan_opd']) && is_array($opd['urusan_opd'])) {
-            foreach ($opd['urusan_opd'] as $urusan) {
-                if (isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd'])) {
-                    foreach ($urusan['bidang_urusan_opd'] as $bidang) {
-                        $bidang_urusan .= $bidang['bidang_urusan'] . "\n"; // Append each bidang_urusan with a newline
-                    }
-                }
+            if (!$response->successful()) {
+                throw new \Exception('Failed to fetch data from API');
             }
-        }
 
-        return response()->json([
-            'nama_opd' => $opd['nama_opd'] ?? null,
-            'bidang_urusan' => trim($bidang_urusan), // Trim to remove trailing newline
-        ]);
+            $urusan_opd = $response->json()['results'] ?? [];
+
+            $html = view('layouts.admin.bab4.word', compact('bab4', 'urusan_opd'))->render();
+
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection();
+
+            $text = strip_tags($html); // You may need more complex parsing here based on your needs
+
+            $section->addText($text);
+
+            $fileName = 'bab4-' . $id . '.docx';
+            $tempFile = storage_path('app/' . $fileName);
+            $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+            $objWriter->save($tempFile);
+
+            return response()->download($tempFile)->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            \Log::error('Word document generation error: ' . $e->getMessage());
+            return response()->json(['error' => 'Unable to generate Word document: ' . $e->getMessage()], 500);
+        }
+    }
+
+
+    // public function getUrusanOpd($kode_opd)
+    // {
+    //     $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+    //     $response = Http::timeout(30)->withHeaders(['Accept' => 'application/json'])
+    //             ->post($apiUrl, ['kode_opd' => $kode_opd]);
+
+    //     if (!$response->successful()) {
+    //         return response()->json(['error' => 'Failed to fetch data from API'], 500);
+    //     }
+
+    //     $data = $response->json();
+    //     $urusan_opd = collect($data['results'] ?? []);
+    //     $opd = $urusan_opd->firstWhere('kode_opd', $kode_opd);
+
+    //     if (!$opd) {
+    //         return response()->json(['error' => 'OPD not found'], 404);
+    //     }
+
+    //     // Extract bidang_urusan from the nested structure
+    //     $bidang_urusan = '';
+    //     if (isset($opd['urusan_opd']) && is_array($opd['urusan_opd'])) {
+    //         foreach ($opd['urusan_opd'] as $urusan) {
+    //             if (isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd'])) {
+    //                 foreach ($urusan['bidang_urusan_opd'] as $bidang) {
+    //                     $bidang_urusan .= $bidang['bidang_urusan'] . "\n"; // Append each bidang_urusan with a newline
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'nama_opd' => $opd['nama_opd'] ?? null,
+    //         'bidang_urusan' => trim($bidang_urusan), // Trim to remove trailing newline
+    //     ]);
+    // }
+    public function getTujuanOpd($kode_opd)
+    {
+        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/tujuan_opd';
+        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
+
+        if ($response->successful()) {
+            $data = $response->json('data');
+            return view('tujuan-opd', ['data' => $data]);
+        } else {
+            return abort(500, 'Gagal mengambil data dari API.');
+        }
     }
 }
     
@@ -370,7 +340,7 @@ class Bab1Controller extends Controller
 //     {
 //         try {
 //             // Fetch the data
-//             $bab1 = Bab1::findOrFail($id);
+//             $bab4 = Bab1::findOrFail($id);
     
 //             // Fetch OPD data
 //             $apiUrl = 'https://kak.madiunkota.go.id/api/opd/daftar_opd';
