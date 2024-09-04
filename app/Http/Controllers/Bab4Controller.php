@@ -67,7 +67,7 @@ class Bab4Controller extends Controller
                 \Log::info('Fetched OPD Data:', ['data' => $data]);
 
                 // Log the specific OPD data you are trying to retrieve
-                $opd = collect($data)->firstWhere('kode_opd', $kode_opd);
+                $opd = collect($data['results'])->firstWhere('kode_opd', $kode_opd);
                 \Log::info('Filtered OPD Data:', ['tujuan_opd' => $opd]);
 
                 if ($opd) {
