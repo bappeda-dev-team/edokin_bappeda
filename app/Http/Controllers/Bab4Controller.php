@@ -71,11 +71,34 @@ class Bab4Controller extends Controller
                 \Log::info('Filtered OPD Data:', ['tujuan_opd' => $opd]);
 
                 if ($opd) {
-                    return response()->json([
-                        'nama_opd' => $opd['nama_opd'] ?? '',
-                        'tujuan_opd' => $opd['tujuan_opd'] ?? '',
-                        'sasaran_opd' => $opd['sasaran_opd'] ?? '',
-                    ]);
+                    $tujuan_response = $api->tujuanOpd($opd['kode_opd']);
+
+                    if ($tujuan_response->successful()) {
+                        $data_tujuan = $tujuan_response->json();
+                        // Cari tujuan dengan periode 2020-2024
+                        // tujuan_opd hanya membawa tujuan pertama
+                        // TODO: get all tujuan by periode
+                        $tujuan_opd = collect($data_tujuan['results']['data']['tujuan_opd'])->firstWhere('periode', '2020-2024');
+
+                        // sasaran opd kosong sebagai default
+                        $sasaran_opd = '';
+
+                        $sasaran_opd_response = $api->sasaranOpd($kode_opd, '2024');
+                        if ($sasaran_opd_response->successful()) {
+                            $data_sasaran = $sasaran_opd_response->json();
+
+                            // Data yang diambil baru data pertama
+                            // TODO: get all data sasaran opd, dan mapping ke sasaran_opd
+                            $sasaran_opd = collect($data_sasaran['results']['data']['sasaran_opds'])->first();
+                        }
+
+                        return response()->json([
+                            'nama_opd' => $opd['nama_opd'] ?? '',
+                            'tujuan_opd' => $tujuan_opd['tujuan'] ?? '',
+                            'sasaran_opd' => $sasaran_opd['sasaran_opd'] ?? '',
+                        ]);
+                    }
+                    return response()->json(['message' => 'Tujuan OPD Not Found'], 404);
                 }
 
                 return response()->json(['message' => 'OPD not found'], 404);
