@@ -116,37 +116,11 @@ class Bab2Controller extends Controller
     }
 
    
-    public function show($id)
+    public function show()
     {
-        $bab2 = Bab2::with('jenis')->findOrFail($id);
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-        
-        // Use GET if POST is not required
-        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
     
-        if (!$response->successful()) {
-            abort(500, 'Failed to fetch data from API');
-        }
-    
-        $urusan_opd = $response->json()['results'] ?? [];
-        $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab2->kode_opd);
-    
-        $selectedBidangUrusan = [];
-        if ($selectedOpd) {
-            $kodeBidangUrusan = is_array($bab2->kode_bidang_urusan) ? $bab2->kode_bidang_urusan : [$bab2->kode_bidang_urusan];
-    
-            foreach ($selectedOpd['bidang_urusan'] ?? [] as $bidang) {
-                if (in_array($bidang['kode_bidang_urusan'] ?? '', $kodeBidangUrusan)) {
-                    $selectedBidangUrusan[] = $bidang;
-                }
-            }
-        }
-    
-        return view('layouts.admin.bab2.show', [
-            'bab2' => $bab2,
-            'urusan_opd' => $urusan_opd,
-            'selectedBidangUrusan' => $selectedBidangUrusan,
-        ]);
+       
+        return view('layouts.admin.bab2.show');
     }
     
 

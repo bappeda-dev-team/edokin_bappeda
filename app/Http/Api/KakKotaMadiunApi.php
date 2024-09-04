@@ -16,13 +16,18 @@ class KakKotaMadiunApi
         return $response;
     }
 
+   
     public function urusanOpd()
     {
         $apiUrl = $this->BASE_URL . "/opd/urusan_opd.json";
         $response = Http::post($apiUrl);
-
+    
+        // Tambahkan log untuk memeriksa respons API
+        \Log::info('Urusan OPD API Response:', ['response' => $response->json()]);
+    
         return $response;
     }
+    
 
     public function permasalahanOpd($kode_opd, $tahun)
     {

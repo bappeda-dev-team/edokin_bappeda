@@ -57,6 +57,29 @@
     .spacer {
         padding-right: 900px; /* Prevents the colon from shrinking */
     }
+
+    table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid black; /* Garis border hitam */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
 </style>
 
 @section('content')
@@ -67,12 +90,12 @@
     <div class="row">
         <div class="col-12">
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab2.index') }}">
+                {{-- <a href="{{ route('layouts.admin.bab2.index') }}">
                     <button class="btn btn-primary mb-3"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
                 <a href="{{ route('bab2.exportPdf', $bab2->id) }} "target="_blank">
                     <button class="btn btn-danger mb-3"><i class="fa fa-file-pdf"></i> Export to PDF </button>
-                </a>
+                </a> --}}
                 {{-- <a href="{{ route('bab2.exportWord', $bab1->id) }}">
                     <button class="btn btn-success mb-3"><i class="fa fa-file-word"></i> Export to Word </button>
                 </a> --}}
@@ -82,35 +105,12 @@
                     <h1>HASIL EVALUASI RENJA PERANGKAT DAERAH TAHUN LALU</h1><br>
                     <h4>2.1 Tugas, Fungsi dan Struktur Organisasi Perangkat Daerah</h4>
                     <p class="indent">
-                        @php
-                        $selectedOpd = null;
-                        foreach ($urusan_opd as $opd) {
-                            if ($opd['kode_opd'] == $bab2->kode_opd) {
-                                $selectedOpd = $opd;
-                                break;
-                            }
-                        }
-
-                        $bidangUrusanText = '';
-                        if ($selectedOpd) {
-                            foreach ($selectedOpd['urusan_opd'] as $urusan) {
-                                if (isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd'])) {
-                                    foreach ($urusan['bidang_urusan_opd'] as $index => $bidang) {
-                                        $bidangUrusanText .= $bidang['bidang_urusan'];
-                                        if ($index < count($urusan['bidang_urusan_opd']) - 1) {
-                                            $bidangUrusanText .= ' serta ';
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    @endphp
-
-                    <p class="indent"><span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> mengelola bidang urusan <span style="color: rgb(11, 242, 11);">{{ $bidangUrusanText }} </span>
+                       
+                    <p class="indent"><span style="color: rgb(11, 242, 11);">...</span> mengelola bidang urusan <span style="color: rgb(11, 242, 11);">...... </span>
                         yang telah dibentuk sesuai Peraturan Daerah Kota Madiun Nomor 3 Tahun 2016 tentang Pembentukan dan Susunan Perangkat Daerah sebagaimana telah diubah terakhir dengan Peraturan Daerah Kota Madiun Nomor 8 Tahun 2020.</p>
                 </p>
                 </ol>
-                <p class="indent">Tugas <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan rincian tugas :</p>
+                <p class="indent">Tugas <span style="color: rgb(11, 242, 11);">...</span> Dengan rincian tugas :</p>
                     <div class="list">
                         <ol style="list-style-type: none">
                             <ul style="list-style-type: none; padding-left: 0;">
@@ -129,7 +129,7 @@
                             </ul>
                         </ol>
                     </div>
-                    <p class="indent">Fungsi <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan rincian tugas :</p>
+                    <p class="indent">Fungsi <span style="color: rgb(11, 242, 11);">...</span> Dengan rincian tugas :</p>
                     <div class="list">
                         <ol style="list-style-type: none">
                             <ul style="list-style-type: none; padding-left: 0;">
@@ -147,141 +147,450 @@
                                 </li>
                             </ul>
                         </ol>
+
+                        <p style="text-align: center">Gambar Struktur Organisasi
+                        </p>
                     </div>
                     <h4>2.2 Sumber Daya Perangkat Daerah</h4>
-                    <p class="indent"><span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> 
+                    <p class="indent"><span style="color: rgb(11, 242, 11);">...</span> 
                         memiliki sumber daya manusia yang bertugas dalam pengembangan organisasi dengan rincian personil sebagai berikut:
                     </p>
                     <p style="text-align: center">Tabel 2.1</p>
                         <p style="text-align: center">Sumber Daya Manusia Perangkat Daerah
-                            Kota Madiun
+                            Kota Madiun</p>
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">No.</th>
+                                        <th rowspan="2">Jabatan</th>
+                                        <th colspan="4">Status Kepegawaian</th>
+                                        <th colspan="6">Pendidikan Terakhir</th>
+                                    </tr>
+                                    <tr>
+                                        <th>PNS</th>
+                                        <th>PPPK</th>
+                                        <th>Kontrak</th>
+                                        <th>Upah</th>
+                                        <th>SD/SMP</th>
+                                        <th>SMA</th>
+                                        <th>D1/D3</th>
+                                        <th>D4/S1</th>
+                                        <th>S2/S3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Pejabat Eselon II</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Pejabat Eselon III</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Pejabat Eselon IV</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Pejabat Sub Koordinator</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Fungsional Umum (JFU)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Fungsional Tertentu (JFT)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Pelaksana</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>dst…</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>       
+                            <p class="indent">Selain sumber daya manusia<span style="color: rgb(11, 242, 11);">...</span> 
+                                juga memiliki aset yang mendukung kelancaran pelaksanaan tugas organisasi yaitu:
                             </p>
-                           
-                           
+
+                            <p style="text-align: center">Tabel 2.2</p>
+                                <p style="text-align: center">Aset Pendukung Perangkat Daerah Kota Madiun</p>
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Asset Pendukung</th>
+                                        <th>Jumlah</th>
+                                        <th colspan="3">Kondisi Asset</th>
+                                        <th>Perolehan Asset</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Baik</th>
+                                        <th>Cukup</th>
+                                        <th>Kurang</th>
+                                        <th>Tahun</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Kendaraan Dinas Operasional</td>
+                                        <td>10 kendaraan</td>
+                                        <td>v</td>
+                                        <td>v</td>
+                                        <td>v</td>
+                                        <td>2018, 2019, 2020</td>
+                                        <td>3 kendaraan kondisi baik, 4 kendaraan kondisi kurang baik, 3 kendaraan kondisi cukup baik</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Printer</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Laptop</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Meja</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Kursi</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>dst…</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             
+                            <p style="text-align: center"><span style="color: rgb(255, 0, 0);">Uraian tabel...</span> 
+                                </p>
                             
-                         
-                          
-                        {{-- <ol>
-                            @if(isset($selectedOpd['bidang_urusan']) && is_array($selectedOpd['bidang_urusan']))
-                                @foreach($selectedOpd['bidang_urusan'] as $urusan)
-                                    <li>{{ $urusan['urusan'] ?? 'N/A' }}</li>
-                                    <p>{{ $bab1->nama_bab ?? 'N/A' }}</p>
-                                @endforeach
-                            @else
-                                <li>No data available</li>
-                            @endif
-                        </ol> --}}
-                       
-                        {{-- <ol>
-                            @if(isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']))
-                                @foreach($selectedOpd['urusan_opd'] as $urusan)
-                                    @if(isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd']) && count($urusan['bidang_urusan_opd']) > 0)
-                                        @foreach($urusan['bidang_urusan_opd'] as $bidang)
-                                            <li>{{ $bidang['bidang_urusan'] ?? 'N/A' }}</li>
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                            @else
-                                <li>No data available</li>
-                            @endif
-                        </ol> --}}
-                        {{-- <ol>
-                            @if (isset($selectedOpd['urusan_opd']) && is_array($selectedOpd['urusan_opd']) && count($selectedOpd['urusan_opd']) > 0)
-                                @foreach ($selectedOpd['urusan_opd'] as $urusan)
-                                    @if (isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd']) && count($urusan['bidang_urusan_opd']) > 0)
-                                        @foreach ($urusan['bidang_urusan_opd'] as $index => $bidang)
-                                            @if ($index == 0)
-                                                <li>
-                                                    {{ $bidang['bidang_urusan'] ?? 'N/A' }}
+                                <h4>2.3 Kinerja Pelayanan Perangkat Daerah</h4>
+                                <p class="indent">Pelayanan kinerja perangkat daerah yang dilaksanakan pada periode tahun sebulmnya memuat indikator SPM untuk Urusan Wajib, Indikator Kinerja Daerah (IKD), indikator Tujuan dan Indikator Sasaran sesuai dengan yang telah diampu dan di amanatkan pada 
+                                    <span style="color: rgb(11, 242, 11);">...</span> 
+                                    
+                                </p>
+
+                                <p style="text-align: center">Tabel 2.3</p>
+                                <p style="text-align: center">Pencapaian Kinerja Pelayanan Perangkat 
+                                    Daerah Selama 5 (lima) Tahun Terakhir Kota Madiun
+                                    </p>
+                        
+                                    <p class="indent"> 
+                                        <span style="color: rgb(11, 242, 11);">.................</span> 
+                                    </p>
+
+                                    <table border="1" cellspacing="0" cellpadding="5">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2">NO</th>
+                                                <th rowspan="2">Indikator Kinerja sesuai Tugas dan Fungsi Perangkat Daerah</th>
+                                                <th rowspan="2">Tergat NSPK</th>
+                                                <th rowspan="2">Target IKK/IKD</th>
+                                                <th rowspan="2">Target Indikator Lainnya</th>
+                                                <th colspan="5">Target Renstra Perangkat Daerah Tahun ke-</th>
+                                                <th colspan="5">Realisasi Capaian Tahun ke-</th>
+                                                <th colspan="5">Rasio Capaian pada Tahun ke-</th>
+                                            </tr>
+                                            <tr>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>(1)</td>
+                                                <td>(2)</td>
+                                                <td>(3)</td>
+                                                <td>(4)</td>
+                                                <td>(5)</td>
+                                                <td>(6)</td>
+                                                <td>(7)</td>
+                                                <td>(8)</td>
+                                                <td>(9)</td>
+                                                <td>(10)</td>
+                                                <td>(11)</td>
+                                                <td>(12)</td>
+                                                <td>(13)</td>
+                                                <td>(14)</td>
+                                                <td>(15)</td>
+                                                <td>(16)</td>
+                                                <td>(17)</td>
+                                                <td>(18)</td>
+                                                <td>(19)</td>
+                                                <td>(20)</td>
+                                            </tr>
+                                            <!-- Additional rows can be added here -->
+                                            <tr>
+                                                <td colspan="20">(dst…)</td>
+                                                {{-- <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td> --}}
+                                                
                                                
-                                                    @if (isset($bidang1))
-                                                        - {{ $bidang1 }}
-                                                    @endif
-                                                </li>
-                                            @elseif ($index == 1)
-                                                <li>
-                                                    {{ $bidang['bidang_urusan'] ?? 'N/A' }}
-                                                  
-                                                    @if (isset($bidang2))
-                                                        - {{ $bidang2 }}
-                                                    @endif
-                                                </li>
-                                            @else
-                                                <li>{{ $bidang['bidang_urusan'] ?? 'N/A' }}</li>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                            @else
-                                <li>No data available</li>
-                            @endif
-                        </ol>
-                         --}}
-    
-                        
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                        {{-- <p class="indent">Rencana Strategis Perangkat Daerah Tahun 2024-2026 yang disusun telah selaras dengan Rencana Pembangunan Daerah (RPD) Tahun 2026-2026. 
-                            Renstra PD merupakan potret dari Rencana strategis dari masing-masing Perangkat Daerah selama 2 (dua) tahun yang telah disusun melalui 
-                            berbagai tahapan dan telah melibatkan unsur masyarakat dan stakeholder, Renstra PD yang disusun juga telah mengakomodir dokumen perencanaan Kementerian/Lembaga sebagai bagian dari kewenangan 
-                                serta tugas dan pokok dan fungsi serta kewenangan Perangkat Daerah. Renstra PD akan menjadi dasar acuan penyusunan rencana kerja tahunan Perangkat Daerah.</p>
-                        <br>
-                        <h4>1.2. Dasar Hukum Penyusunan</h4>
-                        <p class="indent">Dalam penyusunan renstra {{ $selectedOpd['nama_opd'] ?? 'N/A' }} Kota Madiun Tahun 2025-2026, peraturan yang digunakan sebagai landasan hukum adalah : </p>
-                        <ol style="list-style-type: lower-alpha">
-                            <li>dsfg</li>
-                        </ol>
-                        <h4>1.3. Maksud dan Tujuan</h4>
-                        <p class="indent">Maksud disusunnya Rencana Strategis Perangkat Daerah adalah :</p>
-                        <ol>
-                            <li>Memberikan gambaran kinerja Perangkat Daerah pada renstra tahun sebelumnya yaitu renstra tahun 2019-2024;</li>
-                            <li>Memberikan gambaran rencana strategis Perangkat Daerah pada Tahun 2025-2026;</li>
-                            <li>sebagai pedoman Perangkat Daerah dalam menyusun kebijakan program, kegiatan, sub kegiatan serta tolok ukur dari kinerja penyelenggaraan pemerintahan daerah selama tahun 2025-2026.</li>
-                        </ol>
-                        <p class="indent">Tujuan disusunnya Rencana Kerja Perangkat Daerah adalah </p>
-                        <ol>
-                            <li>sebagai acuan pelaksanaan program, kegiatan dan sub kegiatan, serta sebagai pedoman penyusunan Rencana Kerja (Renja) Perangkat Daerah yang mengedepankan pelaksanaan akuntabilitas kinerja dalam mencapai tujuan pembangunan.</li>
-                            <li>Tersedianya dokumen perencanaan tahunan yang disusun sebagai dasar Perengkat Daerah menyusun Renja Perangkat Daerah pada Tahun 2025 dan Tahun 2026.</li>
-                        </ol>
-                        <h4>1.4. Sistematika Penulisan</h4>
-                        <p class="indent">Dengan berpedoman pada Peraturan Menteri Dalam Negeri Republik Indonesia Nomor 86 Tahun 2017 sistematika penyusunan Rencana Strategis Perangkat Daerah (Renstra PD) sebagai berikut :</p>
-                        <p class="indent">Penetapan Renstra Oleh Kepala Perangkat Daerah</p>
-                        <p class="indent">Daftar Isi</p>
+                                    <p style="text-align: center">Tabel 2.4</p>
+                                        <p style="text-align: center">Anggaran dan Realisasi Pendanaan Pelayanan Perangkat Daerah
+                                                  Selama 5 (lima) Tahun Terakhir
+                                                    Kota Madiun</p>
 
-                        <p class="indent">BAB I&emsp;: Pendahuluan</p>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;1.1. Latar Belakang</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;1.2. Dasar Hukum Penyusunan</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;1.3. Maksud dan Tujuan</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;1.4. Sistematika Penilaian</li>
-
-                        <p class="indent">BAB II&emsp;: Gambaran Pelayanan Perangkat Daerah</p>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;2.1. Tugas, Fungsi, dan Struktur Perangkat Daerah</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;2.2. Sumber Daya Perangkat Daerah</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;2.3. Kinerja Pelayanan Perangkat Daerah</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;2.4. Kelompok Sasaran</li>
-
-
-                        <p class="indent">BAB III&emsp;: Permasalahan dan Isu Strategis Perangkat Daerah</p>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;3.1. Permasalahan Pelayanan Perangkat Daerah</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;3.2. Isu Strategis</li>
-                
-                        <p class="indent">BAB IV&emsp;: Tujuan dan Sasaran Jangka Menengah Perangkat Daerah</p>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;4.1. Tujuan dan Sasaran Renstra PD Tahun 2025-2026</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;4.2. Cascading Kinerja PD</li>
-                
-                        <p class="indent">BAB V&emsp;: Strategi dan Arah Kebijakan</p>
-
-                        <p class="indent">BAB VI&emsp;: Rencana Program, Kegiatan, dan Sub Kegiatan serta Pendanaan</p>
-                 
-                        <p class="indent">BAB VII&emsp;: Kinerja Penyelanggaraan Bidang Urusan</p>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;7.1. Penentuan target keberhasilan pencapaian tujuan dan sasaran Renstra PD Tahun 2025-2026 melalui Indikator Kinerja Utama (IKU) PD</li>
-                        <li class="indent1" style=" list-style-type: none;">&emsp;7.2. Penentuan target kinerja penyelenggaraan urusan pemerintahan daerah Tahun 2025-2026 melalui Indikator Kinerja Kunci (IKK) PD</li>
-
-                        <p class="indent">BAB VIII&emsp;: Penutup</p>
-                     --}}
-                        
-                                          
-                
+                                    <table border="1" cellspacing="0" cellpadding="5">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="3">Uraian Kewenangan Perangkat Daerah</th>
+                                                <th colspan="5">Target Renstra Perangkat Daerah Tahun ke-</th>
+                                                <th colspan="5">Realisasi Capaian Tahun ke-</th>
+                                                <th colspan="5">Rasio Capaian pada Tahun ke-</th>
+                                                <th colspan="2">Rata-Rata Pertumbuhan</th>
+                                            </tr>
+                                            <tr>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                                <th>Anggaran</th>
+                                                <th>Realisasi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>(1)</td>
+                                                <td>(2)</td>
+                                                <td>(3)</td>
+                                                <td>(4)</td>
+                                                <td>(5)</td>
+                                                <td>(6)</td>
+                                                <td>(7)</td>
+                                                <td>(8)</td>
+                                                <td>(9)</td>
+                                                <td>(10)</td>
+                                                <td>(11)</td>
+                                                <td>(12)</td>
+                                                <td>(13)</td>
+                                                <td>(14)</td>
+                                                <td>(15)</td>
+                                                <td>(16)</td>
+                                                <td>(17)</td>
+                                                <td>(18)</td>
+                                            </tr>
+                                            <!-- Add more rows as needed -->
+                                            <tr>
+                                                <td colspan="20">(Dst…)</td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="indent">Berdasarkan tabel Pencapaian kinerja pelayanan Perangkat 
+                                        Daerah terdapat beberapa indikator dalam kondisi :
+                                    </p>
+                                    
+                                    <ol>
+                                        <li>
+                                            Tercapai, yaitu pada indikator :
+                                            <ul style="list-style-type: lower-alpha">
+                                                <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan <span style="color: rgb(11, 242, 11);">...</span> </li>
+                                                <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan <span style="color: rgb(11, 242, 11);">...</span> </li>
+                                                <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan <span style="color: rgb(11, 242, 11);">...</span> </li>
+                                                
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            Belum tercapai, yaitu pada indikator :
+                                            <ul style="list-style-type: lower-alpha">
+                                                <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan <span style="color: rgb(11, 242, 11);">...</span> </li>
+                                                <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan <span style="color: rgb(11, 242, 11);">...</span> </li>
+                                                <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan <span style="color: rgb(11, 242, 11);">...</span> </li>
+                                                
+                                            </ul>
+                                        </li>
+                                    </ol>
+                                    <p class="indent">Sehingga potensi dan permasalahan yang timbul yang ditinjau 
+                                        dari kinerja pelayanan periode sebelumnya tersebut adalah :
+                                    </p>
+                                    <ol>
+                                        <li><span style="color: rgb(11, 242, 11);">...</span></li>
+                                        <li><span style="color: rgb(11, 242, 11);">...</span></li>
+                                        <li><span style="color: rgb(11, 242, 11);">...</span></li>
+                                    </ol>
+                                    
+                                    <h4>2.4	Kelompok Sasaran Layanan</h4>
+                                    <p class="indent">Sebagaimana tugas pokok dan fungsi perangkat daerah yang menjadi kewenangannya, agar tercapai pelayanan yang berorientasi hasil serta menjaga Kerjasama yang baik dengan stakeholder, mitra serta Kerjasama lainnya dalam penyelenggaraan pemerintahan daerah maka diperlukan upaya 
+                                        pemerintah daerah dalam menentukan kelompok sasaran yang akan terdampak dalam pelayanan pada dinas/badan 
+                                    <span style="color: rgb(11, 242, 11);">...</span><br>
+                                    <p class="indent">Kelompok sasaran   <span style="color: rgb(11, 242, 11);">...</span> dalam kegiatan yang akan dilaksanakan berupa kerjasama dalam pencapaian kinerja yaitu </p>
+                                    
+                                </p>
+                                <ol style="list-style-type: lower-alpha">
+                                    <li>Mitra PD </li>
+                                    <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                                    <li>Dukungan Instansi/perusahaan</li>
+                                    <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                                    <li>Kerjasama dengan pemerintah daerah lain</li>
+                                    <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                                    </li>
+                                </ol>
+                          
+                     
                             
                     </div>
                 </div>

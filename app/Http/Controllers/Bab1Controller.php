@@ -204,34 +204,34 @@ class Bab1Controller extends Controller
 
     
     public function exportWord($id)
-{
-    $bab1 = Bab1::findOrFail($id);
-    $kode_opd = $bab1->kode_opd;
+    {
+        $bab1 = Bab1::findOrFail($id);
+        $kode_opd = $bab1->kode_opd;
 
-    $selectedOpd = FetchOpd::data_opd($kode_opd);
+        $selectedOpd = FetchOpd::data_opd($kode_opd);
 
 
-    // Render HTML from Blade view
-    $htmlContent = view('layouts.admin.bab1.word', compact('bab1', 'selectedOpd'))->render();
+        // Render HTML from Blade view
+        $htmlContent = view('layouts.admin.bab1.word', compact('bab1', 'selectedOpd'))->render();
 
-    // Simplify HTML and handle unsupported tags
-    $allowedTags = '<p><h1><h2><h3><h4><h5><h6><ul><ol><li><b><i><u><strong><em>';
-    $htmlContent = strip_tags($htmlContent, $allowedTags);
+        // Simplify HTML and handle unsupported tags
+        $allowedTags = '<p><h1><h2><h3><h4><h5><h6><ul><ol><li><b><i><u><strong><em>';
+        $htmlContent = strip_tags($htmlContent, $allowedTags);
 
-    // Convert HTML to Word format
-    $phpWord = new \PhpOffice\PhpWord\PhpWord();
-    $section = $phpWord->addSection();
-    \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent, false, false);
+        // Convert HTML to Word format
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $section = $phpWord->addSection();
+        \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent, false, false);
 
-    // Save the Word file
-    $fileName = 'Bab_I_Pendahuluan.docx';
-    $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+        // Save the Word file
+        $fileName = 'Bab_I_Pendahuluan.docx';
+        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
 
-    $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save($tempFile);
+        $writer = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $writer->save($tempFile);
 
-    return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
-}
+        return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+    }
 
     
 

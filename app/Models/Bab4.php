@@ -22,6 +22,10 @@ class Bab4 extends Model
         'indikator_opd',
         'sasaran_opd',
     ];
+    protected $casts = [
+        'tujuan_opd' => 'array',
+        'sasaran_opd' => 'array',
+    ];
 
     // Definisikan relasi dengan model Jenis (jika ada)
     public function tahun()

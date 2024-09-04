@@ -37,7 +37,7 @@ Route::get('/dashboard/bab1', [Bab1Controller::class, 'index'])->name('layouts.a
 Route::get('/dashboard/create-bab2', [Bab2Controller::class, 'create'])->name('bab2.create');
 Route::post('/dashboard/store-bab2', [Bab2Controller::class, 'store'])->name('bab2.store');
 Route::get('/dashboard/edit-bab2/{id}', [Bab2Controller::class, 'edit'])->name('bab2.edit');
-Route::get('/dashboard/show-bab2/{id}', [Bab2Controller::class, 'show'])->name('bab2.show');
+Route::get('/dashboard/show-bab2', [Bab2Controller::class, 'show'])->name('bab2.show');
 Route::put('/dashboard/update-bab2/{id}', [Bab2Controller::class, 'update'])->name('bab2.update');
 Route::delete('/dashboard/delete-bab2/{id}', [Bab2Controller::class, 'destroy'])->name('bab2.destroy');
 Route::get('/dashboard/bab2', [Bab2Controller::class, 'index'])->name('layouts.admin.bab2.index');
@@ -54,10 +54,12 @@ Route::get('/dashboard/bab4', [Bab4Controller::class, 'index'])->name('layouts.a
 Route::get('/dashboard/create-bab4', [Bab4Controller::class, 'create'])->name('bab4.create');
 Route::post('/dashboard/store-bab4', [Bab4Controller::class, 'store'])->name('bab4.store');
 Route::get('/dashboard/edit-bab4/{id}', [Bab4Controller::class, 'edit'])->name('bab4.edit');
-Route::get('/dashboard/show-bab4/{id}', [Bab4Controller::class, 'show'])->name('bab4.show');
+Route::get('/dashboard/show-bab4', [Bab4Controller::class, 'show'])->name('bab4.show');
 Route::put('/dashboard/update-bab4/{id}', [Bab4Controller::class, 'update'])->name('bab4.update');
 Route::delete('/dashboard/delete-bab4/{id}', [Bab4Controller::class, 'destroy'])->name('bab4.destroy');
-Route::get('/tujuan-opd/{kode_opd}', [Bab4Controller::class, 'index']);
+// In web.php
+Route::get('/api/opd-details/{kode_opd}', [Bab4Controller::class, 'getOpdDetails']);
+
 // Route::get('/api/urusan_opd/{kode_opd}', [Bab4Controller::class, 'getUrusanOpd']);
 
 Route::get('/dashboard/bab5', [Bab5Controller::class, 'index'])->name('layouts.admin.bab5.index');
@@ -68,7 +70,7 @@ Route::get('/dashboard/show-bab5/{id}', [Bab5Controller::class, 'show'])->name('
 Route::put('/dashboard/update-bab5/{id}', [Bab5Controller::class, 'update'])->name('bab5.update');
 Route::delete('/dashboard/delete-bab5/{id}', [Bab5Controller::class, 'destroy'])->name('bab5.destroy');
 
-Route::get('/tujuan-opd/{kode_opd}', [Bab4Controller::class, 'index']);
+// Route::get('/tujuan-opd/{kode_opd}', [Bab4Controller::class, 'index']);
 
 Route::get('/dashboard/bab1/export-pdf/{id}', [Bab1Controller::class, 'exportPdf'])->name('bab1.exportPdf');
 Route::get('/dashboard/bab1/export-word/{id}', [Bab1Controller::class, 'exportWord'])->name('bab1.exportWord');
