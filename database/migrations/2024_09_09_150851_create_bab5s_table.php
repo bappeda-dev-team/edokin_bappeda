@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('bab5s', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_bab');
+            $table->foreignId('jenis_id')
+                ->constrained('jenis')
+                ->onDelete('cascade');
+            $table->foreignId('tahun_id')
+                ->constrained('tahun_dokumen')
+                ->onDelete('cascade');
+            $table->string('kode_opd');
+            $table->json('tujuan_opd')->nullable();
+            $table->json('sasaran_opd')->nullable();
             $table->timestamps();
         });
     }

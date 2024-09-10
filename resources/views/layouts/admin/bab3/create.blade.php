@@ -49,12 +49,19 @@
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
                         <div class="col-sm-12 col-md-4">
-                            <select name="kode_opd" class="form-control selectric" required>
+                            <select name="kode_opd" class="form-control select2" required>
                                 <option value="">Pilih Kode OPD</option>
                                 @foreach($data_opd as $opd)
                                     <option value="{{ $opd['kode_opd'] }}">{{ $opd['kode_opd'] }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
+                        <div class="col-sm-12 col-md-4">
+                            <input type="text" name="nama_opd" id="nama_opd" class="form-control" readonly>
                         </div>
                     </div>
 
@@ -132,12 +139,49 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        // Initialize Select2
+        $('.select2').select2({
+            placeholder: 'Pilih Kode OPD',
+            allowClear: true,
+            width: '100%'
+        });
+    
+        // Event listener for Select2 change event
+        $('.select2').on('change', function () {
+            const kodeOpd = $(this).val();
+            const namaOpdInput = $('#nama_opd');
+            
+            if (kodeOpd) {
+                // Fetch data from API using the selected kode_opd
+                fetch(`/api/urusan_opd/${kodeOpd}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error('API Error:', data.error);
+                            namaOpdInput.val('');
+                        } else {
+                            // Populate nama_opd
+                            namaOpdInput.val(data.nama_opd || '');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        namaOpdInput.val('');
+                    });
+            } else {
+                // Clear fields if no kode_opd selected
+                namaOpdInput.val('');
+            }
+        });
+
+        // Initialize Summernote
         $('.summernote').summernote({
-            height: 300,   // set the height of the editor
-            minHeight: null, // set minimum height of the editor
-            maxHeight: null, // set maximum height of the editor
-            focus: true     // set focus to editable area after initializing summernote
+            height: 300,
+            minHeight: null,
+            maxHeight: null,
+            focus: true
         });
     });
 </script>
 @endsection
+Perbaikan yan

@@ -67,7 +67,7 @@
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
                         <div class="col-sm-12 col-md-4">
-                            <select id="kode_opd" name="kode_opd" class="form-control">
+                            <select id="kode_opd" name="kode_opd" class="form-control select2">
                                 <option value="">Pilih Kode OPD</option>
                                 @foreach($kodeOpds as $kode_opd)
                                     <option value="{{ $kode_opd }}">{{ $kode_opd }}</option>
@@ -110,44 +110,53 @@
         </div>
     </div>
 </div>
+@endsection
 
+
+@section('scripts')
 <script>
-    document.getElementById('kode_opd').addEventListener('change', function() {
-    const kodeOpd = this.value;
-    if (kodeOpd) {
-        console.log(`Fetching details for OPD code: ${kodeOpd}`);
-        fetchOpdDetails(kodeOpd);
-    } else {
-        // Clear fields if no OPD is selected
-        document.getElementById('nama_opd').value = '';
-        document.getElementById('tujuan_opd').value = '';
-        document.getElementById('sasaran_opd').value = '';
-    }
-});
+    $(document).ready(function() {
+        // Initialize Select2 on the Kode OPD dropdown
+        $('#kode_opd').select2({
+            placeholder: 'Pilih Kode OPD',
+            allowClear: true,
+            width: '100%'
+        }).on('select2:select', function(e) {
+            // Fetch the selected OPD code and call the fetchOpdDetails function
+            const kodeOpd = e.params.data.id;
+            if (kodeOpd) {
+                fetchOpdDetails(kodeOpd);
+            } else {
+                // Clear fields if no OPD is selected
+                document.getElementById('nama_opd').value = '';
+                document.getElementById('tujuan_opd').value = '';
+                document.getElementById('sasaran_opd').value = '';
+            }
+        });
 
-
-    async function fetchOpdDetails(kodeOpd) {
-    try {
-        console.log(`Fetching details for OPD code: ${kodeOpd}`);
-        const response = await fetch(`/api/opd-details/${encodeURIComponent(kodeOpd)}`);
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`Network response was not ok. Status: ${response.status}, Response: ${errorText}`);
-            throw new Error(`Network response was not ok. Status: ${response.status}, Response: ${errorText}`);
+        // Function to fetch OPD details
+        async function fetchOpdDetails(kodeOpd) {
+            try {
+                console.log(`Fetching details for OPD code: ${kodeOpd}`);
+                const response = await fetch(`/api/opd-details/${encodeURIComponent(kodeOpd)}`);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`Network response was not ok. Status: ${response.status}, Response: ${errorText}`);
+                    throw new Error(`Network response was not ok. Status: ${response.status}, Response: ${errorText}`);
+                }
+                const data = await response.json();
+                console.log('Fetched data:', data);
+                if (data) {
+                    document.getElementById('nama_opd').value = data.nama_opd || '';
+                    document.getElementById('tujuan_opd').value = data.tujuan_opd || '';
+                    document.getElementById('sasaran_opd').value = data.sasaran_opd || '';
+                } else {
+                    console.error('Error fetching OPD details: No data received.');
+                }
+            } catch (error) {
+                console.error('Failed to fetch OPD details:', error);
+            }
         }
-        const data = await response.json();
-        console.log('Fetched data:', data);
-        if (data) {
-            document.getElementById('nama_opd').value = data.nama_opd || '';
-            document.getElementById('tujuan_opd').value = data.tujuan_opd || '';
-            document.getElementById('sasaran_opd').value = data.sasaran_opd || '';
-        } else {
-            console.error('Error fetching OPD details: No data received.');
-        }
-    } catch (error) {
-        console.error('Failed to fetch OPD details:', error);
-    }
-}
-
+    });
 </script>
 @endsection

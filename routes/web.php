@@ -54,7 +54,7 @@ Route::get('/dashboard/bab4', [Bab4Controller::class, 'index'])->name('layouts.a
 Route::get('/dashboard/create-bab4', [Bab4Controller::class, 'create'])->name('bab4.create');
 Route::post('/dashboard/store-bab4', [Bab4Controller::class, 'store'])->name('bab4.store');
 Route::get('/dashboard/edit-bab4/{id}', [Bab4Controller::class, 'edit'])->name('bab4.edit');
-Route::get('/dashboard/show-bab4', [Bab4Controller::class, 'show'])->name('bab4.show');
+Route::get('/dashboard/show-bab4/{id}', [Bab4Controller::class, 'show'])->name('bab4.show');
 Route::put('/dashboard/update-bab4/{id}', [Bab4Controller::class, 'update'])->name('bab4.update');
 Route::delete('/dashboard/delete-bab4/{id}', [Bab4Controller::class, 'destroy'])->name('bab4.destroy');
 // In web.php
@@ -66,7 +66,7 @@ Route::get('/dashboard/bab5', [Bab5Controller::class, 'index'])->name('layouts.a
 Route::get('/dashboard/create-bab5', [Bab5Controller::class, 'create'])->name('bab5.create');
 Route::post('/dashboard/store-bab5', [Bab5Controller::class, 'store'])->name('bab5.store');
 Route::get('/dashboard/edit-bab5/{id}', [Bab5Controller::class, 'edit'])->name('bab5.edit');
-Route::get('/dashboard/show-bab5/{id}', [Bab5Controller::class, 'show'])->name('bab5.show');
+Route::get('/dashboard/show-bab5', [Bab5Controller::class, 'show'])->name('bab5.show');
 Route::put('/dashboard/update-bab5/{id}', [Bab5Controller::class, 'update'])->name('bab5.update');
 Route::delete('/dashboard/delete-bab5/{id}', [Bab5Controller::class, 'destroy'])->name('bab5.destroy');
 

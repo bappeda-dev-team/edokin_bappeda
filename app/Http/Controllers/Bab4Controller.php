@@ -51,6 +51,28 @@ class Bab4Controller extends Controller
 
         return view('layouts.admin.bab4.create', compact('kodeOpds', 'jenis', 'tahun'));
     }
+    // Remove this block to avoid duplicate method definition
+      // Store a new Bab4 record in the database
+      public function store(Request $request)
+      {
+          $validatedData = $request->validate([
+              'nama_bab' => 'required|string|max:255',
+              'jenis_id' => 'required|integer|exists:jenis,id',
+              'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
+              'kode_opd' => 'required|string|max:50',
+              'nama_opd' => 'nullable|string|max:255',
+              'tujuan_opd' => 'nullable|string',
+              'sasaran_opd' => 'nullable|string',
+          ]);
+  
+          try {
+              Bab4::create($validatedData);
+              return redirect()->route('layouts.admin.bab4.index')->with('success', 'Data has been saved successfully!');
+          } catch (\Exception $e) {
+              Log::error('Failed to store Bab4 record:', ['error' => $e->getMessage()]);
+              return redirect()->back()->withErrors('Failed to save data.');
+          }
+      }
 
     // Fetch details of an OPD based on kode_opd
     public function getOpdDetails($kode_opd)
@@ -116,53 +138,37 @@ class Bab4Controller extends Controller
     }
 
 
-    // Store a new Bab4 record in the database
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|integer|exists:jenis,id',
-            'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
-            'kode_opd' => 'required|string|max:50',
-            'nama_opd' => 'nullable|string|max:255',
-            'tujuan_opd' => 'nullable|string',
-            'sasaran_opd' => 'nullable|string',
-        ]);
-
-        try {
-            Bab4::create($validatedData);
-            return redirect()->route('bab4.index')->with('success', 'Data has been saved successfully!');
-        } catch (\Exception $e) {
-            Log::error('Failed to store Bab4 record:', ['error' => $e->getMessage()]);
-            return redirect()->back()->withErrors('Failed to save data.');
-        }
-    }
+  
 
     // Show form to edit an existing Bab4 record
+  
     public function edit($id)
     {
-        $bab4 = Bab4::findOrFail($id);
-        $jenis = Jenis::all();
-        $tahun = TahunDokumen::all();
-
         $api = new KakKotaMadiunApi();
 
         try {
             $urusan_opd = $api->urusanOpd();
-            $kodeOpds = collect($urusan_opd->json())->pluck('kode_opd')->unique();
+            $results = $urusan_opd->json()['results'] ?? [];
+            $kodeOpds = collect($results)->pluck('kode_opd')->unique();
         } catch (\Exception $e) {
             Log::error('Failed to fetch Urusan OPD for edit form:', ['error' => $e->getMessage()]);
             $kodeOpds = collect();
         }
 
-        return view('layouts.admin.bab4.edit', compact('bab4', 'jenis', 'tahun', 'kodeOpds'));
+        $bab4 = Bab4::findOrFail($id); // Fetch the record you want to edit
+        $jenis = Jenis::all();
+        $tahun = TahunDokumen::all();
+
+        return view('layouts.admin.bab4.edit', compact('bab4', 'kodeOpds', 'jenis', 'tahun'));
     }
+
+    
+    
+
 
     // Update an existing Bab4 record in the database
     public function update(Request $request, $id)
     {
-        $bab4 = Bab4::findOrFail($id);
-
         $validatedData = $request->validate([
             'nama_bab' => 'required|string|max:255',
             'jenis_id' => 'required|integer|exists:jenis,id',
@@ -174,17 +180,38 @@ class Bab4Controller extends Controller
         ]);
 
         try {
-            $bab4->update($validatedData);
-            return redirect()->route('bab4.index')->with('success', 'Data has been updated successfully!');
+            $bab4 = Bab4::findOrFail($id);
+            $bab4->update($validatedData); // Update the record with new data
+            return redirect()->route('layouts.admin.bab4.index')->with('success', 'Data has been updated successfully!');
         } catch (\Exception $e) {
-            Log::error('Failed to update Bab4 record:', ['id' => $id, 'error' => $e->getMessage()]);
+            Log::error('Failed to update Bab4 record:', ['error' => $e->getMessage()]);
             return redirect()->back()->withErrors('Failed to update data.');
         }
     }
-    public function show()
+
+
+
+
+    public function show($id)
     {
+        $bab4 = Bab4::findOrFail($id);
+        
+        // Fetch the OPD details
+        $api = new KakKotaMadiunApi();
+        $opdDetails = $this->getOpdDetails($bab4->kode_opd);
+        $opdData = json_decode($opdDetails->content(), true); // decode the JSON response
     
-       
-        return view('layouts.admin.bab4.show');
+        // Initialize variables
+        $nama_opd = $tujuan_opd = $sasaran_opd = 'Data not available';
+    
+        // Check for errors in API response
+        if (!isset($opdData['message'])) {
+            $nama_opd = $opdData['nama_opd'] ?? 'Data not available';
+            $tujuan_opd = $opdData['tujuan_opd'] ?? 'Data not available';
+            $sasaran_opd = $opdData['sasaran_opd'] ?? 'Data not available';
+        }
+    
+        return view('layouts.admin.bab4.show', compact('bab4', 'nama_opd', 'tujuan_opd', 'sasaran_opd'));
     }
+    
 }

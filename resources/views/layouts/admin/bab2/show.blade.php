@@ -483,7 +483,7 @@
                                                   Selama 5 (lima) Tahun Terakhir
                                                     Kota Madiun</p>
 
-                                    <table border="1" cellspacing="0" cellpadding="5">
+                                    <table >
                                         <thead>
                                             <tr>
                                                 <th rowspan="3">Uraian Kewenangan Perangkat Daerah</th>

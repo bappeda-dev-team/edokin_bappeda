@@ -11,6 +11,7 @@
 
   <!-- Summernote CSS -->
 <link rel="stylesheet" href="{{ asset('style/dist/assets/modules/summernote/summernote-bs4.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
   <!-- CSS Libraries -->
@@ -55,6 +56,8 @@
     <script src="{{asset('style/dist/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('style/dist/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js')}}"></script>
     <script src="{{asset('style/dist/assets/modules/jquery-ui/jquery-ui.min.js')}}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Template JS File -->
     <script src="{{asset('style/dist/assets/js/scripts.js')}}"></script>

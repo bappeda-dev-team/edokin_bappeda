@@ -40,9 +40,10 @@
                                     {{-- <td>{{ $bab_4->kode_opd->kode_opd ?? 'N/A' }}</td> --}}
                                     <td>
                                         @php
-                                            $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab_4->kode_opd);
+                                        // Ensure that urusan_opd is being processed correctly
+                                            $kodeOpds = collect($urusan_opd['results'] ?? [])->firstWhere('kode_opd', $bab_4->kode_opd);
                                         @endphp
-                                        {{ $selectedOpd['kode_opd'] ?? 'N/A' }}
+                                        {{ $kodeOpds['kode_opd'] ?? 'N/A' }}
                                     </td>
                                     <td>
                                         <a href="{{ route('bab4.show', $bab_4->id) }}" class="btn btn-info" data-id="{{ $bab_4->id }}"><i class="fa fa-eye"></i> Show</a>

@@ -57,16 +57,8 @@ class Bab5Controller extends Controller
             'nama_bab' => 'required',
             'jenis_id' => 'required',
             'nama_opd' => 'required',
-            'bidang_urusan' => 'required',
-            'bidang1'=>'required',
-            'bidang2'=>'required',
-            'kode_opd' => 'required|string',
-            // 'kode_bidang_urusan'=>'required|string',
-            'tahun_id' => 'required',
-            // 'latar_belakang' => 'required',
-            'dasar_hukum' => 'required',
-            // 'maksud_tujuan' => 'required',
-            // 'sistematika_penulisan' => 'required',
+            
+            
         ]);
 
         Bab1::create($request->all());
@@ -94,16 +86,7 @@ class Bab5Controller extends Controller
             'nama_bab' => 'required|string|max:255',
             'jenis_id' => 'required|exists:jenis,id',
             'nama_opd' => 'required|string',
-            'bidang_urusan' => 'required|string',
-            'bidang1'=> 'required|string',
-            'bidang2'=> 'required|string',
-            'kode_opd' => 'required|string',
-            'tahun_id' => 'required|exists:tahun_dokumen,id',
-            // 'kode_bidang_urusan'=>'required|string',
-            // 'latar_belakang' => 'required|string',
-            'dasar_hukum' => 'required|string',
-            // 'maksud_tujuan' => 'required|string',
-            // 'sistematika_penulisan' => 'required|string',
+           
         ]);
 
         $bab5 = Bab5::findOrFail($id);
@@ -122,37 +105,10 @@ class Bab5Controller extends Controller
     }
 
    
-    public function show($id)
+    public function show()
     {
-        $bab5 = Bab5::with('jenis')->findOrFail($id);
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
         
-        // Use GET if POST is not required
-        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-    
-        if (!$response->successful()) {
-            abort(500, 'Failed to fetch data from API');
-        }
-    
-        $urusan_opd = $response->json()['results'] ?? [];
-        $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab5->kode_opd);
-    
-        $selectedBidangUrusan = [];
-        if ($selectedOpd) {
-            $kodeBidangUrusan = is_array($bab5->kode_bidang_urusan) ? $bab5->kode_bidang_urusan : [$bab5->kode_bidang_urusan];
-    
-            foreach ($selectedOpd['bidang_urusan'] ?? [] as $bidang) {
-                if (in_array($bidang['kode_bidang_urusan'] ?? '', $kodeBidangUrusan)) {
-                    $selectedBidangUrusan[] = $bidang;
-                }
-            }
-        }
-    
-        return view('layouts.admin.bab5.show', [
-            'bab5' => $bab5,
-            'urusan_opd' => $urusan_opd,
-            'selectedBidangUrusan' => $selectedBidangUrusan,
-        ]);
+        return view('layouts.admin.bab5.show');
     }
     
 

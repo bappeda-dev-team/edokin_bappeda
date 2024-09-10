@@ -51,7 +51,7 @@
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
                         <div class="col-sm-12 col-md-4">
-                            <select name="kode_opd" id="kode_opd" class="form-control selectric" required>
+                            <select name="kode_opd" id="kode_opd" class="form-control select2" required>
                                 <option value="">Pilih Kode OPD</option>
                                 @foreach($urusan_opd as $opd)
                                     <option value="{{ $opd['kode_opd'] }}" {{ $bab1->kode_opd == $opd['kode_opd'] ? 'selected' : '' }}>{{ $opd['kode_opd'] }}</option>
@@ -110,51 +110,54 @@
 
 @section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const kodeOpdSelect = document.querySelector('select[name="kode_opd"]');
-    const namaOpdInput = document.getElementById('nama_opd');
-    const bidangUrusanInput = document.getElementById('bidang_urusan');
-    if (kodeOpdSelect) {
-        kodeOpdSelect.addEventListener('change', function () {
-            const kodeOpd = this.value;
+    $(document).ready(function() {
+        // Initialize Select2
+        $('.select2').select2({
+            placeholder: 'Pilih Kode OPD',
+            allowClear: true,
+            width: '100%'
+        });
+    
+        // Event listener for Select2 change event
+        $('.select2').on('change', function () {
+            const kodeOpd = $(this).val();
+            const namaOpdInput = $('#nama_opd');
+            const bidangUrusanInput = $('#bidang_urusan');
+    
             if (kodeOpd) {
+                // Fetch data from API using the selected kode_opd
                 fetch(`/api/urusan_opd/${kodeOpd}`)
                     .then(response => response.json())
                     .then(data => {
-                        console.log('API Response:', data); // Debug: log API response
                         if (data.error) {
                             console.error('API Error:', data.error);
-                            namaOpdInput.value = '';
-                            bidangUrusanInput.value = '';
+                            namaOpdInput.val('');
+                            bidangUrusanInput.val('');
                         } else {
-                            namaOpdInput.value = data.nama_opd || '';
-                            // Display bidang_urusan
-                            bidangUrusanInput.value = data.bidang_urusan || '';
+                            // Populate nama_opd and bidang_urusan
+                            namaOpdInput.val(data.nama_opd || '');
+                            bidangUrusanInput.val(data.bidang_urusan || '');
                         }
                     })
                     .catch(error => {
                         console.error('Fetch Error:', error);
-                        namaOpdInput.value = '';
-                        bidangUrusanInput.value = '';
+                        namaOpdInput.val('');
+                        bidangUrusanInput.val('');
                     });
             } else {
-                namaOpdInput.value = '';
-                bidangUrusanInput.value = '';
+                // Clear fields if no kode_opd selected
+                namaOpdInput.val('');
+                bidangUrusanInput.val('');
             }
         });
-    }
-    // Initialize Summernote after DOM is loaded
-    document.addEventListener('DOMContentLoaded', function () {
-        const summernoteElements = document.querySelectorAll('.summernote');
-        summernoteElements.forEach(el => {
-            $(el).summernote({
-                height: 300,   // set the height of the editor
-                minHeight: null, // set minimum height of the editor
-                maxHeight: null, // set maximum height of the editor
-                focus: true     // set focus to editable area after initializing summernote
-            });
+    
+        // Initialize Summernote
+        $('.summernote').summernote({
+            height: 300,   // Set the height of the editor
+            minHeight: null, // Set minimum height of the editor
+            maxHeight: null, // Set maximum height of the editor
+            focus: true     // Set focus to editable area after initializing summernote
         });
     });
-});
-</script>
+    </script>
 @endsection
