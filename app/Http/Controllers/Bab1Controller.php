@@ -44,6 +44,7 @@ class Bab1Controller extends Controller
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
+        //get data bidang urusan
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
 
@@ -58,14 +59,16 @@ class Bab1Controller extends Controller
             'nama_bab' => 'required',
             'jenis_id' => 'required',
             'nama_opd' => 'required',
-            'bidang_urusan' => 'required',
+            'bidang_urusan' => 'nullable|string',
             'bidang1'=>'nullable|string',
             'bidang2'=>'nullable|string',
             'kode_opd' => 'required|string',
             // 'kode_bidang_urusan'=>'required|string',
-            'tahun_id' => 'required',
+            'tahun_id' => 'nullable|string',
             // 'latar_belakang' => 'required',
-            'dasar_hukum' => 'required',
+            'dasar_hukum' => 'nullable|string',
+            'uraian' => 'nullable|string',
+
             // 'maksud_tujuan' => 'required',
             // 'sistematika_penulisan' => 'required',
         ]);
@@ -95,14 +98,15 @@ class Bab1Controller extends Controller
             'nama_bab' => 'required|string|max:255',
             'jenis_id' => 'required|exists:jenis,id',
             'nama_opd' => 'required|string',
-            'bidang_urusan' => 'required|string',
+            'bidang_urusan' => 'nullable|string',
             'bidang1'=> 'nullable|string',
             'bidang2'=> 'nullable|string',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             // 'kode_bidang_urusan'=>'required|string',
             // 'latar_belakang' => 'required|string',
-            'dasar_hukum' => 'required|string',
+            'dasar_hukum' => 'nullable|string',
+            'uraian' => 'nullable|string',
             // 'maksud_tujuan' => 'required|string',
             // 'sistematika_penulisan' => 'required|string',
         ]);
@@ -181,10 +185,17 @@ class Bab1Controller extends Controller
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                'format' => 'A4',
+                // Custom F4 (HVS) paper size: 210mm x 330mm
+                'format' => [210, 330],
                 'orientation' => 'P',
                 'tempDir' => storage_path('app/temp'),
             ]);
+
+                $mpdf->SetHTMLFooter('
+                <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
+                    Renstra Elektronik Pemerintah Kota Madiun
+                </div>
+            ');
     
             // Write HTML to PDF
             $mpdf->WriteHTML($html);

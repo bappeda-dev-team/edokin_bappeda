@@ -1,19 +1,19 @@
 @extends('layouts.admin.main')
 
-@section('title', 'Create BAB 4')
+@section('title', 'Create BAB 7')
 
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4>Create BAB 4</h4>
+                <h4>Create BAB 7</h4>
             </div>
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab4.index') }}">
+                <a href="{{ route('layouts.admin.bab7.index') }}">
                     <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
-                <form action="{{ route('bab4.store') }}" method="POST">
+                <form action="{{ route('bab7.store') }}" method="POST">
                     @csrf
 
                     <!-- Nama Bab Field -->

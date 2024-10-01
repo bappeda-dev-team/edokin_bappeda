@@ -95,10 +95,17 @@
                         </div>
                     </div>
 
+                    {{-- get data otomatis dan bisa di edit --}}
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Dasar Hukum</label>
                         <div class="col-sm-12 col-md-10">
                             <textarea name="dasar_hukum" class="summernote"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea name="uraian" class="summernote"></textarea>
                         </div>
                     </div>
 
@@ -131,6 +138,7 @@
             const namaOpdInput = $('#nama_opd');
             const bidangUrusanInput = $('#bidang_urusan');
     
+            //get data bidang urusan
             if (kodeOpd) {
                 // Fetch data from API using the selected kode_opd
                 fetch(`/api/urusan_opd/${kodeOpd}`)

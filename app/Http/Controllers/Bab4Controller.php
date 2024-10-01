@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use App\Http\Api\KakKotaMadiunApi;
 use Illuminate\Support\Facades\Log;
 
+use Barryvdh\DomPDF\Facade as PDF;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+
 class Bab4Controller extends Controller
 {
     // Display a list of Bab4 records
@@ -63,6 +67,8 @@ class Bab4Controller extends Controller
               'nama_opd' => 'nullable|string|max:255',
               'tujuan_opd' => 'nullable|string',
               'sasaran_opd' => 'nullable|string',
+              'uraian' => 'nullable|string',
+              
           ]);
   
           try {
@@ -177,6 +183,7 @@ class Bab4Controller extends Controller
             'nama_opd' => 'nullable|string|max:255',
             'tujuan_opd' => 'nullable|string',
             'sasaran_opd' => 'nullable|string',
+            'uraian' => 'nullable|string',
         ]);
 
         try {
@@ -190,28 +197,76 @@ class Bab4Controller extends Controller
     }
 
 
+    public function destroy($id)
+    {
+        $bab4 = Bab4::findOrFail($id);
+        $bab4->delete();
 
+        return redirect()->route('layouts.admin.bab4.index')->with('success', 'BAB 4 deleted successfully');
+    }
 
     public function show($id)
     {
         $bab4 = Bab4::findOrFail($id);
-        
+
         // Fetch the OPD details
         $api = new KakKotaMadiunApi();
         $opdDetails = $this->getOpdDetails($bab4->kode_opd);
         $opdData = json_decode($opdDetails->content(), true); // decode the JSON response
-    
+
         // Initialize variables
-        $nama_opd = $tujuan_opd = $sasaran_opd = 'Data not available';
-    
+        $nama_opd = 'Data not available';
+        $tujuan_opd = [];
+        $sasaran_opd = 'Data not available';
+
         // Check for errors in API response
         if (!isset($opdData['message'])) {
             $nama_opd = $opdData['nama_opd'] ?? 'Data not available';
-            $tujuan_opd = $opdData['tujuan_opd'] ?? 'Data not available';
+            $tujuan_opd = $opdData['tujuan_opd'] ?? [];
             $sasaran_opd = $opdData['sasaran_opd'] ?? 'Data not available';
         }
-    
+
         return view('layouts.admin.bab4.show', compact('bab4', 'nama_opd', 'tujuan_opd', 'sasaran_opd'));
     }
+    
+    public function exportPdf($id)
+    {
+        try {
+            $bab4 = Bab4::findOrFail($id);
+    
+            $api = new KakKotaMadiunApi();
+            $opdDetails = $this->getOpdDetails($bab4->kode_opd);
+            $opdData = json_decode($opdDetails->content(), true);
+    
+            $pdfContent = view('layouts.admin.bab4.pdf', [
+                'bab4' => $bab4,
+                'nama_opd' => $opdData['nama_opd'] ?? 'Data not available',
+                'tujuan_opd' => $opdData['tujuan_opd'] ?? 'Data not available',
+                'sasaran_opd' => $opdData['sasaran_opd'] ?? 'Data not available',
+            ])->render();
+    
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                // Custom F4 (HVS) paper size: 210mm x 330mm
+                'format' => [210, 330],
+                'orientation' => 'P',
+                'tempDir' => storage_path('app/temp'),
+            ]);
+
+            $mpdf->SetHTMLFooter('
+            <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
+                Renstra Elektronik Pemerintah Kota Madiun
+            </div>
+        ');
+
+            $mpdf->WriteHTML($pdfContent);
+            $filename = "Bab4_{$bab4->id}.pdf";
+            $mpdf->Output($filename, 'I');
+        } catch (\Exception $e) {
+            \Log::error('Failed to generate PDF:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Unable to generate PDF'], 500);
+        }
+    }
+    
     
 }

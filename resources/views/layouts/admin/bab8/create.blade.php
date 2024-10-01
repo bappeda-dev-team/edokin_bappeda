@@ -1,19 +1,19 @@
 @extends('layouts.admin.main')
 
-@section('title', 'Create BAB 4')
+@section('title', 'Create BAB 8')
 
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4>Create BAB 4</h4>
+                <h4>Create BAB 8</h4>
             </div>
             <div class="card-body">
-                <a href="{{ route('layouts.admin.bab4.index') }}">
+                <a href="{{ route('layouts.admin.bab8.index') }}">
                     <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
-                <form action="{{ route('bab4.store') }}" method="POST">
+                <form action="{{ route('bab8.store') }}" method="POST">
                     @csrf
 
                     <!-- Nama Bab Field -->
@@ -85,20 +85,20 @@
                     </div>
 
                     <!-- Tujuan OPD Field -->
-                    <div class="form-group row mb-4">
+                    {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tujuan OPD</label>
                         <div class="col-sm-12 col-md-4">
                             <textarea id="tujuan_opd" name="tujuan_opd" class="form-control" rows="4" readonly></textarea>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Sasaran OPD Field -->
-                    <div class="form-group row mb-4">
+                    {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran OPD</label>
                         <div class="col-sm-12 col-md-4">
                             <textarea id="sasaran_opd" name="sasaran_opd" class="form-control" rows="4" readonly></textarea>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>

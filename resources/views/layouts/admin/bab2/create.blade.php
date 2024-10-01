@@ -50,7 +50,7 @@
                     <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
                         <div class="col-sm-12 col-md-4">
-                            <select name="kode_opd" id="kode_opd" class="form-control selectric" required>
+                            <select name="kode_opd" id="kode_opd" class="form-control select2" required>
                                 <option value="">Pilih Kode OPD</option>
                                 @foreach($urusan_opd as $opd)
                                     <option value="{{ $opd['kode_opd'] }}">{{ $opd['kode_opd'] }}</option>
@@ -70,6 +70,13 @@
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan</label>
                         <div class="col-sm-12 col-md-4">
                             <input type="text" name="bidang_urusan" id="bidang_urusan" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                        <div class="col-sm-12 col-md-10">
+                            <textarea name="uraian" class="summernote"></textarea>
                         </div>
                     </div>
 
@@ -117,39 +124,48 @@
 
 @section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const kodeOpdSelect = document.querySelector('select[name="kode_opd"]');
-    const namaOpdInput = document.getElementById('nama_opd');
-    const bidangUrusanInput = document.getElementById('bidang_urusan');
+    
+    $(document).ready(function() {
+    // Initialize Select2
+    $('.select2').select2({
+        placeholder: 'Pilih Kode OPD',
+        allowClear: true,
+        width: '100%'
+    });
 
-    if (kodeOpdSelect) {
-        kodeOpdSelect.addEventListener('change', function () {
-            const kodeOpd = this.value;
-            if (kodeOpd) {
-                fetch(`/api/urusan_opd/${kodeOpd}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('API Response:', data); // Debug: log API response
-                        if (data.error) {
-                            console.error('API Error:', data.error);
-                            namaOpdInput.value = '';
-                            bidangUrusanInput.value = '';
-                        } else {
-                            namaOpdInput.value = data.nama_opd || '';
-                            bidangUrusanInput.value = data.bidang_urusan || '';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Fetch Error:', error);
-                        namaOpdInput.value = '';
-                        bidangUrusanInput.value = '';
-                    });
-            } else {
-                namaOpdInput.value = '';
-                bidangUrusanInput.value = '';
-            }
-        });
-    }
+    // Event handler for when the value of select2 changes
+    $('.select2').on('change', function () {
+        const kodeOpd = $(this).val();
+        const namaOpdInput = $('#nama_opd');
+        const bidangUrusanInput = $('#bidang_urusan');
+        
+        if (kodeOpd) {
+            // Call your API to fetch nama OPD and bidang urusan based on selected kode OPD
+            fetch(`/api/urusan_opd/${kodeOpd}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('API Response:', data); // Debug: log API response
+                    if (data.error) {
+                        console.error('API Error:', data.error);
+                        namaOpdInput.val(''); // Clear nama OPD input
+                        bidangUrusanInput.val(''); // Clear bidang urusan input
+                    } else {
+                        // Set the input values based on the API response
+                        namaOpdInput.val(data.nama_opd || ''); // Set nama OPD
+                        bidangUrusanInput.val(data.bidang_urusan || ''); // Set bidang urusan
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    namaOpdInput.val(''); // Clear nama OPD input in case of error
+                    bidangUrusanInput.val(''); // Clear bidang urusan input in case of error
+                });
+        } else {
+            // Clear both inputs if no kode OPD is selected
+            namaOpdInput.val('');
+            bidangUrusanInput.val('');
+        }
+    });
 
     // Initialize Summernote for all elements with the class 'summernote'
     $('.summernote').summernote({
@@ -159,5 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
         focus: true     // set focus to editable area after initializing summernote
     });
 });
+
 </script>
 @endsection

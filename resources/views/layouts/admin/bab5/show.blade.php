@@ -62,6 +62,7 @@
     tr:nth-child(even) {
         background-color: #f9f9f9;
     }
+    
 </style>
 
 @section('content')
@@ -75,6 +76,9 @@
                 <a href="{{ route('layouts.admin.bab5.index') }}">
                     <button class="btn btn-primary mb-3"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
+                <a href="{{ route('bab5.exportPdf', $bab5->id) }} "target="_blank">
+                    <button class="btn btn-danger mb-3"><i class="fa fa-file-pdf"></i> Export to PDF </button>
+                </a>
 
                 <div class="document-content">
                     <h1>BAB V</h1>
@@ -82,8 +86,8 @@
             
 
                     <p class="indent">Dalam mencapai tujuan dan sasaran pada 
-                        <span style="color: rgb(11, 242, 11);">......</span> diperlukan strategi serta arah kebijakan dalam pencapaiannya dalam kurun waktu periodeisasi renstra. 
-                        Rumusan tujuan dan sasaran, strategi dan arah kebijakan <span style="color: rgb(11, 242, 11);">......</span> tertuang dalam tabel berikut :
+                        <span style="color: rgb(11, 242, 11);">{{$nama_opd}}</span> diperlukan strategi serta arah kebijakan dalam pencapaiannya dalam kurun waktu periodeisasi renstra. 
+                        Rumusan tujuan dan sasaran, strategi dan arah kebijakan <span style="color: rgb(11, 242, 11);">{{$nama_opd}}</span> tertuang dalam tabel berikut :
                     </p>
 
                     <p style="text-align: center">Tabel 5.1.</p>
@@ -105,8 +109,8 @@
                             <th>Arah Kebijakan</th>
                         </tr>
                         <tr>
-                            <td>Tujuan 1</td>
-                            <td>Sasaran 1.1</td>
+                            <td>{{$tujuan_opd}}</td>
+                            <td><span style="color: rgb(11, 242, 11);">{{$sasaran_opd}}</td>
                             <td>Strategi 1.1</td>
                             <td>Arah kebijakan 1.1</td>
                         </tr>
@@ -144,7 +148,10 @@
                     </table>
                     
 
-                    <p class="indent"><span style="color: rgb(250, 5, 5);">...uraian...</span></p>
+                    <p class="indent"><span style="color: rgb(255, 0, 0);">{!! $uraian !!}</span></p>
+                
+
+
                 </div>
             </div>
         </div>

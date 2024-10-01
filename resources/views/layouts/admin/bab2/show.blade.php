@@ -90,12 +90,12 @@
     <div class="row">
         <div class="col-12">
             <div class="card-body">
-                {{-- <a href="{{ route('layouts.admin.bab2.index') }}">
+                <a href="{{ route('layouts.admin.bab2.index') }}">
                     <button class="btn btn-primary mb-3"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
                 <a href="{{ route('bab2.exportPdf', $bab2->id) }} "target="_blank">
                     <button class="btn btn-danger mb-3"><i class="fa fa-file-pdf"></i> Export to PDF </button>
-                </a> --}}
+                </a>
                 {{-- <a href="{{ route('bab2.exportWord', $bab1->id) }}">
                     <button class="btn btn-success mb-3"><i class="fa fa-file-word"></i> Export to Word </button>
                 </a> --}}
@@ -105,12 +105,35 @@
                     <h1>HASIL EVALUASI RENJA PERANGKAT DAERAH TAHUN LALU</h1><br>
                     <h4>2.1 Tugas, Fungsi dan Struktur Organisasi Perangkat Daerah</h4>
                     <p class="indent">
+                        @php
+                        $selectedOpd = null;
+                        foreach ($urusan_opd as $opd) {
+                            if ($opd['kode_opd'] == $bab2->kode_opd) {
+                                $selectedOpd = $opd;
+                                break;
+                            }
+                        }
+
+                        $bidangUrusanText = '';
+                        if ($selectedOpd) {
+                            foreach ($selectedOpd['urusan_opd'] as $urusan) {
+                                if (isset($urusan['bidang_urusan_opd']) && is_array($urusan['bidang_urusan_opd'])) {
+                                    foreach ($urusan['bidang_urusan_opd'] as $index => $bidang) {
+                                        $bidangUrusanText .= $bidang['bidang_urusan'];
+                                        if ($index < count($urusan['bidang_urusan_opd']) - 1) {
+                                            $bidangUrusanText .= ' serta ';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    @endphp
                        
-                    <p class="indent"><span style="color: rgb(11, 242, 11);">...</span> mengelola bidang urusan <span style="color: rgb(11, 242, 11);">...... </span>
+                    <p class="indent"><span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> mengelola bidang urusan <span style="color: rgb(11, 242, 11);">{{ $bidangUrusanText }}  </span>
                         yang telah dibentuk sesuai Peraturan Daerah Kota Madiun Nomor 3 Tahun 2016 tentang Pembentukan dan Susunan Perangkat Daerah sebagaimana telah diubah terakhir dengan Peraturan Daerah Kota Madiun Nomor 8 Tahun 2020.</p>
                 </p>
                 </ol>
-                <p class="indent">Tugas <span style="color: rgb(11, 242, 11);">...</span> Dengan rincian tugas :</p>
+                <p class="indent">Tugas <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan rincian tugas :</p>
                     <div class="list">
                         <ol style="list-style-type: none">
                             <ul style="list-style-type: none; padding-left: 0;">
@@ -129,7 +152,7 @@
                             </ul>
                         </ol>
                     </div>
-                    <p class="indent">Fungsi <span style="color: rgb(11, 242, 11);">...</span> Dengan rincian tugas :</p>
+                    <p class="indent">Fungsi <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan rincian tugas :</p>
                     <div class="list">
                         <ol style="list-style-type: none">
                             <ul style="list-style-type: none; padding-left: 0;">
@@ -152,7 +175,7 @@
                         </p>
                     </div>
                     <h4>2.2 Sumber Daya Perangkat Daerah</h4>
-                    <p class="indent"><span style="color: rgb(11, 242, 11);">...</span> 
+                    <p class="indent"><span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> 
                         memiliki sumber daya manusia yang bertugas dalam pengembangan organisasi dengan rincian personil sebagai berikut:
                     </p>
                     <p style="text-align: center">Tabel 2.1</p>
@@ -589,7 +612,9 @@
                                     <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
                                     </li>
                                 </ol>
-                          
+                                <div class="indent">
+                                    <span style="color: rgb(250, 5, 5);">{!!$bab2->uraian!!}</span>
+                                </div>
                      
                             
                     </div>

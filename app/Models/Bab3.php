@@ -25,6 +25,7 @@ class Bab3 extends Model
         'uraian5',
         'isu_strategis1',
         'isu_strategis2',
+        'uraian',
     ];
 
     // Definisikan relasi dengan model Jenis (jika ada)

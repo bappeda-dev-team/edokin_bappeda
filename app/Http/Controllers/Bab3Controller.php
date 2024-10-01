@@ -48,13 +48,13 @@ class Bab3Controller extends Controller
             'jenis_id' => 'required',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required',
-            'uraian1'  => 'required',
-            'uraian2' => 'required',
-            'uraian3' => 'required',
-            'uraian4' => 'required',
-            'uraian5' => 'required',
-            'isu_strategis1' => 'required',
-            'isu_strategis2' => 'required',
+            'uraian1'  => 'nullable',
+            'uraian2' => 'nullable',
+            'uraian3' => 'nullable',
+            'uraian4' => 'nullable',
+            'uraian5' => 'nullable',
+            'isu_strategis1' => 'nullable',
+            'isu_strategis2' => 'nullable',
         ]);
 
         Bab3::create([
@@ -69,6 +69,7 @@ class Bab3Controller extends Controller
             'uraian5' => $request->uraian5,
             'isu_strategis1' => $request->isu_strategis1,
             'isu_strategis2' => $request->isu_strategis2,
+            'uraian' => $request->uraian,
         ]);
 
         return redirect()->route('layouts.admin.bab3.index')->with('success', 'BAB 3 created successfully');
@@ -102,6 +103,7 @@ class Bab3Controller extends Controller
             'uraian5' => 'required|string',
             'isu_strategis1' => 'required|string',
             'isu_strategis2' => 'required|string',
+            'uraian' => 'nullable|string',
         
         ]);
 
@@ -119,6 +121,7 @@ class Bab3Controller extends Controller
             'uraian5' => $request->uraian5,
             'isu_strategis1' => $request->isu_strategis1,
             'isu_strategis2' => $request->isu_strategis2,
+            'uraian' => $request->uraian,
         ]);
 
         return redirect()->route('layouts.admin.bab3.index')->with('success', 'BAB 3 updated successfully');
@@ -167,46 +170,53 @@ class Bab3Controller extends Controller
     }
 
     public function exportPdf($id)
-{
-    try {
-        // Fetch the Bab3 record
-        $bab3 = Bab3::findOrFail($id);
+    {
+        try {
+            // Fetch the Bab3 record
+            $bab3 = Bab3::findOrFail($id);
 
-        // API URL and fetching data
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-        
-        if (!$response->successful()) {
-            throw new \Exception('Failed to fetch data from API');
+            // API URL and fetching data
+            $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+            $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
+            
+            if (!$response->successful()) {
+                throw new \Exception('Failed to fetch data from API');
+            }
+
+            // Parse API response
+            $urusan_opd = $response->json()['results'] ?? [];
+
+            // Render HTML view
+            $html = view('layouts.admin.bab3.pdf', compact('bab3', 'urusan_opd'))->render();
+
+            // Initialize MPDF
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                // Custom F4 (HVS) paper size: 210mm x 330mm
+                'format' => [210, 330],
+                'orientation' => 'P',
+                'tempDir' => storage_path('app/temp'),
+            ]);
+
+                $mpdf->SetHTMLFooter('
+                <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
+                    Renstra Elektronik Pemerintah Kota Madiun
+                </div>
+            ');
+
+            // Write HTML to PDF
+            $mpdf->WriteHTML($html);
+            $fileName = 'bab3-' . $id . '.pdf';
+
+            // Return PDF response
+            return $mpdf->Output($fileName, 'I');
+            
+        } catch (\Exception $e) {
+            // Log error and return JSON response
+            \Log::error('PDF generation error: ' . $e->getMessage());
+            return response()->json(['error' => 'Unable to generate PDF: ' . $e->getMessage()], 500);
         }
-
-        // Parse API response
-        $urusan_opd = $response->json()['results'] ?? [];
-
-        // Render HTML view
-        $html = view('layouts.admin.bab3.pdf', compact('bab3', 'urusan_opd'))->render();
-
-        // Initialize MPDF
-        $mpdf = new \Mpdf\Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'orientation' => 'P',
-            'tempDir' => storage_path('app/temp'),
-        ]);
-
-        // Write HTML to PDF
-        $mpdf->WriteHTML($html);
-        $fileName = 'bab3-' . $id . '.pdf';
-
-        // Return PDF response
-        return $mpdf->Output($fileName, 'I');
-        
-    } catch (\Exception $e) {
-        // Log error and return JSON response
-        \Log::error('PDF generation error: ' . $e->getMessage());
-        return response()->json(['error' => 'Unable to generate PDF: ' . $e->getMessage()], 500);
     }
-}
 
 
     

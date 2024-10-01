@@ -25,6 +25,7 @@ class Bab1 extends Model
         'kode_opd',
         'tahun_id',
         'dasar_hukum',
+        'uraian',
         // 'kode_bidang_urusan'
     ];
 

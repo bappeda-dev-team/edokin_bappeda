@@ -6,10 +6,16 @@ use App\Http\Controllers\Bab3Controller;
 use App\Http\Controllers\Bab2Controller;
 use App\Http\Controllers\Bab4Controller;
 use App\Http\Controllers\Bab5Controller;
+use App\Http\Controllers\Bab6Controller;
+use App\Http\Controllers\Bab7Controller;
+use App\Http\Controllers\Bab8Controller;
 use App\Http\Controllers\OPDController;
 use App\Http\Controllers\PegawaiController;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\Bab1;
+use App\Models\Bab2;
+use App\Models\Bab3;
+use App\Models\Bab4;
 
 
 Route::get('/', function () {
@@ -37,7 +43,7 @@ Route::get('/dashboard/bab1', [Bab1Controller::class, 'index'])->name('layouts.a
 Route::get('/dashboard/create-bab2', [Bab2Controller::class, 'create'])->name('bab2.create');
 Route::post('/dashboard/store-bab2', [Bab2Controller::class, 'store'])->name('bab2.store');
 Route::get('/dashboard/edit-bab2/{id}', [Bab2Controller::class, 'edit'])->name('bab2.edit');
-Route::get('/dashboard/show-bab2', [Bab2Controller::class, 'show'])->name('bab2.show');
+Route::get('/dashboard/show-bab2/{id}', [Bab2Controller::class, 'show'])->name('bab2.show');
 Route::put('/dashboard/update-bab2/{id}', [Bab2Controller::class, 'update'])->name('bab2.update');
 Route::delete('/dashboard/delete-bab2/{id}', [Bab2Controller::class, 'destroy'])->name('bab2.destroy');
 Route::get('/dashboard/bab2', [Bab2Controller::class, 'index'])->name('layouts.admin.bab2.index');
@@ -66,9 +72,35 @@ Route::get('/dashboard/bab5', [Bab5Controller::class, 'index'])->name('layouts.a
 Route::get('/dashboard/create-bab5', [Bab5Controller::class, 'create'])->name('bab5.create');
 Route::post('/dashboard/store-bab5', [Bab5Controller::class, 'store'])->name('bab5.store');
 Route::get('/dashboard/edit-bab5/{id}', [Bab5Controller::class, 'edit'])->name('bab5.edit');
-Route::get('/dashboard/show-bab5', [Bab5Controller::class, 'show'])->name('bab5.show');
+Route::get('/dashboard/show-bab5/{id}', [Bab5Controller::class, 'show'])->name('bab5.show');
 Route::put('/dashboard/update-bab5/{id}', [Bab5Controller::class, 'update'])->name('bab5.update');
 Route::delete('/dashboard/delete-bab5/{id}', [Bab5Controller::class, 'destroy'])->name('bab5.destroy');
+
+Route::get('/dashboard/bab6', [Bab6Controller::class, 'index'])->name('layouts.admin.bab6.index');
+Route::get('/dashboard/create-bab6', [Bab6Controller::class, 'create'])->name('bab6.create');
+Route::post('/dashboard/store-bab6', [Bab6Controller::class, 'store'])->name('bab6.store');
+Route::get('/dashboard/edit-bab6/{id}', [Bab6Controller::class, 'edit'])->name('bab6.edit');
+Route::get('/dashboard/show-bab6/{id}', [Bab6Controller::class, 'show'])->name('bab6.show');
+Route::put('/dashboard/update-bab6/{id}', [Bab6Controller::class, 'update'])->name('bab6.update');
+Route::delete('/dashboard/delete-bab6/{id}', [Bab6Controller::class, 'destroy'])->name('bab6.destroy');
+
+Route::get('/dashboard/bab7', [Bab7Controller::class, 'index'])->name('layouts.admin.bab7.index');
+Route::get('/dashboard/create-bab7', [Bab7Controller::class, 'create'])->name('bab7.create');
+Route::post('/dashboard/store-bab7', [Bab7Controller::class, 'store'])->name('bab7.store');
+Route::get('/dashboard/edit-bab7/{id}', [Bab7Controller::class, 'edit'])->name('bab7.edit');
+Route::get('/dashboard/show-bab7/{id}', [Bab7Controller::class, 'show'])->name('bab7.show');
+Route::put('/dashboard/update-bab7/{id}', [Bab7Controller::class, 'update'])->name('bab7.update');
+Route::delete('/dashboard/delete-bab7/{id}', [Bab7Controller::class, 'destroy'])->name('bab7.destroy');
+
+Route::get('/dashboard/bab8', [Bab8Controller::class, 'index'])->name('layouts.admin.bab8.index');
+Route::get('/dashboard/create-bab8', [Bab8Controller::class, 'create'])->name('bab8.create');
+Route::post('/dashboard/store-bab8', [Bab8Controller::class, 'store'])->name('bab8.store');
+Route::get('/dashboard/edit-bab8/{id}', [Bab8Controller::class, 'edit'])->name('bab8.edit');
+Route::get('/dashboard/show-bab8/{id}', [Bab8Controller::class, 'show'])->name('bab8.show');
+Route::put('/dashboard/update-bab8/{id}', [Bab8Controller::class, 'update'])->name('bab8.update');
+Route::delete('/dashboard/delete-bab8/{id}', [Bab8Controller::class, 'destroy'])->name('bab8.destroy');
+
+
 
 // Route::get('/tujuan-opd/{kode_opd}', [Bab4Controller::class, 'index']);
 
@@ -77,6 +109,11 @@ Route::get('/dashboard/bab1/export-word/{id}', [Bab1Controller::class, 'exportWo
 Route::get('/dashboard/bab2/export-pdf/{id}', [Bab2Controller::class, 'exportPdf'])->name('bab2.exportPdf');
 
 Route::get('/dashboard/bab3/export-pdf/{id}', [Bab3Controller::class, 'exportPdf'])->name('bab3.exportPdf');
+Route::get('/dashboard/bab4/export-pdf/{id}', [Bab4Controller::class, 'exportPdf'])->name('bab4.exportPdf');
+Route::get('/dashboard/bab5/export-pdf/{id}', [Bab5Controller::class, 'exportPdf'])->name('bab5.exportPdf');
+Route::get('/dashboard/bab6/export-pdf/{id}', [Bab6Controller::class, 'exportPdf'])->name('bab6.exportPdf');
+Route::get('/dashboard/bab7/export-pdf/{id}', [Bab7Controller::class, 'exportPdf'])->name('bab7.exportPdf');
+Route::get('/dashboard/bab8/export-pdf/{id}', [Bab8Controller::class, 'exportPdf'])->name('bab8.exportPdf');
 
 
 // Route::delete('/dashboard/delete-bab1/{id}', [Bab1Controller::class, 'destroy'])->name('bab1.destroy');

@@ -262,6 +262,10 @@
                         <li class="indent1" style=" list-style-type: none;">&emsp;7.2. Penentuan target kinerja penyelenggaraan urusan pemerintahan daerah Tahun 2025-2026 melalui Indikator Kinerja Kunci (IKK) PD</li>
 
                         <p class="indent">BAB VIII&emsp;: Penutup</p>
+
+                        <div class="indent">
+                            <span style="color: rgb(250, 5, 5);">{!!$bab1->uraian!!}</span>
+                        </div>
                     
                         
                                           

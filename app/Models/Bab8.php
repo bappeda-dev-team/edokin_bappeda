@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bab5 extends Model
+class Bab8 extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -13,9 +13,6 @@ class Bab5 extends Model
         'jenis_id',
         'kode_opd',
         'tahun_id',
-        'tujuan_opd',
-        'strategi',
-        'arah_kebijakan',
         'uraian',
     ];
 

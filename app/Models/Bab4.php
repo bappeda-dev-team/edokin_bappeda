@@ -21,6 +21,7 @@ class Bab4 extends Model
         'tujuan_opd',
         'indikator_opd',
         'sasaran_opd',
+        'uraian',
     ];
     protected $casts = [
         'tujuan_opd' => 'array',

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bab5;
+use App\Models\Bab6;
 use App\Models\Jenis;
 use App\Models\TahunDokumen;
 use Illuminate\Http\Request;
@@ -13,12 +13,12 @@ use Barryvdh\DomPDF\Facade as PDF;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 
-class Bab5Controller extends Controller
+class Bab6Controller extends Controller
 {
-
+    // Display a list of Bab6 records
     public function index()
     {
-        $bab5 = Bab5::with('jenis')->get();
+        $bab6 = Bab6::with('jenis')->get();
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -33,14 +33,13 @@ class Bab5Controller extends Controller
             $kodeOpds = collect();
         }
 
-        return view('layouts.admin.bab5.index', compact('bab5', 'jenis', 'urusan_opd', 'tahun', 'kodeOpds'));
+        return view('layouts.admin.bab6.index', compact('bab6', 'jenis', 'urusan_opd', 'tahun', 'kodeOpds'));
     }
 
-    // Show form to create a new Bab4 record
+    // Show form to create a new Bab6 record
     public function create()
     {
         $api = new KakKotaMadiunApi();
-    
 
         try {
             $urusan_opd = $api->urusanOpd();
@@ -53,15 +52,13 @@ class Bab5Controller extends Controller
 
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
-        $bab5 = Bab5::all();
 
-        return view('layouts.admin.bab5.create', compact('kodeOpds', 'jenis', 'tahun'));
+        return view('layouts.admin.bab6.create', compact('kodeOpds', 'jenis', 'tahun'));
     }
     // Remove this block to avoid duplicate method definition
-      // Store a new Bab4 record in the database
+      // Store a new Bab6 record in the database
       public function store(Request $request)
       {
-          // Validation
           $validatedData = $request->validate([
               'nama_bab' => 'required|string|max:255',
               'jenis_id' => 'required|integer|exists:jenis,id',
@@ -72,17 +69,15 @@ class Bab5Controller extends Controller
               'sasaran_opd' => 'nullable|string',
               'uraian' => 'nullable|string',
           ]);
-      
+  
           try {
-              // Store the validated data
-              Bab5::create($validatedData);
-              return redirect()->route('layouts.admin.bab5.index')->with('success', 'Data has been saved successfully!');
+              Bab6::create($validatedData);
+              return redirect()->route('layouts.admin.bab6.index')->with('success', 'Data has been saved successfully!');
           } catch (\Exception $e) {
-              Log::error('Failed to store Bab5 record:', ['error' => $e->getMessage()]);
+              Log::error('Failed to store Bab6 record:', ['error' => $e->getMessage()]);
               return redirect()->back()->withErrors('Failed to save data.');
           }
       }
-      
 
     // Fetch details of an OPD based on kode_opd
     public function getOpdDetails($kode_opd)
@@ -107,15 +102,15 @@ class Bab5Controller extends Controller
 
                     if ($tujuan_response->successful()) {
                         $data_tujuan = $tujuan_response->json();
-                        // Cari tujuan dengan periode 2020-2024
+                        // Cari tujuan dengan periode 2020-2026
                         // tujuan_opd hanya membawa tujuan pertama
                         // TODO: get all tujuan by periode
-                        $tujuan_opd = collect($data_tujuan['results']['data']['tujuan_opd'])->firstWhere('periode', '2020-2024');
+                        $tujuan_opd = collect($data_tujuan['results']['data']['tujuan_opd'])->firstWhere('periode', '2020-2026');
 
                         // sasaran opd kosong sebagai default
                         $sasaran_opd = '';
 
-                        $sasaran_opd_response = $api->sasaranOpd($kode_opd, '2024');
+                        $sasaran_opd_response = $api->sasaranOpd($kode_opd, '2026');
                         if ($sasaran_opd_response->successful()) {
                             $data_sasaran = $sasaran_opd_response->json();
 
@@ -130,10 +125,10 @@ class Bab5Controller extends Controller
                             'sasaran_opd' => $sasaran_opd['sasaran_opd'] ?? '',
                         ]);
                     }
-                    return response()->json(['message' => 'Tujuan OPD Not Found'], 404);
+                    return response()->json(['message' => 'Tujuan OPD Not Found'], 606);
                 }
 
-                return response()->json(['message' => 'OPD not found'], 404);
+                return response()->json(['message' => 'OPD not found'], 606);
             }
 
             \Log::error('Failed to fetch data from Urusan OPD API', [
@@ -150,7 +145,7 @@ class Bab5Controller extends Controller
 
   
 
-    // Show form to edit an existing Bab4 record
+    // Show form to edit an existing Bab6 record
   
     public function edit($id)
     {
@@ -165,18 +160,18 @@ class Bab5Controller extends Controller
             $kodeOpds = collect();
         }
 
-        $bab5 = Bab5::findOrFail($id); // Fetch the record you want to edit
+        $bab6 = Bab6::findOrFail($id); // Fetch the record you want to edit
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        return view('layouts.admin.bab5.edit', compact('bab5', 'kodeOpds', 'jenis', 'tahun'));
+        return view('layouts.admin.bab6.edit', compact('bab6', 'kodeOpds', 'jenis', 'tahun'));
     }
 
     
     
 
 
-    // Update an existing Bab5 record in the database
+    // Update an existing Bab6 record in the database
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -191,64 +186,59 @@ class Bab5Controller extends Controller
         ]);
 
         try {
-            $bab5 = Bab5::findOrFail($id);
-            $bab5->update($validatedData); // Update the record with new data
-            return redirect()->route('layouts.admin.bab5.index')->with('success', 'Data has been updated successfully!');
+            $bab6 = Bab6::findOrFail($id);
+            $bab6->update($validatedData); // Update the record with new data
+            return redirect()->route('layouts.admin.bab6.index')->with('success', 'Data has been updated successfully!');
         } catch (\Exception $e) {
-            Log::error('Failed to update Bab5 record:', ['error' => $e->getMessage()]);
+            Log::error('Failed to update Bab6 record:', ['error' => $e->getMessage()]);
             return redirect()->back()->withErrors('Failed to update data.');
         }
     }
 
 
-
     public function destroy($id)
     {
-        $bab5 = Bab5::findOrFail($id);
-        $bab5->delete();
+        $bab6 = Bab6::findOrFail($id);
+        $bab6->delete();
 
-        return redirect()->route('layouts.admin.bab5.index')->with('success', 'BAB 1 deleted successfully');
+        return redirect()->route('layouts.admin.bab6.index')->with('success', 'BAB 6 deleted successfully');
     }
 
-   
     public function show($id)
     {
-        $bab5 = Bab5::findOrFail($id);
-        
+        $bab6 = Bab6::findOrFail($id);
+
         // Fetch the OPD details
         $api = new KakKotaMadiunApi();
-        $opdDetails = $this->getOpdDetails($bab5->kode_opd);
-        $opdData = json_decode($opdDetails->content(), true);
-        
+        $opdDetails = $this->getOpdDetails($bab6->kode_opd);
+        $opdData = json_decode($opdDetails->content(), true); // decode the JSON response
+
         // Initialize variables
-        $nama_opd = $tujuan_opd = $sasaran_opd = $uraian = 'Data not available';
-        
+        $nama_opd = 'Data not available';
+        $tujuan_opd = [];
+        $sasaran_opd = 'Data not available';
+
         // Check for errors in API response
         if (!isset($opdData['message'])) {
             $nama_opd = $opdData['nama_opd'] ?? 'Data not available';
-            $tujuan_opd = $opdData['tujuan_opd'] ?? 'Data not available';
+            $tujuan_opd = $opdData['tujuan_opd'] ?? [];
             $sasaran_opd = $opdData['sasaran_opd'] ?? 'Data not available';
         }
 
-        // Assuming $uraian comes from the Bab5 model
-        $uraian = $bab5->uraian; // Adjust this if necessary
-        
-        return view('layouts.admin.bab5.show', compact('bab5', 'nama_opd', 'tujuan_opd', 'sasaran_opd', 'uraian'));
+        return view('layouts.admin.bab6.show', compact('bab6', 'nama_opd', 'tujuan_opd', 'sasaran_opd'));
     }
-
-
     
     public function exportPdf($id)
     {
         try {
-            $bab5 = Bab5::findOrFail($id);
+            $bab6 = Bab6::findOrFail($id);
     
             $api = new KakKotaMadiunApi();
-            $opdDetails = $this->getOpdDetails($bab5->kode_opd);
+            $opdDetails = $this->getOpdDetails($bab6->kode_opd);
             $opdData = json_decode($opdDetails->content(), true);
     
-            $pdfContent = view('layouts.admin.bab5.pdf', [
-                'bab5' => $bab5,
+            $pdfContent = view('layouts.admin.bab6.pdf', [
+                'bab6' => $bab6,
                 'nama_opd' => $opdData['nama_opd'] ?? 'Data not available',
                 'tujuan_opd' => $opdData['tujuan_opd'] ?? 'Data not available',
                 'sasaran_opd' => $opdData['sasaran_opd'] ?? 'Data not available',
@@ -256,7 +246,7 @@ class Bab5Controller extends Controller
     
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                // Custom F4 (HVS) paper size: 210mm x 330mm
+                // Custom F6 (HVS) paper size: 210mm x 330mm
                 'format' => [210, 330],
                 'orientation' => 'P',
                 'tempDir' => storage_path('app/temp'),
@@ -269,14 +259,13 @@ class Bab5Controller extends Controller
         ');
 
             $mpdf->WriteHTML($pdfContent);
-            $filename = "Bab5_{$bab5->id}.pdf";
+            $filename = "Bab6_{$bab6->id}.pdf";
             $mpdf->Output($filename, 'I');
         } catch (\Exception $e) {
             \Log::error('Failed to generate PDF:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Unable to generate PDF'], 500);
         }
     }
-
     
-
+    
 }

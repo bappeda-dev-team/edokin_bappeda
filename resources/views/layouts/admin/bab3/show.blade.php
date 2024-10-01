@@ -149,6 +149,10 @@
                             <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis1 !!}</span></li>
                             <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis2 !!}</span></li>
                         </ol>
+
+                        <div class="indent">
+                            <span style="color: rgb(250, 5, 5);">{!!$bab3->uraian!!}</span>
+                        </div>
                 </div>
             </div>
         </div>

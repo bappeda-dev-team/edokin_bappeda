@@ -61,6 +61,7 @@ class Bab2Controller extends Controller
             'kode_opd' => 'required|string',
             // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'required',
+            'uraian' => 'nullable|string',
             // 'latar_belakang' => 'required',
             // 'maksud_tujuan' => 'required',
             // 'sistematika_penulisan' => 'required',
@@ -94,6 +95,7 @@ class Bab2Controller extends Controller
             'bidang_urusan' => 'required|string',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
+            'uraian' => 'nullable|string',
             // 'kode_bidang_urusan'=>'required|string',
             // 'latar_belakang' => 'required|string',
             // 'maksud_tujuan' => 'required|string',
@@ -116,19 +118,49 @@ class Bab2Controller extends Controller
     }
 
    
-    public function show()
-    {
     
        
-        return view('layouts.admin.bab2.show');
+    public function show($id)
+    {
+        $bab2 = Bab2::with('jenis')->findOrFail($id);
+        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+        
+        // Use GET if POST is not required
+        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
+    
+        if (!$response->successful()) {
+            abort(500, 'Failed to fetch data from API');
+        }
+    
+        $urusan_opd = $response->json()['results'] ?? [];
+        $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab2->kode_opd);
+    
+        $selectedBidangUrusan = [];
+        if ($selectedOpd) {
+            $kodeBidangUrusan = is_array($bab2->kode_bidang_urusan) ? $bab2->kode_bidang_urusan : [$bab2->kode_bidang_urusan];
+    
+            foreach ($selectedOpd['bidang_urusan'] ?? [] as $bidang) {
+                if (in_array($bidang['kode_bidang_urusan'] ?? '', $kodeBidangUrusan)) {
+                    $selectedBidangUrusan[] = $bidang;
+                }
+            }
+        }
+    
+        return view('layouts.admin.bab2.show', [
+            'bab2' => $bab2,
+            'urusan_opd' => $urusan_opd,
+            'selectedBidangUrusan' => $selectedBidangUrusan,
+        ]);
     }
+    
+    
     
 
     
     public function exportPdf($id)
     {
         try {
-            // Fetch the Bab2 record
+            // Fetch the Bab1 record
             $bab2 = Bab2::findOrFail($id);
     
             // API URL and fetching data
@@ -148,10 +180,17 @@ class Bab2Controller extends Controller
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                'format' => 'A4',
+                // Custom F4 (HVS) paper size: 210mm x 330mm
+                'format' => [210, 330],
                 'orientation' => 'P',
                 'tempDir' => storage_path('app/temp'),
             ]);
+
+                $mpdf->SetHTMLFooter('
+                <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
+                    Renstra Elektronik Pemerintah Kota Madiun
+                </div>
+            ');
     
             // Write HTML to PDF
             $mpdf->WriteHTML($html);
@@ -166,6 +205,7 @@ class Bab2Controller extends Controller
             return response()->json(['error' => 'Unable to generate PDF: ' . $e->getMessage()], 500);
         }
     }
+    
 
     
 
