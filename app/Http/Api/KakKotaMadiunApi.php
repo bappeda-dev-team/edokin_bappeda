@@ -60,4 +60,5 @@ class KakKotaMadiunApi
 
         return $response;
     }
+
 }

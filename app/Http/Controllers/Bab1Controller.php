@@ -17,7 +17,7 @@ use PhpOffice\PhpWord\Shared\Html;
 class Bab1Controller extends Controller
 {
 
-    
+
     public function index()
     {
         $bab1 = Bab1::with('jenis')->get();
@@ -36,7 +36,7 @@ class Bab1Controller extends Controller
         return view('layouts.admin.bab1.index', compact('bab1', 'jenis', 'urusan_opd', 'tahun'));
     }
 
-  
+
 
 
     public function create()
@@ -59,9 +59,10 @@ class Bab1Controller extends Controller
             'nama_bab' => 'required',
             'jenis_id' => 'required',
             'nama_opd' => 'required',
-            'bidang_urusan' => 'nullable|string',
-            'bidang1'=>'nullable|string',
-            'bidang2'=>'nullable|string',
+            'bidang_urusan_1' => 'nullable|string',
+            'bidang_urusan_2' => 'nullable|string',
+            'bidang1' => 'nullable|string',
+            'bidang2' => 'nullable|string',
             'kode_opd' => 'required|string',
             // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'nullable|string',
@@ -73,7 +74,13 @@ class Bab1Controller extends Controller
             // 'sistematika_penulisan' => 'required',
         ]);
 
-        Bab1::create($request->all());
+        $bidangUrusan = trim($request->bidang_urusan_1);
+        if (!empty($request->bidang_urusan_2)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_2); // Adding a line break between the two fields
+        }
+
+        // Bab1::create($request->all());
+        Bab1::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan]));
 
         return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 created successfully');
     }
@@ -98,9 +105,10 @@ class Bab1Controller extends Controller
             'nama_bab' => 'required|string|max:255',
             'jenis_id' => 'required|exists:jenis,id',
             'nama_opd' => 'required|string',
-            'bidang_urusan' => 'nullable|string',
-            'bidang1'=> 'nullable|string',
-            'bidang2'=> 'nullable|string',
+            'bidang_urusan_1' => 'nullable|string',
+            'bidang_urusan_2' => 'nullable|string',
+            'bidang1' => 'nullable|string',
+            'bidang2' => 'nullable|string',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             // 'kode_bidang_urusan'=>'required|string',
@@ -113,7 +121,13 @@ class Bab1Controller extends Controller
 
         $bab1 = Bab1::findOrFail($id);
 
-        $bab1->update($request->all());
+        $bidangUrusan = trim($request->bidang_urusan_1);
+        if (!empty($request->bidang_urusan_2)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_2); // Adding a line break between the two fields
+        }
+        $bab1->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan]));
+
+        // $bab1->update($request->all());
 
         return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 updated successfully');
     }
@@ -126,62 +140,62 @@ class Bab1Controller extends Controller
         return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 deleted successfully');
     }
 
-   
+
     public function show($id)
     {
         $bab1 = Bab1::with('jenis')->findOrFail($id);
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-        
+
         // Use GET if POST is not required
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-    
+
         if (!$response->successful()) {
             abort(500, 'Failed to fetch data from API');
         }
-    
+
         $urusan_opd = $response->json()['results'] ?? [];
         $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab1->kode_opd);
-    
+
         $selectedBidangUrusan = [];
         if ($selectedOpd) {
             $kodeBidangUrusan = is_array($bab1->kode_bidang_urusan) ? $bab1->kode_bidang_urusan : [$bab1->kode_bidang_urusan];
-    
+
             foreach ($selectedOpd['bidang_urusan'] ?? [] as $bidang) {
                 if (in_array($bidang['kode_bidang_urusan'] ?? '', $kodeBidangUrusan)) {
                     $selectedBidangUrusan[] = $bidang;
                 }
             }
         }
-    
+
         return view('layouts.admin.bab1.show', [
             'bab1' => $bab1,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
         ]);
     }
-    
 
-    
+
+
     public function exportPdf($id)
     {
         try {
             // Fetch the Bab1 record
             $bab1 = Bab1::findOrFail($id);
-    
+
             // API URL and fetching data
             $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
             $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-            
+
             if (!$response->successful()) {
                 throw new \Exception('Failed to fetch data from API');
             }
-    
+
             // Parse API response
             $urusan_opd = $response->json()['results'] ?? [];
-    
+
             // Render HTML view
             $html = view('layouts.admin.bab1.pdf', compact('bab1', 'urusan_opd'))->render();
-    
+
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
@@ -191,19 +205,18 @@ class Bab1Controller extends Controller
                 'tempDir' => storage_path('app/temp'),
             ]);
 
-                $mpdf->SetHTMLFooter('
+            $mpdf->SetHTMLFooter('
                 <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
                     Renstra Elektronik Pemerintah Kota Madiun
                 </div>
             ');
-    
+
             // Write HTML to PDF
             $mpdf->WriteHTML($html);
             $fileName = 'bab1-' . $id . '.pdf';
-    
+
             // Return PDF response
             return $mpdf->Output($fileName, 'I');
-            
         } catch (\Exception $e) {
             // Log error and return JSON response
             \Log::error('PDF generation error: ' . $e->getMessage());
@@ -211,9 +224,9 @@ class Bab1Controller extends Controller
         }
     }
 
-    
 
-    
+
+
     public function exportWord($id)
     {
         $bab1 = Bab1::findOrFail($id);
@@ -244,7 +257,6 @@ class Bab1Controller extends Controller
         return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
     }
 
-    
 
 
 
@@ -252,8 +264,9 @@ class Bab1Controller extends Controller
 
 
 
-    
-    
+
+
+
 
 
 
@@ -265,7 +278,7 @@ class Bab1Controller extends Controller
     {
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
         $response = Http::timeout(30)->withHeaders(['Accept' => 'application/json'])
-                ->post($apiUrl, ['kode_opd' => $kode_opd]);
+            ->post($apiUrl, ['kode_opd' => $kode_opd]);
 
         if (!$response->successful()) {
             return response()->json(['error' => 'Failed to fetch data from API'], 500);
@@ -295,6 +308,12 @@ class Bab1Controller extends Controller
             'nama_opd' => $opd['nama_opd'] ?? null,
             'bidang_urusan' => trim($bidang_urusan), // Trim to remove trailing newline
         ]);
+    }
+
+
+    public function getDasarHukum($kode_opd)
+    {
+        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
     }
 }
     
