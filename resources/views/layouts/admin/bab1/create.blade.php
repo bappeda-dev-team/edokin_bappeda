@@ -125,20 +125,6 @@
                             </div>
                         </div>
 
-                        {{-- <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="bidang1" class="summernote"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="bidang2" class="summernote"></textarea>
-                        </div>
-                    </div> --}}
-
                         {{-- get data otomatis dan bisa di edit --}}
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Dasar Hukum</label>
@@ -257,7 +243,8 @@
 
                 if (kodeOpd && tahun) {
                     fetch(
-                            `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${tahun}&kode_opd=${kodeOpd}`)
+                            `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${tahun}&kode_opd=${kodeOpd}`
+                        )
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('404 - Data not found');
@@ -266,7 +253,7 @@
                         })
                         .then(data => {
                             if (data.dasar_hukums) {
-                                let dasarHukumArray = []; 
+                                let dasarHukumArray = [];
 
                                 data.dasar_hukums.forEach(item => {
                                     dasarHukumArray.push({
@@ -276,7 +263,7 @@
                                     });
                                 });
 
-                                let dasarHukumContent = ''; 
+                                let dasarHukumContent = '';
 
                                 dasarHukumArray.forEach((item, index) => {
                                     dasarHukumContent += `

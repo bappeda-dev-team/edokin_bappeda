@@ -42,10 +42,10 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tahun</label>
                             <div class="col-sm-12 col-md-4">
-                                <select name="tahun_id" class="form-control selectric" required>
+                                <select name="tahun_id" id="tahun_id" class="form-control selectric" required>
                                     <option value="">Pilih Tahun</option>
                                     @foreach ($tahun as $year)
-                                        <option value="{{ $year->id }}"
+                                        <option value="{{ $year->id }}" data-tahun="{{ $year->tahun }}"
                                             {{ $bab1->tahun_id == $year->id ? 'selected' : '' }}>{{ $year->tahun }}
                                         </option>
                                     @endforeach
@@ -102,21 +102,17 @@
                                         readonly>
                                 </div>
                             </div>
+                            <!-- Bidang Urusan 3 -->
+                            <div class="form-group row mb-4" id="bidang-urusan-3"
+                                style="{{ substr_count($bab1->bidang_urusan, "\n") >= 1 ?: 'display: none;' }}">
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan 3</label>
+                                <div class="col-sm-12 col-md-4">
+                                    <input type="text" name="bidang_urusan_3" id="bidang_urusan_3" class="form-control"
+                                        value="{{ old('bidang_urusan_3', explode("\n", $bab1->bidang_urusan)[2] ?? '') }}"
+                                        readonly>
+                                </div>
+                            </div>
                         </div>
-
-                        {{-- <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="bidang1" class="summernote">{{ old('bidang1', $bab1->bidang1) }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="bidang2" class="summernote">{{ old('bidang2', $bab1->bidang2) }}</textarea>
-                        </div>
-                    </div> --}}
 
                         <div id="uraian-bidang">
                             <!-- Bidang1 Uraian -->
@@ -132,6 +128,14 @@
                                 <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang2" class="summernote">{{ old('bidang2', $bab1->bidang2) }}</textarea>
+                                </div>
+                            </div>
+                            <!-- Bidang3 Uraian -->
+                            <div class="form-group row mb-4" id="uraian-bidang3"
+                                style="{{ substr_count($bab1->bidang_urusan, "\n") >= 1 ?: 'display: none;' }}">
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 3</label>
+                                <div class="col-sm-12 col-md-10">
+                                    <textarea name="bidang3" class="summernote">{{ old('bidang3', $bab1->bidang3) }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -180,6 +184,7 @@
                 // const bidangUrusanInput = $('#bidang_urusan');
                 const bidangUrusan1Input = $('#bidang_urusan_1');
                 const bidangUrusan2Input = $('#bidang_urusan_2');
+                const bidangUrusan3Input = $('#bidang_urusan_3');
 
                 if (kodeOpd) {
                     // Fetch data from API using the selected kode_opd
@@ -192,7 +197,9 @@
                                 // bidangUrusanInput.val('');
                                 bidangUrusan1Input.val('');
                                 bidangUrusan2Input.val('');
+                                bidangUrusan3Input.val('');
                                 $('#bidang-urusan-2').hide();
+                                $('#bidang-urusan-3').hide();
                             } else {
                                 // Populate nama_opd and bidang_urusan
                                 namaOpdInput.val(data.nama_opd || '');
@@ -200,6 +207,8 @@
 
                                 let bidangUrusan = data.bidang_urusan.split('\n');
                                 bidangUrusan1Input.val(bidangUrusan[0] || '');
+                                $('#bidang-urusan-2').toggle(bidangUrusan.length > 1);
+                                $('#bidang-urusan-3').toggle(bidangUrusan.length > 2);
 
                                 if (bidangUrusan.length > 1) {
                                     bidangUrusan2Input.val(bidangUrusan[1] || '');
@@ -209,6 +218,14 @@
                                     bidangUrusan2Input.val('');
                                     $('#bidang-urusan-2').hide();
                                     $('#uraian-bidang2').hide();
+                                }
+                                if (bidangUrusan.length > 2) {
+                                    bidangUrusan3Input.val(bidangUrusan[2] || '');
+                                    $('#bidang-urusan-3').show();
+                                    $('#uraian-bidang3').show();
+                                } else {
+                                    $('#bidang-urusan-3').hide();
+                                    $('#uraian-bidang3').hide();
                                 }
                             }
                         })
@@ -220,6 +237,7 @@
                             bidangUrusan2Input.val('');
                             $('#bidang-urusan-2').hide();
                             $('#uraian-bidang2').hide();
+                            $('#bidang-urusan-3').hide();
                         });
                 } else {
                     // Clear fields if no kode_opd selected
@@ -228,9 +246,60 @@
                     bidangUrusan1Input.val('');
                     bidangUrusan2Input.val('');
                     $('#bidang-urusan-2').hide();
+                    $('#bidang-urusan-3').hide();
                 }
             });
 
+            $('#tahun_id, #kode_opd').on('change', function() {
+                const kodeOpd = $('#kode_opd').val();
+                const tahun = $('#tahun_id').find(':selected').data('tahun');
+                const dasarHukumTextarea = $('#dasar_hukum');
+
+                if (kodeOpd && tahun) {
+                    fetch(
+                            `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${tahun}&kode_opd=${kodeOpd}`
+                        )
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('404 - Data not found');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.dasar_hukums) {
+                                let dasarHukumArray = [];
+
+                                data.dasar_hukums.forEach(item => {
+                                    dasarHukumArray.push({
+                                        judul: item.judul,
+                                        peraturan: item.peraturan.replace(
+                                            /<br>\s*-\s*<br>/, '<br>')
+                                    });
+                                });
+
+                                let dasarHukumContent = '';
+
+                                dasarHukumArray.forEach((item, index) => {
+                                    dasarHukumContent += `
+                                    <div>
+                                        <strong>${item.judul}</strong><br>
+                                        ${item.peraturan}
+                                    </div>`;
+                                });
+
+                                dasarHukumTextarea.summernote('code', dasarHukumContent);
+                            } else {
+                                dasarHukumTextarea.summernote('code', 'No data found');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Fetch Error:', error);
+                            dasarHukumTextarea.summernote('code', 'Error fetching data');
+                        });
+                } else {
+                    dasarHukumTextarea.summernote('code', '');
+                }
+            });
             // Initialize Summernote
             $('.summernote').summernote({
                 height: 300, // Set the height of the editor

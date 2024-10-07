@@ -349,6 +349,7 @@ class Bab1Controller extends Controller
             'dasar_hukum' => $dasarHukumList->values(),
         ]);
     }
+
 }
     
         // public function getBidangUrusan($kode_bidang_urusan)

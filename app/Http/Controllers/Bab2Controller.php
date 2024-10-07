@@ -57,7 +57,9 @@ class Bab2Controller extends Controller
             'nama_bab' => 'required',
             'jenis_id' => 'required',
             'nama_opd' => 'required',
-            'bidang_urusan' => 'required',
+            'bidang_urusan_1' => 'nullable|string',
+            'bidang_urusan_2' => 'nullable|string',
+            'bidang_urusan_3' => 'nullable|string',
             'kode_opd' => 'required|string',
             // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'required',
@@ -67,7 +69,17 @@ class Bab2Controller extends Controller
             // 'sistematika_penulisan' => 'required',
         ]);
 
-        Bab2::create($request->all());
+        $bidangUrusan = trim($request->bidang_urusan_1);
+        if (!empty($request->bidang_urusan_2)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_2); // Adding a line break between the two fields
+        }
+
+        if (!empty($request->bidang_urusan_3)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
+        }
+
+        // Bab1::create($request->all());
+        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan]));
 
         return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 created successfully');
     }
