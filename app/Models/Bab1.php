@@ -22,6 +22,7 @@ class Bab1 extends Model
         'bidang_urusan',
         'bidang1',
         'bidang2',
+        'bidang3',
         'kode_opd',
         'tahun_id',
         'dasar_hukum',

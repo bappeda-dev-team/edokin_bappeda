@@ -139,7 +139,13 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Dasar Hukum</label>
                             <div class="col-sm-12 col-md-10">
-                                <textarea name="dasar_hukum" class="summernote">{{ old('dasar_hukum', $bab1->dasar_hukum) }}</textarea>
+                                <textarea name="dasar_hukum" id="dasar_hukum" class="summernote">{{ old('dasar_hukum', $bab1->dasar_hukum) }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea name="uraian" id="uraian" class="summernote">{{ old('uraian', $bab1->uraian) }}</textarea>
                             </div>
                         </div>
 

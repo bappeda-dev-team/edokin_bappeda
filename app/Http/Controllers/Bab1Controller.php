@@ -61,8 +61,10 @@ class Bab1Controller extends Controller
             'nama_opd' => 'required',
             'bidang_urusan_1' => 'nullable|string',
             'bidang_urusan_2' => 'nullable|string',
+            'bidang_urusan_3' => 'nullable|string',
             'bidang1' => 'nullable|string',
             'bidang2' => 'nullable|string',
+            'bidang3' => 'nullable|string',
             'kode_opd' => 'required|string',
             // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'nullable|string',
@@ -77,6 +79,10 @@ class Bab1Controller extends Controller
         $bidangUrusan = trim($request->bidang_urusan_1);
         if (!empty($request->bidang_urusan_2)) {
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_2); // Adding a line break between the two fields
+        }
+
+        if (!empty($request->bidang_urusan_3)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
 
         // Bab1::create($request->all());
@@ -107,8 +113,10 @@ class Bab1Controller extends Controller
             'nama_opd' => 'required|string',
             'bidang_urusan_1' => 'nullable|string',
             'bidang_urusan_2' => 'nullable|string',
+            'bidang_urusan_3' => 'nullable|string',
             'bidang1' => 'nullable|string',
             'bidang2' => 'nullable|string',
+            'bidang3' => 'nullable|string',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             // 'kode_bidang_urusan'=>'required|string',
@@ -124,6 +132,9 @@ class Bab1Controller extends Controller
         $bidangUrusan = trim($request->bidang_urusan_1);
         if (!empty($request->bidang_urusan_2)) {
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_2); // Adding a line break between the two fields
+        }
+        if (!empty($request->bidang_urusan_3)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
         $bab1->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan]));
 
@@ -167,14 +178,29 @@ class Bab1Controller extends Controller
             }
         }
 
+        $dasarHukumList = $bab1->dasar_hukum;
+        $hukums = explode('</div>', $dasarHukumList); // Split by </div>
+        $hukums = array_filter(array_map('trim', $hukums)); // Remove empty entries
+
+        $dasar_hukums = [];
+        foreach ($hukums as $entry) {
+            if (!empty($entry)) {
+                preg_match('/<strong>(.*?)<\/strong><br>(.*?)(?=<br>|$)/s', $entry, $matches);
+                if (count($matches) === 3) {
+                    $dasar_hukums[] = (object)[
+                        'judul' => strip_tags($matches[1]),
+                        'peraturan' => strip_tags($matches[2]),
+                    ];
+                }
+            }
+        }
         return view('layouts.admin.bab1.show', [
             'bab1' => $bab1,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
+            'dasar_hukums' => $dasar_hukums
         ]);
     }
-
-
 
     public function exportPdf($id)
     {
@@ -224,9 +250,6 @@ class Bab1Controller extends Controller
         }
     }
 
-
-
-
     public function exportWord($id)
     {
         $bab1 = Bab1::findOrFail($id);
@@ -256,23 +279,6 @@ class Bab1Controller extends Controller
 
         return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function getUrusanOpd($kode_opd)
     {
@@ -310,10 +316,38 @@ class Bab1Controller extends Controller
         ]);
     }
 
-
-    public function getDasarHukum($kode_opd)
+    public function getDasarHukum($kode_opd, $tahun)
     {
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+        $apiUrl = 'https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=' . $tahun . '&kode_opd=' . $kode_opd;
+
+        $response = Http::timeout(30)
+            ->withHeaders(['Accept' => 'application/json'])
+            ->get($apiUrl);
+
+        if (!$response->successful()) {
+            Log::error('API request failed: ' . $response->status());
+            return response()->json(['error' => 'Failed to fetch data from API'], 500);
+        }
+
+        $data = $response->json();
+
+        if (empty($data)) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+
+        $dasar_hukum = collect($data['dasar_hukums'] ?? []);
+        $dasarHukumList = $dasar_hukum
+            ->where('kode_opd', $kode_opd)
+            ->where('tahun', $tahun);
+
+
+        if ($dasarHukumList->isEmpty()) {
+            return response()->json(['error' => 'No Dasar Hukum found'], 404);
+        }
+        return response()->json([
+            'nama_opd' => $data['nama_opd'] ?? 'Unknown OPD',
+            'dasar_hukum' => $dasarHukumList->values(),
+        ]);
     }
 }
     

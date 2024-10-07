@@ -16,18 +16,18 @@ class KakKotaMadiunApi
         return $response;
     }
 
-   
+
     public function urusanOpd()
     {
         $apiUrl = $this->BASE_URL . "/opd/urusan_opd.json";
         $response = Http::post($apiUrl);
-    
+
         // Tambahkan log untuk memeriksa respons API
         \Log::info('Urusan OPD API Response:', ['response' => $response->json()]);
-    
+
         return $response;
     }
-    
+
 
     public function permasalahanOpd($kode_opd, $tahun)
     {
@@ -61,4 +61,34 @@ class KakKotaMadiunApi
         return $response;
     }
 
+    public function dasarHukum($kode_opd, $tahun)
+    {
+        $apiUrl = $this->BASE_URL . "/substansi_renstra/dasar_hukums.json";
+        $response = Http::get($apiUrl, [
+            'kode_opd' => $kode_opd,
+            'tahun' => $tahun
+        ]);
+
+        return $response;
+    }
+    public function asets($kode_opd, $tahun)
+    {
+        $apiUrl = $this->BASE_URL . "/substansi_renstra/asets.json";
+        $response = Http::get($apiUrl, [
+            'kode_opd' => $kode_opd,
+            'tahun' => $tahun
+        ]);
+
+        return $response;
+    }
+    public function sumberDayaManusia($kode_opd, $tahun)
+    {
+        $apiUrl = $this->BASE_URL . "/substansi_renstra/sumber_daya_manusia.json";
+        $response = Http::get($apiUrl, [
+            'kode_opd' => $kode_opd,
+            'tahun' => $tahun
+        ]);
+
+        return $response;
+    }
 }

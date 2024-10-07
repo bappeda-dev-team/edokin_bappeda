@@ -58,4 +58,40 @@ class KakKotaMadiunApiTest extends TestCase
         $this->assertEquals(200, $response->status());
         $this->assertArrayHasKey('results', $response->json());
     }
+    public function testDasarHukum(): void
+    {
+        $kakApi = new KakKotaMadiunApi();
+        $response = $kakApi->dasarHukum(
+            kode_opd: '5.01.5.05.0.00.02.0000',
+            tahun: '2024'
+        );
+
+        $this->assertEquals(200, $response->status());
+        $this->assertArrayHasKey('dasar_hukums', $response->json());
+
+    }
+    public function testAsets(): void
+    {
+        $kakApi = new KakKotaMadiunApi();
+        $response = $kakApi->asets(
+            kode_opd: '5.01.5.05.0.00.02.0000',
+            tahun: '2024'
+        );
+
+        $this->assertEquals(200, $response->status());
+        $this->assertArrayHasKey('asets', $response->json());
+
+    }
+    public function testSumberDayaManusia(): void
+    {
+        $kakApi = new KakKotaMadiunApi();
+        $response = $kakApi->sumberDayaManusia(
+            kode_opd: '5.01.5.05.0.00.02.0000',
+            tahun: '2024'
+        );
+
+        $this->assertEquals(200, $response->status());
+        $this->assertArrayHasKey('sumber_daya_manusia', $response->json());
+
+    }
 }

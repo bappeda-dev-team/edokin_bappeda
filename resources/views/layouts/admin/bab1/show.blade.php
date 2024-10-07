@@ -59,6 +59,7 @@
         margin-left: 20px;
         /* Adjust the left margin if needed */
     }
+
 </style>
 
 @section('content')
@@ -202,7 +203,7 @@
                                                 count($urusan['bidang_urusan_opd']) > 0)
                                             @foreach ($urusan['bidang_urusan_opd'] as $index => $bidang)
                                                 @if ($index == 0)
-                                                    <li><span>Urusan Penunjang Pemerintahan Bidang Urusan</span>
+                                                    <li>
                                                         <span style="color: rgb(11, 242, 11);">
                                                             {{ $bidang['bidang_urusan'] ?? 'N/A' }}
                                                         </span>
@@ -210,7 +211,7 @@
                                                         <p>{!! strip_tags($bab1['bidang1'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
                                                     </li>
                                                 @elseif ($index == 1)
-                                                    <li><span>Urusan Penunjang Pemerintahan Bidang Urusan</span>
+                                                    <li>
                                                         <span style="color: rgb(11, 242, 11);">
                                                             {{ $bidang['bidang_urusan'] ?? 'N/A' }}
                                                         </span>
@@ -222,6 +223,8 @@
                                                         <span style="color: rgb(11, 242, 11);">
                                                             {{ $bidang['bidang_urusan'] ?? 'N/A' }}
                                                         </span>
+                                                        {{-- Display bidang3 --}}
+                                                        <p>{!! strip_tags($bab1['bidang3'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
                                                     </li>
                                                 @endif
                                             @endforeach
@@ -231,11 +234,6 @@
                                     <li>No data available</li>
                                 @endif
                             </ol>
-
-
-
-
-
                             <p class="indent">Rencana Strategis Perangkat Daerah Tahun 2024-2026 yang disusun telah selaras
                                 dengan Rencana Pembangunan Daerah (RPD) Tahun 2026-2026.
                                 Renstra PD merupakan potret dari Rencana strategis dari masing-masing Perangkat Daerah
@@ -251,8 +249,11 @@
                                 <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Kota
                                 Madiun Tahun 2025-2026, peraturan yang digunakan sebagai landasan hukum adalah :
                             </p>
-                            <ol style="list-style-type: lower-alpha">
-                                <li>dsfg</li>
+                            <ol >
+                                @foreach ($dasar_hukums as $index => $dasar_hukum)
+                                    {{ $index + 1 }}. {{ strip_tags($dasar_hukum->judul) }}  <br>
+                                    {{ strip_tags($dasar_hukum->peraturan) }} <br>
+                                @endforeach
                             </ol>
                             <h4>1.3. Maksud dan Tujuan</h4>
                             <p class="indent">Maksud disusunnya Rencana Strategis Perangkat Daerah adalah :</p>
@@ -319,7 +320,9 @@
                             <p class="indent">BAB VIII&emsp;: Penutup</p>
 
                             <div class="indent">
-                                <span style="color: rgb(250, 5, 5);">{!! $bab1->uraian !!}</span>
+                                <span style="color: rgb(250, 5, 5);">
+                                    <p>{!! strip_tags($bab1['uraian'] ?? '', '<br><b><u><i><strong><em>') !!}</p>
+                                </span>
                             </div>
 
 
