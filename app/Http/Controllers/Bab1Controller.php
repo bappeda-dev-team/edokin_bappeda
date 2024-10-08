@@ -219,8 +219,25 @@ class Bab1Controller extends Controller
             // Parse API response
             $urusan_opd = $response->json()['results'] ?? [];
 
+            $dasarHukumList = $bab1->dasar_hukum;
+            $hukums = explode('</div>', $dasarHukumList); // Split by </div>
+            $hukums = array_filter(array_map('trim', $hukums)); // Remove empty entries
+
+            $dasar_hukums = [];
+            foreach ($hukums as $entry) {
+                if (!empty($entry)) {
+                    preg_match('/<strong>(.*?)<\/strong><br>(.*?)(?=<br>|$)/s', $entry, $matches);
+                    if (count($matches) === 3) {
+                        $dasar_hukums[] = (object)[
+                            'judul' => strip_tags($matches[1]),
+                            'peraturan' => strip_tags($matches[2]),
+                        ];
+                    }
+                }
+            }
+
             // Render HTML view
-            $html = view('layouts.admin.bab1.pdf', compact('bab1', 'urusan_opd'))->render();
+            $html = view('layouts.admin.bab1.pdf', compact('bab1', 'urusan_opd', 'dasar_hukums'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
@@ -349,7 +366,6 @@ class Bab1Controller extends Controller
             'dasar_hukum' => $dasarHukumList->values(),
         ]);
     }
-
 }
     
         // public function getBidangUrusan($kode_bidang_urusan)
