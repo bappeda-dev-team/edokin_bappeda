@@ -246,6 +246,10 @@ class Bab1Controller extends Controller
                 'format' => [210, 330],
                 'orientation' => 'P',
                 'tempDir' => storage_path('app/temp'),
+                'margin_left' => 25, // Tambahkan margin kiri untuk penjilidan
+                'margin_right' => 15, // Margin kanan standar
+                'margin_top' => 20, // Margin atas
+                'margin_bottom' => 20, // Margin bawah
             ]);
 
             $mpdf->SetHTMLFooter('

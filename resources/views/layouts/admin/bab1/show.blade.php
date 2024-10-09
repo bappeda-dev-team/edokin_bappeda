@@ -2,9 +2,10 @@
 
 @section('title', 'Detail BAB I')
 
+@section('content')
 <style>
     body {
-        font-family: Arial, sans-serif;
+        /* font-family: Arial, sans-serif; */
         line-height: 1.6;
     }
 
@@ -61,8 +62,6 @@
     }
 
 </style>
-
-@section('content')
     <section class="section">
         <div class="section-header">
             <h1>Detail BAB I</h1>
@@ -208,7 +207,7 @@
                                                             {{ $bidang['bidang_urusan'] ?? 'N/A' }}
                                                         </span>
                                                         {{-- Display bidang1 --}}
-                                                        <p>{!! strip_tags($bab1['bidang1'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
+                                                        <p style="color:rgb(250, 5, 5)">{!! strip_tags($bab1['bidang1'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
                                                     </li>
                                                 @elseif ($index == 1)
                                                     <li>
@@ -216,7 +215,7 @@
                                                             {{ $bidang['bidang_urusan'] ?? 'N/A' }}
                                                         </span>
                                                         {{-- Display bidang2 --}}
-                                                        <p>{!! strip_tags($bab1['bidang2'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
+                                                        <p style="color:rgb(250, 5, 5)">{!! strip_tags($bab1['bidang2'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
                                                     </li>
                                                 @else
                                                     <li>
@@ -224,7 +223,7 @@
                                                             {{ $bidang['bidang_urusan'] ?? 'N/A' }}
                                                         </span>
                                                         {{-- Display bidang3 --}}
-                                                        <p>{!! strip_tags($bab1['bidang3'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
+                                                        <p style="color:rgb(250, 5, 5)">{!! strip_tags($bab1['bidang3'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</p>
                                                     </li>
                                                 @endif
                                             @endforeach
@@ -249,8 +248,8 @@
                                 <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Kota
                                 Madiun Tahun 2025-2026, peraturan yang digunakan sebagai landasan hukum adalah :
                             </p>
-                            <ol >
-                                @foreach ($dasar_hukums as $index => $dasar_hukum)
+                            <ol style="color:dodgerblue;">
+                                @foreach ($dasar_hukums as $index => $dasar_hukum) <br>
                                     {{ $index + 1 }}. {{ strip_tags($dasar_hukum->judul) }}  <br>
                                     {{ strip_tags($dasar_hukum->peraturan) }} <br>
                                 @endforeach

@@ -2,9 +2,12 @@
 
 @section('title', 'Detail BAB III')
 
+
+
+@section('content')
 <style>
     body {
-        font-family: Arial, sans-serif;
+        /* font-family: Arial, sans-serif; */
         line-height: 1.6;
     }
     .section {
@@ -73,8 +76,6 @@
 
        
 </style>
-
-@section('content')
 <section class="section">
     <div class="section-header">
         <h1>Detail BAB III</h1>

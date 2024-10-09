@@ -56,7 +56,24 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/dashboard/update-bab2/{id}', [Bab2Controller::class, 'update'])->name('bab2.update');
     Route::delete('/dashboard/delete-bab2/{id}', [Bab2Controller::class, 'destroy'])->name('bab2.destroy');
     Route::get('/dashboard/bab2', [Bab2Controller::class, 'index'])->name('layouts.admin.bab2.index');
+
+    Route::get('/dashboard/create-bab3', [Bab3Controller::class, 'create'])->name('bab3.create');
+    Route::post('/dashboard/store-bab3', [Bab3Controller::class, 'store'])->name('bab3.store');
+    Route::get('/dashboard/edit-bab3/{id}', [Bab3Controller::class, 'edit'])->name('bab3.edit');
+    Route::get('/dashboard/show-bab3/{id}', [Bab3Controller::class, 'show'])->name('bab3.show');
+    Route::put('/dashboard/update-bab3/{id}', [Bab3Controller::class, 'update'])->name('bab3.update');
+    Route::delete('/dashboard/delete-bab3/{id}', [Bab3Controller::class, 'destroy'])->name('bab3.destroy');
+    Route::get('/dashboard/bab3', [Bab3Controller::class, 'index'])->name('layouts.admin.bab3.index');
+
+    Route::get('/dashboard/create-bab4', [Bab4Controller::class, 'create'])->name('bab4.create');
+    Route::post('/dashboard/store-bab4', [Bab4Controller::class, 'store'])->name('bab4.store');
+    Route::get('/dashboard/edit-bab4/{id}', [Bab4Controller::class, 'edit'])->name('bab4.edit');
+    Route::get('/dashboard/show-bab4/{id}', [Bab4Controller::class, 'show'])->name('bab4.show');
+    Route::put('/dashboard/update-bab4/{id}', [Bab4Controller::class, 'update'])->name('bab4.update');
+    Route::delete('/dashboard/delete-bab4/{id}', [Bab4Controller::class, 'destroy'])->name('bab4.destroy');
+    Route::get('/dashboard/bab4', [Bab4Controller::class, 'index'])->name('layouts.admin.bab4.index');
     
+    Route::get('/dashboard/bab5', [Bab5Controller::class, 'index'])->name('layouts.admin.bab5.index');
     Route::get('/dashboard/create-bab5', [Bab5Controller::class, 'create'])->name('bab5.create');
     Route::post('/dashboard/store-bab5', [Bab5Controller::class, 'store'])->name('bab5.store');
     Route::get('/dashboard/edit-bab5/{id}', [Bab5Controller::class, 'edit'])->name('bab5.edit');
@@ -71,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/show-bab6/{id}', [Bab6Controller::class, 'show'])->name('bab6.show');
     Route::put('/dashboard/update-bab6/{id}', [Bab6Controller::class, 'update'])->name('bab6.update');
     Route::delete('/dashboard/delete-bab6/{id}', [Bab6Controller::class, 'destroy'])->name('bab6.destroy');
+
     Route::get('/dashboard/bab7', [Bab7Controller::class, 'index'])->name('layouts.admin.bab7.index');
     Route::get('/dashboard/create-bab7', [Bab7Controller::class, 'create'])->name('bab7.create');
     Route::post('/dashboard/store-bab7', [Bab7Controller::class, 'store'])->name('bab7.store');
@@ -78,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/show-bab7/{id}', [Bab7Controller::class, 'show'])->name('bab7.show');
     Route::put('/dashboard/update-bab7/{id}', [Bab7Controller::class, 'update'])->name('bab7.update');
     Route::delete('/dashboard/delete-bab7/{id}', [Bab7Controller::class, 'destroy'])->name('bab7.destroy');
+
     Route::get('/dashboard/bab8', [Bab8Controller::class, 'index'])->name('layouts.admin.bab8.index');
     Route::get('/dashboard/create-bab8', [Bab8Controller::class, 'create'])->name('bab8.create');
     Route::post('/dashboard/store-bab8', [Bab8Controller::class, 'store'])->name('bab8.store');

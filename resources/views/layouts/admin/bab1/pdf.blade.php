@@ -208,12 +208,12 @@
             <h4>1.2. Dasar Hukum Penyusunan</h4>
             <p class="indent">Dalam penyusunan renstra {{ $selectedOpd['nama_opd'] ?? 'N/A' }} Kota Madiun Tahun
                 2025-2026, peraturan yang digunakan sebagai landasan hukum adalah:</p>
-            <ol>
-                @foreach ($dasar_hukums as $index => $dasar_hukum)
-                    {{ $index + 1 }}. {{ strip_tags($dasar_hukum->judul) }} <br>
-                    {{ strip_tags($dasar_hukum->peraturan) }} <br>
-                @endforeach
-            </ol>
+                <ol>
+                    @foreach ($dasar_hukums as $index => $dasar_hukum) <br>
+                        {{ $index + 1 }}. {{ strip_tags($dasar_hukum->judul) }}  <br>
+                        {{ strip_tags($dasar_hukum->peraturan) }} <br>
+                    @endforeach
+                </ol>
 
             <h4>1.3. Maksud dan Tujuan</h4>
             <p class="indent">Maksud disusunnya Rencana Strategis Perangkat Daerah adalah:</p>

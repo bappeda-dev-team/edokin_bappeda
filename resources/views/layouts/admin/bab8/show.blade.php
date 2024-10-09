@@ -2,9 +2,10 @@
 
 @section('title', 'Detail BAB VIII')
 
+@section('content')
 <style>
     body {
-        font-family: Arial, sans-serif;
+        /* font-family: Arial, sans-serif; */
         line-height: 1.6;
     }
     .section {
@@ -67,8 +68,6 @@
         background-color: #f9f9f9;
     }
 </style>
-
-@section('content')
 <section class="section">
     <div class="section-header">
         <h1>Detail BAB VIII</h1>
