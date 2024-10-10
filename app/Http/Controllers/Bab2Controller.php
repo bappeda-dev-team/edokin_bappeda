@@ -64,6 +64,7 @@ class Bab2Controller extends Controller
             // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'required',
             'uraian' => 'nullable|string',
+            'uraian_asets' => 'nullable|string',
             // 'latar_belakang' => 'required',
             // 'maksud_tujuan' => 'required',
             // 'sistematika_penulisan' => 'required',
@@ -78,8 +79,18 @@ class Bab2Controller extends Controller
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
 
+        $tugasFungsi = [];
+        if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
+            foreach ($request->nama_jabatan as $index => $namaJabatan) {
+                $tugas = $request->tugas_jabatan[$index] ?? '';
+                $fungsi = $request->fungsi_jabatan[$index] ?? '';
+                $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
+            }
+        }
+        $tugasFungsiString = implode("\n", $tugasFungsi);
+
         // Bab1::create($request->all());
-        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan]));
+        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsiString]));
 
         return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 created successfully');
     }
@@ -95,7 +106,11 @@ class Bab2Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun'));
+        $asets = $this->getAsets($bab2->kode_opd, $bab2->tahun);
+        $tugasFungsiString = $bab2->tugas_fungsi;
+        $tugas_fungsi_array = explode("\n", $tugasFungsiString);
+
+        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun','asets', 'tugas_fungsi_array'));
     }
 
     public function update(Request $request, $id)
@@ -104,10 +119,13 @@ class Bab2Controller extends Controller
             'nama_bab' => 'required|string|max:255',
             'jenis_id' => 'required|exists:jenis,id',
             'nama_opd' => 'required|string',
-            'bidang_urusan' => 'required|string',
+            'bidang_urusan_1' => 'nullable|string',
+            'bidang_urusan_2' => 'nullable|string',
+            'bidang_urusan_3' => 'nullable|string',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             'uraian' => 'nullable|string',
+            'uraian_asets' => 'nullable|string',
             // 'kode_bidang_urusan'=>'required|string',
             // 'latar_belakang' => 'required|string',
             // 'maksud_tujuan' => 'required|string',
@@ -115,8 +133,27 @@ class Bab2Controller extends Controller
         ]);
 
         $bab2 = Bab2::findOrFail($id);
+        $bidangUrusan = trim($request->bidang_urusan_1);
+        if (!empty($request->bidang_urusan_2)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_2); // Adding a line break between the two fields
+        }
 
-        $bab2->update($request->all());
+        if (!empty($request->bidang_urusan_3)) {
+            $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
+        }
+
+        $tugasFungsi = [];
+        if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
+            foreach ($request->nama_jabatan as $index => $namaJabatan) {
+                $tugas = $request->tugas_jabatan[$index] ?? '';
+                $fungsi = $request->fungsi_jabatan[$index] ?? '';
+                $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
+            }
+        }
+
+        $tugasFungsiString = implode("\n", $tugasFungsi);
+
+        $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsiString]));
 
         return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 updated successfully');
     }
@@ -158,6 +195,9 @@ class Bab2Controller extends Controller
             }
         }
 
+        $tugasFungsiString = $bab2->tugas_fungsi;
+        $tugasFungsiArray = explode("\n", $tugasFungsiString);
+
         $asetList = $this->getAsets($bab2->kode_opd, $bab2->tahun);
         $SDMList = $this->getSumberDayaManusia($bab2->kode_opd, $bab2->tahun);
 
@@ -166,7 +206,8 @@ class Bab2Controller extends Controller
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
             'asets' => $asetList,
-            'sumber_daya_manusia' => $SDMList
+            'sumber_daya_manusia' => $SDMList,
+            'tugas_fungsi' => $tugasFungsiArray
         ]);
     }
 
@@ -187,8 +228,14 @@ class Bab2Controller extends Controller
             // Parse API response
             $urusan_opd = $response->json()['results'] ?? [];
 
+            $tugasFungsiString = $bab2->tugas_fungsi;
+            $tugas_fungsi = explode("\n", $tugasFungsiString);
+    
+            $asets = $this->getAsets($bab2->kode_opd, $bab2->tahun);
+            $sumber_daya_manusia = $this->getSumberDayaManusia($bab2->kode_opd, $bab2->tahun);
+
             // Render HTML view
-            $html = view('layouts.admin.bab2.pdf', compact('bab2', 'urusan_opd'))->render();
+            $html = view('layouts.admin.bab2.pdf', compact('bab2', 'urusan_opd', 'tugas_fungsi', 'asets','sumber_daya_manusia'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
@@ -280,8 +327,9 @@ class Bab2Controller extends Controller
         }
 
         $sdm = collect($data['sumber_daya_manusia'] ?? []);
+        
         if ($sdm->isEmpty()) {
-            return []; // Return an empty array if no assets found
+            return []; 
         }
 
         return $sdm->map(function ($jabatan) {

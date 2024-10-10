@@ -4,102 +4,102 @@
 
 
 @section('content')
-<style>
-    body {
-        /* font-family: Arial, sans-serif; */
-        line-height: 1.6;
-    }
+    <style>
+        body {
+            /* font-family: Arial, sans-serif; */
+            line-height: 1.6;
+        }
 
-    .section {
-        margin: 20px 0;
-    }
+        .section {
+            margin: 20px 0;
+        }
 
-    .section h1 {
-        font-size: 24px;
-        margin-bottom: 10px;
-        text-align: center;
-    }
+        .section h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
 
-    .section h2 {
-        font-size: 20px;
-        margin-bottom: 8px;
-        text-align: center;
-    }
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
 
-    .section p {
-        margin: 5px 0;
-    }
+        .section p {
+            margin: 5px 0;
+        }
 
-    .list {
-        margin: 10px 0;
-    }
+        .list {
+            margin: 10px 0;
+        }
 
-    .list ul {
-        list-style-type: disc;
-        margin-left: 20px;
-    }
+        .list ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
 
-    .list ol {
-        /* list-style-type: lower-alpha; */
-        margin-left: 20px;
-    }
+        .list ol {
+            /* list-style-type: lower-alpha; */
+            margin-left: 20px;
+        }
 
-    .list ul ul {
-        list-style-type: circle;
-    }
+        .list ul ul {
+            list-style-type: circle;
+        }
 
-    .indent {
-        text-indent: 48px;
-        /* Adjust the value as needed */
-        margin-left: 20px;
-        /* Adjust the left margin if needed */
-    }
+        .indent {
+            text-indent: 48px;
+            /* Adjust the value as needed */
+            margin-left: 20px;
+            /* Adjust the left margin if needed */
+        }
 
-    .indent1 {
-        text-indent: 90px;
-        /* Adjust the value as needed */
-        margin-left: 20px;
-        /* Adjust the left margin if needed */
-    }
+        .indent1 {
+            text-indent: 90px;
+            /* Adjust the value as needed */
+            margin-left: 20px;
+            /* Adjust the left margin if needed */
+        }
 
 
-    .list-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px;
-        /* Space between items */
-    }
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            /* Space between items */
+        }
 
-    .spacer {
-        padding-right: 900px;
-        /* Prevents the colon from shrinking */
-    }
+        .spacer {
+            padding-right: 900px;
+            /* Prevents the colon from shrinking */
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
 
-    th,
-    td {
-        border: 1px solid black;
-        /* Garis border hitam */
-        padding: 8px;
-        text-align: left;
-    }
+        th,
+        td {
+            border: 1px solid black;
+            /* Garis border hitam */
+            padding: 8px;
+            text-align: left;
+        }
 
-    th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-        text-align: center;
-    }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
 
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-</style>
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
     <section class="section">
         <div class="section-header">
             <h1>Detail BAB II</h1>
@@ -163,18 +163,20 @@
                         <div class="list">
                             <ol style="list-style-type: none">
                                 <ul style="list-style-type: none; padding-left: 0;">
-                                    <li class="list-item">
-                                        Kepala <span class="spacer">:</span>
-                                    </li>
-                                    <li class="list-item">
-                                        Sekretaris <span class="spacer">:</span>
-                                    </li>
-                                    <li class="list-item">
-                                        Sub Bagian Keuangan <span class="spacer">:</span>
-                                    </li>
-                                    <li class="list-item">
-                                        Sub Bagian Kepegawaian <span class="spacer">:</span>
-                                    </li>
+                                    @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
+                                        <li class="list-item text-center">Tidak ada data tersedia.</li>
+                                    @else
+                                        @foreach ($tugas_fungsi as $index => $tugas)
+                                            @if ($index % 3 === 0)
+                                                <!-- Menampilkan nama jabatan -->
+                                                <li class="list-item">
+                                                    {{ ucwords(strtolower($tugas)) }}
+                                                @elseif ($index % 3 === 1)
+                                                    <span> {{ $tugas }}</>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </ol>
                         </div>
@@ -184,18 +186,20 @@
                         <div class="list">
                             <ol style="list-style-type: none">
                                 <ul style="list-style-type: none; padding-left: 0;">
-                                    <li class="list-item">
-                                        Kepala <span class="spacer">:</span>
-                                    </li>
-                                    <li class="list-item">
-                                        Sekretaris <span class="spacer">:</span>
-                                    </li>
-                                    <li class="list-item">
-                                        Sub Bagian Keuangan <span class="spacer">:</span>
-                                    </li>
-                                    <li class="list-item">
-                                        Sub Bagian Kepegawaian <span class="spacer">:</span>
-                                    </li>
+                                    @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
+                                        <li class="list-item text-center">Tidak ada data tersedia.</li>
+                                    @else
+                                        @foreach ($tugas_fungsi as $index => $fungsi)
+                                            @if ($index % 3 === 0)
+                                                <!-- Menampilkan nama jabatan -->
+                                                <li class="list-item">
+                                                    {{ ucwords(strtolower($fungsi)) }}
+                                                @elseif ($index % 3 === 2)
+                                                    <span> {{ $fungsi }}</>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </ol>
 
@@ -308,14 +312,14 @@
                             </tbody>
                         </table>
 
-                        <p style="text-align: center"><span style="color: rgb(255, 0, 0);">Uraian tabel...</span>
+                        <p style="text-align: center"><span style="color: rgb(255, 0, 0);">{!! strip_tags($bab2['uraian_asets'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</span>
                         </p>
 
                         <h4>2.3 Kinerja Pelayanan Perangkat Daerah</h4>
                         <p class="indent">Pelayanan kinerja perangkat daerah yang dilaksanakan pada periode tahun sebulmnya
                             memuat indikator SPM untuk Urusan Wajib, Indikator Kinerja Daerah (IKD), indikator Tujuan dan
                             Indikator Sasaran sesuai dengan yang telah diampu dan di amanatkan pada
-                            <span style="color: rgb(11, 242, 11);">...</span>
+                            <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
 
                         </p>
 
@@ -325,7 +329,7 @@
                         </p>
 
                         <p class="indent">
-                            <span style="color: rgb(11, 242, 11);">.................</span>
+                            <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
                         </p>
 
                         <table border="1" cellspacing="0" cellpadding="5">

@@ -23,6 +23,8 @@ class Bab2 extends Model
         'kode_opd',
         'tahun_id',
         'uraian',
+        'uraian_asets',
+        'tugas_fungsi',
         // 'kode_bidang_urusan'
     ];
 

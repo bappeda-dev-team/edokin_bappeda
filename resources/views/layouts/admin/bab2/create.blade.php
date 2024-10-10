@@ -94,6 +94,61 @@
                             </div>
                         </div>
 
+                        <!-- Container for Sumber Daya Manusia -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sumber Daya Manusia</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table class="table table-bordered" id="sdm-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Jabatan</th>
+                                            <th>Tugas</th>
+                                            <th>Fungsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Container for Asets -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Asets</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table class="table table-bordered" id="asets-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Asset Pendukung</th>
+                                            <th>Jumlah</th>
+                                            <th colspan="3">Kondisi Asset</th>
+                                            <th>Perolehan Asset</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Baik</th>
+                                            <th>Cukup</th>
+                                            <th>Kurang</th>
+                                            <th>Tahun</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Asets</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea name="uraian_asets" class="summernote"></textarea>
+                            </div>
+                        </div>
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
@@ -188,6 +243,88 @@
                     bidangUrusan2Input.val('');
                     $('#bidang-urusan-2').hide();
                     $('#bidang-urusan-3').hide();
+                }
+            });
+
+            $('#tahun_id, #kode_opd').on('change', function() {
+                const kodeOpd = $('#kode_opd').val();
+                const tahun = $('#tahun_id').find(':selected').data('tahun');
+                const sdmTableBody = $('#sdm-table tbody');
+                const asetsTableBody = $('#asets-table tbody');
+
+                sdmTableBody.empty();
+                asetsTableBody.empty();
+
+                if (kodeOpd && tahun) {
+                    lastKodeOpd = kodeOpd;
+                    lastTahun = tahun;
+                }
+
+                const fetchKodeOpd = kodeOpd || lastKodeOpd;
+                const fetchTahun = tahun || lastTahun;
+
+                if (fetchKodeOpd && fetchTahun) {
+                    // Fetch Sumber Daya Manusia
+                    fetch(
+                            `https://kak.madiunkota.go.id/api/substansi_renstra/sumber_daya_manusia?tahun=${tahun}&kode_opd=${kodeOpd}`
+                        )
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data && data.sumber_daya_manusia && data.sumber_daya_manusia.length >
+                                0) {
+                                data.sumber_daya_manusia.forEach(item => {
+                                    let row = `<tr>
+                                    <td>${item.nama_jabatan || 'N/A'}</td>
+                                    <td><textarea name="tugas_jabatan[]"></textarea></td>
+                                    <td><textarea name="fungsi_jabatan[]"></textarea></td>
+                                    <input type="hidden" name="nama_jabatan[]" value="${item.nama_jabatan || ''}"
+                                </tr>`;
+                                    sdmTableBody.append(row);
+                                });
+                            } else {
+                                sdmTableBody.append(
+                                    '<tr><td colspan="3">Tidak ada data sumber daya manusia.</td></tr>'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching Sumber Daya Manusia:', error);
+                            sdmTableBody.append('<tr><td colspan="3">Error fetching data.</td></tr>');
+                        });
+
+                    // Fetch Asets
+                    fetch(
+                            `https://kak.madiunkota.go.id/api/substansi_renstra/asets?tahun=${tahun}&kode_opd=${kodeOpd}`
+                        )
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data && data.asets && data.asets.length > 0) {
+                                data.asets.forEach((item, index) => {
+                                    let row = `<tr>
+                                    <td>${index + 1}</td>
+                                    <td>${item.aset || 'N/A'}</td>
+                                    <td>${item.jumlah_aset || 0} ${item.satuan_aset || 0}</td>
+                                    <td>${item.kondisi ? item.kondisi.Baik || 0 : 0}</td>
+                                    <td>${item.kondisi ? item.kondisi.Cukup || 0 : 0}</td>
+                                    <td>${item.kondisi ? item.kondisi.Kurang || 0 : 0}</td>
+                                    <td>${item.tahun_perolehan_aset.join(', ') || 'N/A'}</td>
+                                    <td>${item.keterangan || '-'}</td>
+                                </tr>`;
+                                    asetsTableBody.append(row);
+                                });
+                            } else {
+                                asetsTableBody.append(
+                                    '<tr><td colspan="8">Tidak ada data aset.</td></tr>');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching Asets:', error);
+                            asetsTableBody.append('<tr><td colspan="8">Error fetching data.</td></tr>');
+                        });
+                } else {
+                    sdmTableBody.append('<tr><td colspan="3">Silakan pilih Kode OPD dan Tahun.</td></tr>');
+                    asetsTableBody.append(
+                        '<tr><td colspan="8">Silakan pilih Kode OPD dan Tahun.</td></tr>');
                 }
             });
 

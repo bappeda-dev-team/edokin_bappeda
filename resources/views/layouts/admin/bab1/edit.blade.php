@@ -104,7 +104,7 @@
                             </div>
                             <!-- Bidang Urusan 3 -->
                             <div class="form-group row mb-4" id="bidang-urusan-3"
-                                style="{{ substr_count($bab1->bidang_urusan, "\n") >= 1 ?: 'display: none;' }}">
+                                style="{{ substr_count($bab1->bidang_urusan, "\n") >= 2 ?: 'display: none;' }}">
                                 <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan 3</label>
                                 <div class="col-sm-12 col-md-4">
                                     <input type="text" name="bidang_urusan_3" id="bidang_urusan_3" class="form-control"
@@ -132,7 +132,7 @@
                             </div>
                             <!-- Bidang3 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang3"
-                                style="{{ substr_count($bab1->bidang_urusan, "\n") >= 1 ?: 'display: none;' }}">
+                                style="{{ substr_count($bab1->bidang_urusan, "\n") >= 2 ?: 'display: none;' }}">
                                 <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 3</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang3" class="summernote">{{ old('bidang3', $bab1->bidang3) }}</textarea>
