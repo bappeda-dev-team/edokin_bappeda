@@ -147,19 +147,21 @@
                 <ol style="list-style-type: none">
                     <ul style="list-style-type: none; padding-left: 0;">
                         @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
-                        <li class="list-item text-center">Tidak ada data tersedia.</li>
-                    @else
-                        @foreach ($tugas_fungsi as $index => $tugas)
-                            @if ($index % 3 === 0)
-                                <!-- Menampilkan nama jabatan -->
-                                <li class="list-item">
-                                    {{ ucwords(strtolower($tugas)) }}
-                                @elseif ($index % 3 === 1)
-                                    <span> {{ $tugas }}</>
-                                </li>
-                            @endif
-                        @endforeach
-                    @endif
+                            <li class="list-item text-center">Tidak ada data tersedia.</li>
+                        @else
+                            @foreach ($tugas_fungsi as $index => $tugas)
+                                @if ($index % 3 === 0)
+                                    <!-- Menampilkan nama jabatan -->
+                                    <li class="list-item" style="display: flex; align-items: flex-start; padding: 5px 0;">
+                                    <span style="min-width: 200px;">
+                                        {{ ucwords(strtolower($tugas)) }} 
+                                    </span>
+                                    @elseif ($index % 3 === 1)
+                                        <span style="display: inline-block;">: {{ $tugas }}</>
+                                    </li>
+                                @endif
+                            @endforeach
+                        @endif
                     </ul>
                 </ol>
             </div>
@@ -173,10 +175,12 @@
                         @foreach ($tugas_fungsi as $index => $fungsi)
                             @if ($index % 3 === 0)
                                 <!-- Menampilkan nama jabatan -->
-                                <li class="list-item">
-                                    {{ ucwords(strtolower($fungsi)) }}
+                                <li class="list-item" style="display: flex; align-items: flex-start; padding: 5px 0;">
+                                    <span style="min-width: 200px;">
+                                    {{ ucwords(strtolower($fungsi)) }} 
+                                    </span>
                                 @elseif ($index % 3 === 2)
-                                    <span> {{ $fungsi }}</>
+                                    <span style="display: inline-block;">: {{ $fungsi }}</>
                                 </li>
                             @endif
                         @endforeach

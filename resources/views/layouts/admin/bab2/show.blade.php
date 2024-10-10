@@ -64,9 +64,8 @@
 
 
         .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            /* display: flex;
+            justify-content: space-around; */
             margin-bottom: 5px;
             /* Space between items */
         }
@@ -169,10 +168,12 @@
                                         @foreach ($tugas_fungsi as $index => $tugas)
                                             @if ($index % 3 === 0)
                                                 <!-- Menampilkan nama jabatan -->
-                                                <li class="list-item">
-                                                    {{ ucwords(strtolower($tugas)) }}
+                                                <li class="list-item" style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
+                                                <span style="min-width: 200px;">
+                                                    {{ ucwords(strtolower($tugas)) }} 
+                                                </span>
                                                 @elseif ($index % 3 === 1)
-                                                    <span> {{ $tugas }}</>
+                                                    <span style="color:red; display: inline-block;">: {{ $tugas }}</>
                                                 </li>
                                             @endif
                                         @endforeach
@@ -192,10 +193,12 @@
                                         @foreach ($tugas_fungsi as $index => $fungsi)
                                             @if ($index % 3 === 0)
                                                 <!-- Menampilkan nama jabatan -->
-                                                <li class="list-item">
-                                                    {{ ucwords(strtolower($fungsi)) }}
+                                                <li class="list-item" style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
+                                                    <span style="min-width: 200px;">
+                                                    {{ ucwords(strtolower($fungsi)) }} 
+                                                    </span>
                                                 @elseif ($index % 3 === 2)
-                                                    <span> {{ $fungsi }}</>
+                                                    <span style="color:red; display: inline-block;">: {{ $fungsi }}</>
                                                 </li>
                                             @endif
                                         @endforeach
