@@ -256,14 +256,6 @@
                 asetsTableBody.empty();
 
                 if (kodeOpd && tahun) {
-                    lastKodeOpd = kodeOpd;
-                    lastTahun = tahun;
-                }
-
-                const fetchKodeOpd = kodeOpd || lastKodeOpd;
-                const fetchTahun = tahun || lastTahun;
-
-                if (fetchKodeOpd && fetchTahun) {
                     // Fetch Sumber Daya Manusia
                     fetch(
                             `https://kak.madiunkota.go.id/api/substansi_renstra/sumber_daya_manusia?tahun=${tahun}&kode_opd=${kodeOpd}`
