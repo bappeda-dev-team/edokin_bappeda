@@ -3,6 +3,7 @@
 @section('title', 'Create BAB 5')
 
 @section('content')
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -85,19 +86,79 @@
                     </div>
 
                     <!-- Tujuan OPD Field -->
-                    <div class="form-group row mb-4">
+                    {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tujuan OPD</label>
                         <div class="col-sm-12 col-md-4">
                             <textarea id="tujuan_opd" name="tujuan_opd" class="form-control" rows="4" readonly></textarea>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Sasaran OPD Field -->
-                    <div class="form-group row mb-4">
+                    {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran OPD</label>
                         <div class="col-sm-12 col-md-4">
                             <textarea id="sasaran_opd" name="sasaran_opd" class="form-control" rows="4" readonly></textarea>
                         </div>
+                    </div> --}}
+
+                    <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Visi dan Misi</label>
+                        <div class="col-sm-12 col-md-10">
+                    <table >
+                        <!-- VISI -->
+                        <tr>
+                            <th colspan="4">VISI:</th>
+                        </tr>
+                        
+                        <!-- MISI 1 -->
+                        <tr>
+                            <th colspan="4">MISI 1:</th>
+                        </tr>
+                        <tr>
+                            <th>Tujuan</th>
+                            <th>Sasaran</th>
+                            <th>Strategi</th>
+                            <th>Arah Kebijakan</th>
+                        </tr>
+                        <tr>
+                            <td>Tujuan 1</td>
+                            <td></td>
+                            <td>Strategi 1.1</td>
+                            <td>Arah kebijakan 1.1</td>
+                        </tr>
+                        <tr>
+                            <td>Tujuan 2</td>
+                            <td>Sasaran 2.1</td>
+                            <td>Strategi 1.2</td>
+                            <td>Arah kebijakan 1.2</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    
+                        <!-- MISI 2 -->
+                        <tr>
+                            <th colspan="4">MISI 2:</th>
+                        </tr>
+                        <tr>
+                            <th>Tujuan</th>
+                            <th>Sasaran</th>
+                            <th>Strategi</th>
+                            <th>Arah Kebijakan</th>
+                        </tr>
+                        <tr>
+                            <td>Tujuan 1</td>
+                            <td>Sasaran 1.1</td>
+                            <td>Strategi 1.1</td>
+                            <td>Arah kebijakan 1.1</td>
+                        </tr>
+                        <tr>
+                            <td>Tujuan 2</td>
+                            <td>Sasaran 2.1</td>
+                            <td>Strategi 1.2</td>
+                            <td>Arah kebijakan 1.2</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </table>
+                    </div>
                     </div>
 
                     <div class="form-group row mb-4">
@@ -166,4 +227,25 @@
         }
     });
 </script>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-align: center;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+    
 @endsection

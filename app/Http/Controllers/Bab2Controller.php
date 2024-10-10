@@ -308,8 +308,9 @@ class Bab2Controller extends Controller
 
     public function getSumberDayaManusia($kode_opd, $tahun)
     {
-        $apiUrl = 'https://kak.madiunkota.go.id/api/substansi_renstra/sumber_daya_manusia?tahun=' . $tahun . '&kode_opd=' . $kode_opd;
         $tahun = '2024';
+        $apiUrl = 'https://kak.madiunkota.go.id/api/substansi_renstra/sumber_daya_manusia?tahun=' . $tahun . '&kode_opd=' . $kode_opd;
+        
         $response = Http::timeout(30)
             ->withHeaders(['Accept' => 'application/json'])
             ->get($apiUrl);
@@ -321,6 +322,7 @@ class Bab2Controller extends Controller
 
         $data = $response->json();
         // dd($data); 
+        // dd($data);
 
         if (empty($data)) {
             return []; // Return an empty array if no data found
@@ -331,6 +333,7 @@ class Bab2Controller extends Controller
         if ($sdm->isEmpty()) {
             return []; 
         }
+       
 
         return $sdm->map(function ($jabatan) {
             return [

@@ -218,7 +218,6 @@
                         <p style="text-align: center">Tabel 2.1</p>
                         <p style="text-align: center">Sumber Daya Manusia Perangkat Daerah
                             Kota Madiun</p>
-
                         <table>
                             <thead>
                                 <tr>
