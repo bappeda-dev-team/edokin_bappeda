@@ -8,6 +8,7 @@ use App\Models\TahunDokumen;
 use Illuminate\Http\Request;
 use App\Http\Api\KakKotaMadiunApi;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 use Barryvdh\DomPDF\Facade as PDF;
 use PhpOffice\PhpWord\PhpWord;
@@ -40,7 +41,6 @@ class Bab5Controller extends Controller
     public function create()
     {
         $api = new KakKotaMadiunApi();
-    
 
         try {
             $urusan_opd = $api->urusanOpd();
@@ -58,38 +58,42 @@ class Bab5Controller extends Controller
         return view('layouts.admin.bab5.create', compact('kodeOpds', 'jenis', 'tahun'));
     }
     // Remove this block to avoid duplicate method definition
-      // Store a new Bab4 record in the database
-      public function store(Request $request)
-      {
-          // Validation
-          $validatedData = $request->validate([
-              'nama_bab' => 'required|string|max:255',
-              'jenis_id' => 'required|integer|exists:jenis,id',
-              'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
-              'kode_opd' => 'required|string|max:50',
-              'nama_opd' => 'nullable|string|max:255',
-              'tujuan_opd' => 'nullable|string',
-              'sasaran_opd' => 'nullable|string',
-              'uraian' => 'nullable|string',
-          ]);
-      
-          try {
-              // Store the validated data
-              Bab5::create($validatedData);
-              return redirect()->route('layouts.admin.bab5.index')->with('success', 'Data has been saved successfully!');
-          } catch (\Exception $e) {
-              Log::error('Failed to store Bab5 record:', ['error' => $e->getMessage()]);
-              return redirect()->back()->withErrors('Failed to save data.');
-          }
-      }
-      
+    // Store a new Bab4 record in the database
+    public function store(Request $request)
+    {
+        // Validation
+        $validatedData = $request->validate([
+            'nama_bab' => 'required|string|max:255',
+            'jenis_id' => 'required|integer|exists:jenis,id',
+            'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
+            'kode_opd' => 'required|string|max:50',
+            'nama_opd' => 'nullable|string|max:255',
+            'tujuan_opd' => 'nullable|string',
+            'sasaran_opd' => 'nullable|array',
+            'strategi' => 'nullable|string',
+            'arah_kebijakan' => 'nullable|array',
+            'uraian' => 'nullable|string',
+        ]);
+
+        try {
+            $validatedData['sasaran_opd'] = json_encode($request->input('sasaran_opd'));
+            $validatedData['arah_kebijakan'] = json_encode($request->input('arah_kebijakan'));
+            // Store the validated data
+            Bab5::create($validatedData);
+            return redirect()->route('layouts.admin.bab5.index')->with('success', 'Data has been saved successfully!');
+        } catch (\Exception $e) {
+            Log::error('Failed to store Bab5 record:', ['error' => $e->getMessage()]);
+            return redirect()->back()->withErrors('Failed to save data.');
+        }
+    }
+
 
     // Fetch details of an OPD based on kode_opd
     public function getOpdDetails($kode_opd)
     {
         \Log::info('Received Kode OPD:', ['kode_opd' => $kode_opd]);
 
-        
+
         try {
             $api = new KakKotaMadiunApi();
             $response = $api->urusanOpd();
@@ -147,11 +151,8 @@ class Bab5Controller extends Controller
         }
     }
 
-
-  
-
     // Show form to edit an existing Bab4 record
-  
+
     public function edit($id)
     {
         $api = new KakKotaMadiunApi();
@@ -165,16 +166,15 @@ class Bab5Controller extends Controller
             $kodeOpds = collect();
         }
 
-        $bab5 = Bab5::findOrFail($id); // Fetch the record you want to edit
+        $bab5 = Bab5::findOrFail($id);
+
+        $bab5->sasaran_opd = json_decode($bab5->sasaran_opd); // Decode JSON to array
+        $bab5->arah_kebijakan = json_decode($bab5->arah_kebijakan); // Decode JSON to array// Fetch the record you want to edit
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
         return view('layouts.admin.bab5.edit', compact('bab5', 'kodeOpds', 'jenis', 'tahun'));
     }
-
-    
-    
-
 
     // Update an existing Bab5 record in the database
     public function update(Request $request, $id)
@@ -186,12 +186,18 @@ class Bab5Controller extends Controller
             'kode_opd' => 'required|string|max:50',
             'nama_opd' => 'nullable|string|max:255',
             'tujuan_opd' => 'nullable|string',
-            'sasaran_opd' => 'nullable|string',
+            'sasaran_opd' => 'nullable|array',
+            'strategi' => 'nullable|string',
+            'arah_kebijakan' => 'nullable|array',
             'uraian' => 'nullable|string',
         ]);
 
         try {
             $bab5 = Bab5::findOrFail($id);
+
+            $validatedData['sasaran_opd'] = json_encode($request->input('sasaran_opd'));
+            $validatedData['arah_kebijakan'] = json_encode($request->input('arah_kebijakan'));
+            // Store the validated data
             $bab5->update($validatedData); // Update the record with new data
             return redirect()->route('layouts.admin.bab5.index')->with('success', 'Data has been updated successfully!');
         } catch (\Exception $e) {
@@ -199,7 +205,6 @@ class Bab5Controller extends Controller
             return redirect()->back()->withErrors('Failed to update data.');
         }
     }
-
 
 
     public function destroy($id)
@@ -210,77 +215,149 @@ class Bab5Controller extends Controller
         return redirect()->route('layouts.admin.bab5.index')->with('success', 'BAB 1 deleted successfully');
     }
 
-   
     public function show($id)
     {
         $bab5 = Bab5::findOrFail($id);
-        
-        // Fetch the OPD details
-        $api = new KakKotaMadiunApi();
-        $opdDetails = $this->getOpdDetails($bab5->kode_opd);
-        $opdData = json_decode($opdDetails->content(), true);
-        
-        // Initialize variables
-        $nama_opd = $tujuan_opd = $sasaran_opd = $uraian = 'Data not available';
-        
-        // Check for errors in API response
-        if (!isset($opdData['message'])) {
-            $nama_opd = $opdData['nama_opd'] ?? 'Data not available';
-            $tujuan_opd = $opdData['tujuan_opd'] ?? 'Data not available';
-            $sasaran_opd = $opdData['sasaran_opd'] ?? 'Data not available';
-        }
 
-        // Assuming $uraian comes from the Bab5 model
-        $uraian = $bab5->uraian; // Adjust this if necessary
-        
-        return view('layouts.admin.bab5.show', compact('bab5', 'nama_opd', 'tujuan_opd', 'sasaran_opd', 'uraian'));
+        $kode_opd = $bab5->kode_opd;
+        $tahun = $bab5->tahun->tahun;
+
+        $api = new KakKotaMadiunApi();
+        $strategiResponse = $api->strategiArahKebijakan($tahun, $kode_opd);
+        $uraian = $bab5->uraian;
+
+        if ($strategiResponse->successful()) {
+            $strategiData = $strategiResponse->json();
+
+
+            return view('layouts.admin.bab5.show', [
+                'bab5' => $bab5,
+                'uraian' => $uraian,
+                'nama_opd' => $strategiData['nama_opd'],
+                'tujuan_opd' => $strategiData['tujuan_opd'],
+                'strategi' => $strategiData['strategi'],
+                'sasaran_opd_list' => $strategiData['sasaran_opd_list'],
+                'kebijakan_list' => $strategiData['kebijakan_list'],
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Gagal mengambil data strategi arah kebijakan.');
+        }
     }
 
+    public function getStrategiArahKebijakan($tahun, $kode_opd)
+    {
 
-    
+        try {
+            $api = new KakKotaMadiunApi();
+            $response = $api->strategiArahKebijakan($tahun, $kode_opd);
+
+            \Log::info('API Response Status:', ['status' => $response->status()]);
+            if ($response->successful()) {
+                $data = $response->json();
+
+                $tujuan_opd = $data['tujuan_opd'] ?? 'Data tidak tersedia';
+                $sasaran_opd = [];
+                $strategi = $data['strategi'] ?? 'Data tidak tersedia';
+                $arah_kebijakan = [];
+                if (isset($data['sasaran_opd_list']) && is_array($data['sasaran_opd_list'])) {
+                    foreach ($data['sasaran_opd_list'] as $sasaran) {
+                        $sasaran_opd[] = $sasaran['sasaran_opd'];
+                    }
+                }
+                if (isset($data['kebijakan_list']) && is_array($data['kebijakan_list'])) {
+                    foreach ($data['kebijakan_list'] as $kebijakan) {
+                        $arah_kebijakan[] = $kebijakan['arah_kebijakan'];
+                    }
+                }
+
+                return response()->json([
+                    'tahun' => $tahun,
+                    'tujuan_opd' => $tujuan_opd,
+                    'sasaran_opd' => implode("\n", $sasaran_opd),
+                    'strategi' => $strategi,
+                    'arah_kebijakan' => implode("\n", $arah_kebijakan),
+                ]);
+            } else {
+                return response()->json(['message' => 'Failed to fetch data'], 500);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error fetching data: ' . $e->getMessage());
+            return response()->json(['message' => 'An error occurred'], 500);
+        }
+    }
+
     public function exportPdf($id)
     {
         try {
+            // Find the corresponding Bab5 record, or fail if not found
             $bab5 = Bab5::findOrFail($id);
     
+            $kode_opd = $bab5->kode_opd;
+            $tahun = $bab5->tahun->tahun;
+            // Initialize API and fetch strategi and kebijakan data
             $api = new KakKotaMadiunApi();
-            $opdDetails = $this->getOpdDetails($bab5->kode_opd);
-            $opdData = json_decode($opdDetails->content(), true);
+            $strategiResponse = $api->strategiArahKebijakan($tahun, $kode_opd);
     
-            $pdfContent = view('layouts.admin.bab5.pdf', [
-                'bab5' => $bab5,
-                'nama_opd' => $opdData['nama_opd'] ?? 'Data not available',
-                'tujuan_opd' => $opdData['tujuan_opd'] ?? 'Data not available',
-                'sasaran_opd' => $opdData['sasaran_opd'] ?? 'Data not available',
-            ])->render();
+            // Check if the API request was successful
+            if ($strategiResponse->successful()) {
+                // Parse the response JSON
+                $strategiData = $strategiResponse->json();
     
-            $mpdf = new \Mpdf\Mpdf([
-                'mode' => 'utf-8',
-                // Custom F4 (HVS) paper size: 210mm x 330mm
-                'format' => [210, 330],
-                'orientation' => 'P',
-                'tempDir' => storage_path('app/temp'),
-                'margin_left' => 25, // Tambahkan margin kiri untuk penjilidan
-                'margin_right' => 15, // Margin kanan standar
-                'margin_top' => 20, // Margin atas
-                'margin_bottom' => 20, // Margin bawah
-            ]);
-
-            $mpdf->SetHTMLFooter('
-            <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
-                Renstra Elektronik Pemerintah Kota Madiun
-            </div>
-        ');
-
-            $mpdf->WriteHTML($pdfContent);
-            $filename = "Bab5_{$bab5->id}.pdf";
-            $mpdf->Output($filename, 'I');
+                // Validate that the expected data is present
+                if (isset($strategiData['nama_opd'], $strategiData['tujuan_opd'], $strategiData['strategi'], $strategiData['sasaran_opd_list'], $strategiData['kebijakan_list'])) {
+                    // Render the view to HTML for PDF generation
+                    $html = view('layouts.admin.bab5.pdf', [
+                        'bab5' => $bab5,
+                        'uraian' => $bab5->uraian,
+                        'nama_opd' => $strategiData['nama_opd'],
+                        'tujuan_opd' => $strategiData['tujuan_opd'],
+                        'strategi' => $strategiData['strategi'],
+                        'sasaran_opd_list' => $strategiData['sasaran_opd_list'],
+                        'kebijakan_list' => $strategiData['kebijakan_list'],
+                    ])->render();
+    
+                    // Create a new mPDF instance with the desired settings
+                    $mpdf = new \Mpdf\Mpdf([
+                        'mode' => 'utf-8',
+                        'format' => [210, 330], // Custom F4 size: 210mm x 330mm
+                        'orientation' => 'P',    // Portrait orientation
+                        'tempDir' => storage_path('app/temp'),
+                        'margin_left' => 25,      // Left margin for binding
+                        'margin_right' => 15,     // Right margin
+                        'margin_top' => 20,       // Top margin
+                        'margin_bottom' => 20,    // Bottom margin
+                    ]);
+    
+                    // Set the footer
+                    $mpdf->SetHTMLFooter('
+                        <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
+                            Renstra Elektronik Pemerintah Kota Madiun
+                        </div>
+                    ');
+    
+                    // Write the HTML content to the PDF
+                    $mpdf->WriteHTML($html);
+    
+                    $filename = 'bab5-' . $id . '.pdf';
+                    $mpdf->Output($filename, 'I');
+                } else {
+                    // Log if the expected fields are missing in the API response
+                    \Log::error('Incomplete API response', ['response' => $strategiData]);
+                    return response()->json(['error' => 'Incomplete data from API'], 500);
+                }
+            } else {
+                // Log the failed API request and response body
+                \Log::error('API request failed', [
+                    'status' => $strategiResponse->status(),
+                    'response' => $strategiResponse->body()
+                ]);
+                return response()->json(['error' => 'API request failed'], 500);
+            }
         } catch (\Exception $e) {
+            // Log any unexpected exceptions that occur during PDF generation
             \Log::error('Failed to generate PDF:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Unable to generate PDF'], 500);
         }
     }
-
     
-
 }

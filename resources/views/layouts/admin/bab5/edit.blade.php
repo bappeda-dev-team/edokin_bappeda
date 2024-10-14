@@ -1,0 +1,265 @@
+@extends('layouts.admin.main')
+
+@section('title', 'Edit BAB 5')
+
+@section('content')
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Edit BAB 5</h4>
+                </div>
+                <div class="card-body">
+                    <a href="{{ route('layouts.admin.bab5.index') }}">
+                        <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
+                    </a>
+                    <form action="{{ route('bab5.update', $bab5->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <!-- Nama Bab Field -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Bab</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" name="nama_bab" class="form-control"
+                                    value="{{ old('nama_bab', $bab5->nama_bab) }}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Jenis</label>
+                            <div class="col-sm-12 col-md-4">
+                                <select name="jenis_id" class="form-control selectric" required>
+                                    <option value="">Pilih Jenis</option>
+                                    @foreach ($jenis as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ $bab5->jenis_id == $item->id ? 'selected' : '' }}>{{ $item->jenis }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tahun</label>
+                            <div class="col-sm-12 col-md-4">
+                                <select name="tahun_id" id="tahun_id" class="form-control selectric" required>
+                                    <option value="">Pilih Tahun</option>
+                                    @foreach ($tahun as $year)
+                                        <option value="{{ $year->id }}" data-tahun="{{ $year->tahun }}"
+                                            {{ $bab5->tahun_id == $year->id ? 'selected' : '' }}>{{ $year->tahun }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
+                            <div class="col-sm-12 col-md-4">
+                                <select name="kode_opd" id="kode_opd" class="form-control select2" required>
+                                    <option value="">Pilih Kode OPD</option>
+                                    @foreach ($kodeOpds as $kode_opd)
+                                        <option value="{{ $kode_opd }}"
+                                            {{ $bab5->kode_opd == $kode_opd ? 'selected' : '' }}>
+                                            {{ $kode_opd }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Nama OPD Field -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly
+                                    value="{{ old('nama_opd', $bab5->nama_opd) }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Visi dan Misi</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table>
+                                    <!-- VISI -->
+                                    <tr>
+                                        <th colspan="4">VISI:</th>
+                                    </tr>
+
+                                    <!-- MISI 1 -->
+                                    <tr>
+                                        <th colspan="4">MISI 1:</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Tujuan</th>
+                                        <th>Sasaran</th>
+                                        <th>Strategi</th>
+                                        <th>Arah Kebijakan</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea name="tujuan_opd" id="tujuan_opd">{{ old('tujuan_opd', $bab5->tujuan_opd) }}</textarea>
+                                        </td>
+                                        <td>
+                                            @foreach ($bab5->sasaran_opd as $index => $sasaran)
+                                                <textarea name="sasaran_opd[]" id="sasaran_opd_{{ $index }}" rows="2">{{ old('sasaran_opd.' . $index, $sasaran) }}</textarea>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            <textarea name="strategi" id="strategi">{{ old('strategi', $bab5->strategi) }}</textarea>
+                                        </td>
+                                        <td>
+                                            @foreach ($bab5->arah_kebijakan as $index => $kebijakan)
+                                                <textarea name="arah_kebijakan[]" id="arah_kebijakan_{{ $index }}" rows="2">{{ old('arah_kebijakan.' . $index, $kebijakan) }}</textarea>
+                                            @endforeach
+                                        </td>
+                                    </tr>
+
+                                    <!-- Add more rows as needed -->
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea name="uraian" class="summernote">{{ old('uraian', $bab5->uraian) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <div class="col-sm-12 col-md-4 offset-md-2">
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2
+            $('.select2').select2({
+                placeholder: 'Pilih Kode OPD',
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Event handler for when the value of select2 changes
+            $('.select2').on('change', function() {
+                const kodeOpd = $(this).val();
+                const namaOpdInput = $('#nama_opd');
+
+                if (kodeOpd) {
+                    // Call your API to fetch nama OPD and bidang urusan based on selected kode OPD
+                    fetch(`/api/urusan_opd/${kodeOpd}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('API Response:', data); // Debug: log API response
+                            if (data.error) {
+                                console.error('API Error:', data.error);
+                                namaOpdInput.val(''); // Clear nama OPD input
+                            } else {
+                                // Set the input values based on the API response
+                                namaOpdInput.val(data.nama_opd ||
+                                    ''); // Set nama OPD                      
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Fetch Error:', error);
+                            namaOpdInput.val('');
+                        });
+                } else {
+                    // Clear fields if no kode_opd selected
+                    namaOpdInput.val('');
+                }
+            });
+
+            $('#tahun_id, #kode_opd').on('change', function() {
+                const kodeOpd = $('#kode_opd').val();
+                const tahun = $('#tahun_id').find(':selected').data('tahun');
+
+                const tujuanOpd = $('#tujuan_opd').val('');
+                const sasaranOpd = $('#sasaran_opd').val('');
+                const strategiOpd = $('#strategi').val('');
+                const arahKebijakan = $('#arah_kebijakan').val('');
+
+                //     tujuanOpd.empty();
+                //     sasaranOpd.empty();
+                //     strategiOpd.empty();
+                //     arahKebijakan.empty();
+
+                //    if (kodeOpd && tahun) {
+                //         lastKodeOpd = kodeOpd;
+                //         lastTahun = tahun;
+                //     }
+
+                //     const fetchKodeOpd = kodeOpd || lastKodeOpd;
+                //     const fetchTahun = tahun || lastTahun;
+
+                if (kodeOpd && tahun) {
+                    fetch(`/api/strategi-arah-kebijakan/${tahun}/${kodeOpd}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('API Response:', data); // Debug: log API response
+                            if (data) {
+                                $('#tujuan_opd').val(data.tujuan_opd || '');
+                                $('textarea[name="sasaran_opd[]"]').each(function(index) {
+                                    $(this).val(data.sasaran_opd|| '');
+                                });
+                                $('#strategi').val(data.strategi || '');
+                                $('textarea[name="arah_kebijakan[]"]').each(function(index) {
+                                    $(this).val(data.arah_kebijakan || '');
+                                });
+                            } else {
+                                alert('Data tidak ditemukan untuk tahun dan kode OPD yang dipilih.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                            alert('Terjadi kesalahan saat mengambil data.');
+                        });
+                }
+            });
+
+            // Initialize Summernote for all elements with the class 'summernote'
+            $('.summernote').summernote({
+                height: 300, // set the height of the editor
+                minHeight: null, // set minimum height of the editor
+                maxHeight: null, // set maximum height of the editor
+                focus: true // set focus to editable area after initializing summernote
+            });
+        });
+    </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+@endsection

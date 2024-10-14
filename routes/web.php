@@ -120,6 +120,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Route::delete('/dashboard/delete-bab1/{id}', [Bab1Controller::class, 'destroy'])->name('bab1.destroy');
     Route::get('/api/urusan_opd/{kode_opd}', [Bab1Controller::class, 'getUrusanOpd']);
+    Route::get('/api/strategi-arah-kebijakan/{tahun}/{kode_opd}', [Bab5Controller::class, 'getStrategiArahKebijakan']);
     // Route::get('/api/bidang_urusan/{kode_bidang_urusan}', [Bab1Controller::class, 'getBidangUrusan']);
     // Route::get('/get-bidang-urusan/{kode_opd}', [Bab1Controller::class, 'getUrusanOpd']);
     // Route::get('/get-nama-bidang-urusan/{kode_bidang_urusan}', [Bab1Controller::class, 'getNamaBidangUrusan']);

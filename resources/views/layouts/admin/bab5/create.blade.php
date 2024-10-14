@@ -4,248 +4,265 @@
 
 @section('content')
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h4>Create BAB 5</h4>
-            </div>
-            <div class="card-body">
-                <a href="{{ route('layouts.admin.bab5.index') }}">
-                    <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
-                </a>
-                <form action="{{ route('bab5.store') }}" method="POST">
-                    @csrf
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Create BAB 5</h4>
+                </div>
+                <div class="card-body">
+                    <a href="{{ route('layouts.admin.bab5.index') }}">
+                        <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
+                    </a>
+                    <form action="{{ route('bab5.store') }}" method="POST">
+                        @csrf
 
-                    <!-- Nama Bab Field -->
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Bab</label>
-                        <div class="col-sm-12 col-md-4">
-                            <input type="text" name="nama_bab" class="form-control" value="{{ old('nama_bab') }}" required>
-                            @error('nama_bab')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                        <!-- Nama Bab Field -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Bab</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" name="nama_bab" class="form-control" value="{{ old('nama_bab') }}"
+                                    required>
+                                @error('nama_bab')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Jenis Field -->
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Jenis</label>
-                        <div class="col-sm-12 col-md-4">
-                            <select name="jenis_id" class="form-control selectric" required>
-                                <option value="">Pilih Jenis</option>
-                                @foreach($jenis as $item)
-                                    <option value="{{ $item->id }}" {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
-                                        {{ $item->jenis }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('jenis_id')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                        <!-- Jenis Field -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Jenis</label>
+                            <div class="col-sm-12 col-md-4">
+                                <select name="jenis_id" class="form-control selectric" required>
+                                    <option value="">Pilih Jenis</option>
+                                    @foreach ($jenis as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
+                                            {{ $item->jenis }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('jenis_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Tahun Field -->
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tahun</label>
-                        <div class="col-sm-12 col-md-4">
-                            <select name="tahun_id" class="form-control selectric" required>
-                                <option value="">Pilih Tahun</option>
-                                @foreach($tahun as $year)
-                                    <option value="{{ $year->id }}" {{ old('tahun_id') == $year->id ? 'selected' : '' }}>
-                                        {{ $year->tahun }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('tahun_id')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                        <!-- Tahun Field -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tahun</label>
+                            <div class="col-sm-12 col-md-4">
+                                <select name="tahun_id" id="tahun_id" class="form-control selectric" required>
+                                    <option value="">Pilih Tahun</option>
+                                    @foreach ($tahun as $year)
+                                        <option value="{{ $year->id }}" data-tahun="{{ $year->tahun }}">
+                                            {{ $year->tahun }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('tahun_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Kode OPD Field -->
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
-                        <div class="col-sm-12 col-md-4">
-                            <select id="kode_opd" name="kode_opd" class="form-control select2">
-                                <option value="">Pilih Kode OPD</option>
-                                @foreach($kodeOpds as $kode_opd)
-                                    <option value="{{ $kode_opd }}">{{ $kode_opd }}</option>
-                                @endforeach
-                            </select>
+                        <!-- Kode OPD Field -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
+                            <div class="col-sm-12 col-md-4">
+                                <select id="kode_opd" name="kode_opd" class="form-control select2">
+                                    <option value="">Pilih Kode OPD</option>
+                                    @foreach ($kodeOpds as $kode_opd)
+                                        <option value="{{ $kode_opd }}">{{ $kode_opd }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Nama OPD Field -->
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                        <div class="col-sm-12 col-md-4">
-                            <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly>
+                        <!-- Nama OPD Field -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Tujuan OPD Field -->
-                    {{-- <div class="form-group row mb-4">
+                        <!-- Tujuan OPD Field -->
+                        {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tujuan OPD</label>
                         <div class="col-sm-12 col-md-4">
                             <textarea id="tujuan_opd" name="tujuan_opd" class="form-control" rows="4" readonly></textarea>
                         </div>
                     </div> --}}
 
-                    <!-- Sasaran OPD Field -->
-                    {{-- <div class="form-group row mb-4">
+                        <!-- Sasaran OPD Field -->
+                        {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran OPD</label>
                         <div class="col-sm-12 col-md-4">
                             <textarea id="sasaran_opd" name="sasaran_opd" class="form-control" rows="4" readonly></textarea>
                         </div>
                     </div> --}}
 
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Visi dan Misi</label>
-                        <div class="col-sm-12 col-md-10">
-                    <table >
-                        <!-- VISI -->
-                        <tr>
-                            <th colspan="4">VISI:</th>
-                        </tr>
-                        
-                        <!-- MISI 1 -->
-                        <tr>
-                            <th colspan="4">MISI 1:</th>
-                        </tr>
-                        <tr>
-                            <th>Tujuan</th>
-                            <th>Sasaran</th>
-                            <th>Strategi</th>
-                            <th>Arah Kebijakan</th>
-                        </tr>
-                        <tr>
-                            <td>Tujuan 1</td>
-                            <td></td>
-                            <td>Strategi 1.1</td>
-                            <td>Arah kebijakan 1.1</td>
-                        </tr>
-                        <tr>
-                            <td>Tujuan 2</td>
-                            <td>Sasaran 2.1</td>
-                            <td>Strategi 1.2</td>
-                            <td>Arah kebijakan 1.2</td>
-                        </tr>
-                        <!-- Add more rows as needed -->
-                    
-                        <!-- MISI 2 -->
-                        <tr>
-                            <th colspan="4">MISI 2:</th>
-                        </tr>
-                        <tr>
-                            <th>Tujuan</th>
-                            <th>Sasaran</th>
-                            <th>Strategi</th>
-                            <th>Arah Kebijakan</th>
-                        </tr>
-                        <tr>
-                            <td>Tujuan 1</td>
-                            <td>Sasaran 1.1</td>
-                            <td>Strategi 1.1</td>
-                            <td>Arah kebijakan 1.1</td>
-                        </tr>
-                        <tr>
-                            <td>Tujuan 2</td>
-                            <td>Sasaran 2.1</td>
-                            <td>Strategi 1.2</td>
-                            <td>Arah kebijakan 1.2</td>
-                        </tr>
-                        <!-- Add more rows as needed -->
-                    </table>
-                    </div>
-                    </div>
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Visi dan Misi</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table>
+                                    <!-- VISI -->
+                                    <tr>
+                                        <th colspan="4">VISI:</th>
+                                    </tr>
 
-                    <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
-                        <div class="col-sm-12 col-md-10">
-                            <textarea name="uraian" class="summernote"></textarea>
-                        </div>
-                    </div>
+                                    <!-- MISI 1 -->
+                                    <tr>
+                                        <th colspan="4">MISI 1:</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Tujuan</th>
+                                        <th>Sasaran</th>
+                                        <th>Strategi</th>
+                                        <th>Arah Kebijakan</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea name="tujuan_opd" id="tujuan_opd"></textarea>
+                                        </td>
+                                        <td>
+                                            <textarea name="sasaran_opd[]" id="sasaran_opd"></textarea>
+                                        </td>
+                                        <td>
+                                            <textarea name="strategi" id="strategi"></textarea>
+                                        </td>
+                                        <td>
+                                            <textarea name="arah_kebijakan[]" id="arah_kebijakan"></textarea>
+                                        </td>
+                                    </tr>
 
-                    <div class="form-group row mb-4">
-                        <div class="col-sm-12 col-md-4 offset-md-2">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <!-- Add more rows as needed -->
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </form>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea name="uraian" class="summernote"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <div class="col-sm-12 col-md-4 offset-md-2">
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 
 @section('scripts')
-<script>
-    $(document).ready(function() {
-        // Initialize Select2 on the Kode OPD dropdown
-        $('#kode_opd').select2({
-            placeholder: 'Pilih Kode OPD',
-            allowClear: true,
-            width: '100%'
-        }).on('select2:select', function(e) {
-            // Fetch the selected OPD code and call the fetchOpdDetails function
-            const kodeOpd = e.params.data.id;
-            if (kodeOpd) {
-                fetchOpdDetails(kodeOpd);
-            } else {
-                // Clear fields if no OPD is selected
-                document.getElementById('nama_opd').value = '';
-                document.getElementById('tujuan_opd').value = '';
-                document.getElementById('sasaran_opd').value = '';
-            }
-        });
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2
+            $('.select2').select2({
+                placeholder: 'Pilih Kode OPD',
+                allowClear: true,
+                width: '100%'
+            });
 
-        // Function to fetch OPD details
-        async function fetchOpdDetails(kodeOpd) {
-            try {
-                console.log(`Fetching details for OPD code: ${kodeOpd}`);
-                const response = await fetch(`/api/opd-details/${encodeURIComponent(kodeOpd)}`);
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error(`Network response was not ok. Status: ${response.status}, Response: ${errorText}`);
-                    throw new Error(`Network response was not ok. Status: ${response.status}, Response: ${errorText}`);
-                }
-                const data = await response.json();
-                console.log('Fetched data:', data);
-                if (data) {
-                    document.getElementById('nama_opd').value = data.nama_opd || '';
-                    document.getElementById('tujuan_opd').value = data.tujuan_opd || '';
-                    document.getElementById('sasaran_opd').value = data.sasaran_opd || '';
+            // Event handler for when the value of select2 changes
+            $('.select2').on('change', function() {
+                const kodeOpd = $(this).val();
+                const namaOpdInput = $('#nama_opd');
+
+                if (kodeOpd) {
+                    // Call your API to fetch nama OPD and bidang urusan based on selected kode OPD
+                    fetch(`/api/urusan_opd/${kodeOpd}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('API Response:', data); // Debug: log API response
+                            if (data.error) {
+                                console.error('API Error:', data.error);
+                                namaOpdInput.val(''); // Clear nama OPD input
+                            } else {
+                                // Set the input values based on the API response
+                                namaOpdInput.val(data.nama_opd ||
+                                    ''); // Set nama OPD                      
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Fetch Error:', error);
+                            namaOpdInput.val('');
+                        });
                 } else {
-                    console.error('Error fetching OPD details: No data received.');
+                    // Clear fields if no kode_opd selected
+                    namaOpdInput.val('');
                 }
-            } catch (error) {
-                console.error('Failed to fetch OPD details:', error);
-            }
+            });
+
+            $('#tahun_id, #kode_opd').on('change', function() {
+                const kodeOpd = $('#kode_opd').val();
+                const tahun = $('#tahun_id').find(':selected').data('tahun');
+
+                const tujuanOpd = $('#tujuan_opd').val('');
+                const sasaranOpd = $('#sasaran_opd').val('');
+                const strategiOpd = $('#strategi').val('');
+                const arahKebijakan = $('#arah_kebijakan').val('');
+
+                if (kodeOpd && tahun) {
+                    fetch(`/api/strategi-arah-kebijakan/${tahun}/${kodeOpd}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('API Response:', data); // Debug: log API response
+                            if (data) {
+                                $('#tujuan_opd').val(data.tujuan_opd || '');
+                                $('#sasaran_opd').val(data.sasaran_opd || '');
+                                $('#strategi').val(data.strategi || '');
+                                $('#arah_kebijakan').val(data.arah_kebijakan || '');
+                            } else {
+                                alert('Data tidak ditemukan untuk tahun dan kode OPD yang dipilih.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                            alert('Terjadi kesalahan saat mengambil data.');
+                        });
+                }
+            });
+
+            // Initialize Summernote for all elements with the class 'summernote'
+            $('.summernote').summernote({
+                height: 300, // set the height of the editor
+                minHeight: null, // set minimum height of the editor
+                maxHeight: null, // set maximum height of the editor
+                focus: true // set focus to editable area after initializing summernote
+            });
+        });
+    </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
         }
-    });
-</script>
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-        text-align: center;
-    }
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-</style>
-    
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 @endsection

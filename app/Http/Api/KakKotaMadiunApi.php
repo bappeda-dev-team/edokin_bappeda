@@ -91,4 +91,14 @@ class KakKotaMadiunApi
 
         return $response;
     }
+    public function strategiArahKebijakan($tahun, $kode_opd)
+    {
+        $apiUrl = $this->BASE_URL . "/substansi_renstra/strategi_arah_kebijakan.json";
+        $response = Http::get($apiUrl, [
+            'tahun' => $tahun,
+            'kode_opd' => $kode_opd,
+        ]);
+
+        return $response;
+    }
 }

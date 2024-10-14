@@ -115,10 +115,18 @@
                             <th>Arah Kebijakan</th>
                         </tr>
                         <tr>
-                            <td>{{$tujuan_opd}}</td>
-                            <td><span>{{$sasaran_opd}}</td>
-                            <td>Strategi 1.1</td>
-                            <td>Arah kebijakan 1.1</td>
+                            <td>{{ $tujuan_opd }}</td>
+                            <td>
+                                @foreach ($sasaran_opd_list as $sasaran)
+                                    <p>{{ $sasaran['sasaran_opd'] }}</p>
+                                @endforeach
+                            </td>
+                            <td>{{ $strategi }}</td>
+                            <td>
+                                @foreach ($kebijakan_list as $kebijakan)
+                                    <p>{{ $kebijakan['arah_kebijakan'] }}</p>
+                                @endforeach
+                            </td>
                         </tr>
                         <tr>
                             <td>Tujuan 2</td>
@@ -154,7 +162,7 @@
                     </table>
                     
 
-                    <p class="indent"><span>...uraian...</span></p>
+                    <p class="indent"><span>{!! $uraian !!}</span></p>
                 </div>
             </div>
         </div>
