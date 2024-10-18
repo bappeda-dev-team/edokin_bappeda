@@ -122,7 +122,7 @@
                                         <th>Strategi</th>
                                         <th>Arah Kebijakan</th>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>
                                             <textarea name="tujuan_opd" id="tujuan_opd"></textarea>
                                         </td>
@@ -135,12 +135,37 @@
                                         <td>
                                             <textarea name="arah_kebijakan[]" id="arah_kebijakan"></textarea>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
 
-                                    <!-- Add more rows as needed -->
+                                    {{-- <tbody id="dynamic-rows"> --}}
+                                    <!-- Input rows akan ditambahkan di sini -->
+                                    <tr>
+                                        <td>
+                                            <div id="tujuan_opd-rows"></div>
+                                        </td>
+                                        <td>
+                                            <div id="sasaran_opd-rows"></div>
+                                        </td>
+                                        <td>
+                                            <div id="strategi-rows"></div>
+                                        </td>
+                                        <td>
+                                            <div id="arah_kebijakan-rows"></div>
+                                        </td>
+                                    </tr>
+                                    {{-- </tbody> --}}
                                 </table>
+                                {{-- <button id="add-row" type="button" class="btn btn-primary mt-3">Tambah Data</button> --}}
+                                <button id="add-tujuan" type="button" class="btn btn-primary mt-3">Tambah Tujuan</button>
+                                <button id="add-sasaran" type="button" class="btn btn-primary mt-3">Tambah Sasaran</button>
+                                <button id="add-strategi" type="button" class="btn btn-primary mt-3">Tambah
+                                    Strategi</button>
+                                <button id="add-kebijakan" type="button" class="btn btn-primary mt-3">Tambah Arah
+                                    Kebijakan</button>
                             </div>
                         </div>
+
+
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
@@ -197,33 +222,55 @@
                             namaOpdInput.val('');
                         });
                 } else {
-                    // Clear fields if no kode_opd selected
                     namaOpdInput.val('');
                 }
+            });
+
+            function addRowToCategory(category, value = '') {
+                const newRow = `<div >
+            <textarea name="${category}[]" >${value}</textarea>
+        </div>`;
+                $(`#${category}-rows`).append(newRow);
+            }
+
+            $('#add-tujuan').on('click', function() {
+                addRowToCategory('tujuan_opd');
+            });
+
+            $('#add-sasaran').on('click', function() {
+                addRowToCategory('sasaran_opd');
+            });
+
+            $('#add-strategi').on('click', function() {
+                addRowToCategory('strategi');
+            });
+
+            $('#add-kebijakan').on('click', function() {
+                addRowToCategory('arah_kebijakan');
             });
 
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
 
-                const tujuanOpd = $('#tujuan_opd').val('');
-                const sasaranOpd = $('#sasaran_opd').val('');
-                const strategiOpd = $('#strategi').val('');
-                const arahKebijakan = $('#arah_kebijakan').val('');
-
                 if (kodeOpd && tahun) {
                     fetch(`/api/strategi-arah-kebijakan/${tahun}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
-                            console.log('API Response:', data); // Debug: log API response
-                            if (data) {
-                                $('#tujuan_opd').val(data.tujuan_opd || '');
-                                $('#sasaran_opd').val(data.sasaran_opd || '');
-                                $('#strategi').val(data.strategi || '');
-                                $('#arah_kebijakan').val(data.arah_kebijakan || '');
-                            } else {
-                                alert('Data tidak ditemukan untuk tahun dan kode OPD yang dipilih.');
-                            }
+                            console.log('API Response:', data);
+                            $('#tujuan_opd-rows').empty();
+                            $('#sasaran_opd-rows').empty();
+                            $('#strategi-rows').empty();
+                            $('#arah_kebijakan-rows').empty();
+
+                            // Add initial rows based on fetched data
+                            addRowToCategory('tujuan_opd', data.tujuan_opd || '');
+                            const sasaranOpd = data.sasaran_opd || [];
+                            sasaranOpd.forEach(sasaran => addRowToCategory('sasaran_opd', sasaran));
+                            addRowToCategory('strategi', data.strategi || '');
+                            const arahKebijakan = data.arah_kebijakan || [];
+                            arahKebijakan.forEach(kebijakan => addRowToCategory('arah_kebijakan',
+                                kebijakan));
                         })
                         .catch(error => {
                             console.error('Error fetching data:', error);

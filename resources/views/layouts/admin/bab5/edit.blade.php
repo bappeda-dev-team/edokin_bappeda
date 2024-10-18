@@ -99,26 +99,34 @@
                                         <th>Arah Kebijakan</th>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <textarea name="tujuan_opd" id="tujuan_opd">{{ old('tujuan_opd', $bab5->tujuan_opd) }}</textarea>
+                                        <td id="tujuan_opd-rows">
+                                            @foreach ($bab5->tujuan_opd as $index => $tujuan)
+                                                <textarea name="tujuan_opd[]" id="tujuan_opd_{{ $index }}" rows="2">{{ old('tujuan_opd.' . $index, $tujuan) }}</textarea>
+                                            @endforeach
                                         </td>
-                                        <td>
+                                        <td id="sasaran_opd-rows">
                                             @foreach ($bab5->sasaran_opd as $index => $sasaran)
                                                 <textarea name="sasaran_opd[]" id="sasaran_opd_{{ $index }}" rows="2">{{ old('sasaran_opd.' . $index, $sasaran) }}</textarea>
                                             @endforeach
                                         </td>
-                                        <td>
-                                            <textarea name="strategi" id="strategi">{{ old('strategi', $bab5->strategi) }}</textarea>
+                                        <td id="strategi-rows">
+                                            @foreach ($bab5->strategi as $index => $strategii)
+                                                <textarea name="strategi[]" id="strategi_{{ $index }}" rows="2">{{ old('strategi.' . $index, $strategii) }}</textarea>
+                                            @endforeach
                                         </td>
-                                        <td>
+                                        <td id="arah_kebijakan-rows">
                                             @foreach ($bab5->arah_kebijakan as $index => $kebijakan)
                                                 <textarea name="arah_kebijakan[]" id="arah_kebijakan_{{ $index }}" rows="2">{{ old('arah_kebijakan.' . $index, $kebijakan) }}</textarea>
                                             @endforeach
                                         </td>
                                     </tr>
-
-                                    <!-- Add more rows as needed -->
                                 </table>
+                                <button id="add-tujuan" type="button" class="btn btn-primary mt-3">Tambah Tujuan</button>
+                                <button id="add-sasaran" type="button" class="btn btn-primary mt-3">Tambah Sasaran</button>
+                                <button id="add-strategi" type="button" class="btn btn-primary mt-3">Tambah
+                                    Strategi</button>
+                                <button id="add-kebijakan" type="button" class="btn btn-primary mt-3">Tambah Arah
+                                    Kebijakan</button>
                             </div>
                         </div>
 
@@ -182,45 +190,51 @@
                 }
             });
 
+            function addRowToCategory(category, value = '') {
+                const newRow = `<div>
+            <textarea name="${category}[]">${value}</textarea>
+        </div>`;
+                $(`#${category}-rows`).append(newRow);
+            }
+
+            $('#add-tujuan').on('click', function() {
+                addRowToCategory('tujuan_opd');
+            });
+
+            $('#add-sasaran').on('click', function() {
+                addRowToCategory('sasaran_opd');
+            });
+
+            $('#add-strategi').on('click', function() {
+                addRowToCategory('strategi');
+            });
+
+            $('#add-kebijakan').on('click', function() {
+                addRowToCategory('arah_kebijakan');
+            });
+
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
-
-                const tujuanOpd = $('#tujuan_opd').val('');
-                const sasaranOpd = $('#sasaran_opd').val('');
-                const strategiOpd = $('#strategi').val('');
-                const arahKebijakan = $('#arah_kebijakan').val('');
-
-                //     tujuanOpd.empty();
-                //     sasaranOpd.empty();
-                //     strategiOpd.empty();
-                //     arahKebijakan.empty();
-
-                //    if (kodeOpd && tahun) {
-                //         lastKodeOpd = kodeOpd;
-                //         lastTahun = tahun;
-                //     }
-
-                //     const fetchKodeOpd = kodeOpd || lastKodeOpd;
-                //     const fetchTahun = tahun || lastTahun;
 
                 if (kodeOpd && tahun) {
                     fetch(`/api/strategi-arah-kebijakan/${tahun}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
-                            console.log('API Response:', data); // Debug: log API response
-                            if (data) {
-                                $('#tujuan_opd').val(data.tujuan_opd || '');
-                                $('textarea[name="sasaran_opd[]"]').each(function(index) {
-                                    $(this).val(data.sasaran_opd|| '');
-                                });
-                                $('#strategi').val(data.strategi || '');
-                                $('textarea[name="arah_kebijakan[]"]').each(function(index) {
-                                    $(this).val(data.arah_kebijakan || '');
-                                });
-                            } else {
-                                alert('Data tidak ditemukan untuk tahun dan kode OPD yang dipilih.');
-                            }
+                            console.log('API Response:', data);
+                            $('#tujuan_opd-rows').empty();
+                            $('#sasaran_opd-rows').empty();
+                            $('#strategi-rows').empty();
+                            $('#arah_kebijakan-rows').empty();
+
+                            // Add initial rows based on fetched data
+                            addRowToCategory('tujuan_opd', data.tujuan_opd || '');
+                            const sasaranOpd = data.sasaran_opd || [];
+                            sasaranOpd.forEach(sasaran => addRowToCategory('sasaran_opd', sasaran));
+                            addRowToCategory('strategi', data.strategi || '');
+                            const arahKebijakan = data.arah_kebijakan || [];
+                            arahKebijakan.forEach(kebijakan => addRowToCategory('arah_kebijakan',
+                                kebijakan));
                         })
                         .catch(error => {
                             console.error('Error fetching data:', error);

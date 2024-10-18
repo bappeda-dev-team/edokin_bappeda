@@ -71,22 +71,22 @@ class KakKotaMadiunApi
 
         return $response;
     }
-    public function asets($kode_opd, $tahun)
+    public function asets($tahun,$kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/substansi_renstra/asets.json";
         $response = Http::get($apiUrl, [
+            'tahun' => $tahun,
             'kode_opd' => $kode_opd,
-            'tahun' => $tahun
         ]);
 
         return $response;
     }
-    public function sumberDayaManusia($kode_opd, $tahun)
+    public function sumberDayaManusia($tahun,$kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/substansi_renstra/sumber_daya_manusia.json";
         $response = Http::get($apiUrl, [
+            'tahun' => $tahun,
             'kode_opd' => $kode_opd,
-            'tahun' => $tahun
         ]);
 
         return $response;
