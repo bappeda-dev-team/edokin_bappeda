@@ -99,6 +99,7 @@
             background-color: #f9f9f9;
         }
     </style>
+     <link rel="stylesheet" href="https://unpkg.com/treeflex/dist/css/treeflex.css">
     <section class="section">
         <div class="section-header">
             <h1>Detail BAB II</h1>
@@ -208,7 +209,7 @@
 
                             <p style="text-align: center">Gambar Struktur Organisasi
                             </p>
-                        </div>
+                            
                         <h4>2.2 Sumber Daya Perangkat Daerah</h4>
                         <p class="indent"><span
                                 style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
