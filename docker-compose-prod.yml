@@ -16,7 +16,6 @@ services:
     restart: on-failure
     volumes:
       - edokin-database-volume:/var/lib/mysql
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
 
   nginx:
     image: nginx:alpine
@@ -25,7 +24,6 @@ services:
       - "${PORT}:80"
     volumes:
       - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d
 
 volumes:
   edokin-database-volume: {}
