@@ -5,6 +5,8 @@ services:
                 user: deploy
                 uid: 1000
             context: ./
+            platforms:
+                - linux/amd64
             dockerfile: Dockerfile
         image: ghcr.io/bappeda-dev-team/edokin:latest
         restart: unless-stopped
