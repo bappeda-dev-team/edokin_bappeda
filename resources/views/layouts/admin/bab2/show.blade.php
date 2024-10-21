@@ -207,8 +207,25 @@
                                 </ul>
                             </ol>
 
-                            <p style="text-align: center">Gambar Struktur Organisasi
+                            <p style="text-align: center">Gambar Struktur Organisasi :
                             </p>
+                            <div class="tf-tree" style="text-align: center">
+                                <ul>
+                                  <li>
+                                    <span class="tf-nc">2</span>
+                                    <ul>
+                                      <li><span class="tf-nc">4</span>
+                                       <ul>
+                                          <li><span class="tf-nc">A</span></li>
+                                          <li><span class="tf-nc">B</span></li>
+                                          <li><span class="tf-nc">C</span></li>
+                                      </ul>
+                                    </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                            <p style="text-align: center">Gambar 2.1</p>
                             
                         <h4>2.2 Sumber Daya Perangkat Daerah</h4>
                         <p class="indent"><span
