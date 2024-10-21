@@ -65,7 +65,7 @@
 
         .list-item {
             /* display: flex;
-            justify-content: space-around; */
+                            justify-content: space-around; */
             margin-bottom: 5px;
             /* Space between items */
         }
@@ -156,7 +156,7 @@
                             Madiun Nomor 8 Tahun 2020.</p>
                         </p>
                         </ol>
-                        <p class="indent">Tugas <span
+                        {{-- <p class="indent">Tugas <span
                                 style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan
                             rincian tugas :</p>
                         <div class="list">
@@ -201,6 +201,57 @@
                                                     <span style="color:red; display: inline-block;">: {{ $fungsi }}</>
                                                 </li>
                                             @endif
+                                        @endforeach
+                                    @endif
+                                </ul>
+                            </ol>
+
+                            <p style="text-align: center">Gambar Struktur Organisasi
+                            </p>
+                        </div> --}}
+                        <p class="indent">Tugas <span
+                                style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan
+                            rincian tugas :</p>
+                        <div class="list">
+                            <ol style="list-style-type: none">
+                                <ul style="list-style-type: none; padding-left: 0;">
+                                    @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
+                                        <li class="list-item text-center">Tidak ada data tersedia.</li>
+                                    @else
+                                        @foreach ($tugas_fungsi as $item)
+                                            <!-- Menampilkan nama jabatan -->
+                                            <li class="list-item"
+                                                style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
+                                                <span style="min-width: 200px;">
+                                                    {{ ucwords(strtolower($item['nama_jabatan'])) }}
+                                                </span>
+                                                <span style="color:red; display: inline-block;">: &nbsp;</span>
+                                                <span style="color:red; display: inline-block;"> {!! nl2br(e($item['tugas_jabatan'])) !!}</span>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+                            </ol>
+                        </div>
+                        <p class="indent">Fungsi <span
+                                style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan
+                            rincian tugas :</p>
+                        <div class="list">
+                            <ol style="list-style-type: none">
+                                <ul style="list-style-type: none; padding-left: 0;">
+                                    @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
+                                        <li class="list-item text-center">Tidak ada data tersedia.</li>
+                                    @else
+                                        @foreach ($tugas_fungsi as $item)
+                                            <!-- Menampilkan nama jabatan -->
+                                            <li class="list-item"
+                                                style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
+                                                <span style="min-width: 200px;">
+                                                    {{ ucwords(strtolower($item['nama_jabatan'])) }}
+                                                </span>
+                                                    <span style="color:red; display: inline-block;">: &nbsp;</span>
+                                                    <span style="color:red; display: inline-block;"> {!! nl2br(e($item['fungsi_jabatan'])) !!}</span>
+                                            </li>
                                         @endforeach
                                     @endif
                                 </ul>

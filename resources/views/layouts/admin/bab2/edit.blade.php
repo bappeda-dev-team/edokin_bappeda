@@ -121,19 +121,27 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if (empty($tugas_fungsi_array) || count($tugas_fungsi_array) === 0)
+                                            @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
                                                 <tr>
                                                     <td colspan="3" class="text-center">Tidak ada data sumber daya
                                                         manusia tersedia.</td>
                                                 </tr>
                                             @else
-                                                @for ($i = 0; $i < count($tugas_fungsi_array); $i += 3)
+                                                @foreach ($tugas_fungsi as $item)
                                                     <tr>
-                                                        <td>{{ $tugas_fungsi_array[$i] ?? '' }}</td>
-                                                        <td>{{ $tugas_fungsi_array[$i + 1] ?? '' }}</td>
-                                                        <td>{{ $tugas_fungsi_array[$i + 2] ?? '' }}</td>
+                                                        <td>
+                                                            {{ ucwords(strtolower($item['nama_jabatan'])) }}
+                                                        </td>
+                                                        <input type="hidden" name="nama_jabatan[]"
+                                                            value="{{ ucwords(strtolower($item['nama_jabatan'])) }}">
+                                                        <td>
+                                                            <textarea name="tugas_jabatan[]" id="">{!! strip_tags($item['tugas_jabatan'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</textarea>
+                                                        </td>
+                                                        <td>
+                                                            <textarea name="fungsi_jabatan[]" id="">{!! strip_tags($item['fungsi_jabatan'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</textarea>
+                                                        </td>
                                                     </tr>
-                                                @endfor
+                                                @endforeach
                                             @endif
                                         </tbody>
                                     </table>

@@ -81,18 +81,28 @@ class Bab2Controller extends Controller
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
 
+        // $tugasFungsi = [];
+        // if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
+        //     foreach ($request->nama_jabatan as $index => $namaJabatan) {
+        //         $tugas = $request->tugas_jabatan[$index] ?? '';
+        //         $fungsi = $request->fungsi_jabatan[$index] ?? '';
+        //         $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
+        //     }
+        // }
+        // $tugasFungsiString = implode("\n", $tugasFungsi);
         $tugasFungsi = [];
         if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
             foreach ($request->nama_jabatan as $index => $namaJabatan) {
-                $tugas = $request->tugas_jabatan[$index] ?? '';
-                $fungsi = $request->fungsi_jabatan[$index] ?? '';
-                $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
+                $tugasFungsi[] = [
+                    'nama_jabatan' => trim($namaJabatan),
+                    'tugas_jabatan' => trim($request->tugas_jabatan[$index] ?? ''),
+                    'fungsi_jabatan' => trim($request->fungsi_jabatan[$index] ?? ''),
+                ];
             }
         }
-        $tugasFungsiString = implode("\n", $tugasFungsi);
-
+    
         // Bab1::create($request->all());
-        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsiString]));
+        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => json_encode($tugasFungsi)]));
 
         return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 created successfully');
     }
@@ -109,10 +119,10 @@ class Bab2Controller extends Controller
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
         $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
-        $tugasFungsiString = $bab2->tugas_fungsi;
-        $tugas_fungsi_array = explode("\n", $tugasFungsiString);
-
-        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'tugas_fungsi_array'));
+        // $tugasFungsiString = $bab2->tugas_fungsi;
+        // $tugas_fungsi_array = explode("\n", $tugasFungsiString);
+        $tugas_fungsi = json_decode($bab2->tugas_fungsi, true);
+        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'tugas_fungsi'));
     }
 
     public function update(Request $request, $id)
@@ -144,18 +154,28 @@ class Bab2Controller extends Controller
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
 
+        // $tugasFungsi = [];
+        // if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
+        //     foreach ($request->nama_jabatan as $index => $namaJabatan) {
+        //         $tugas = $request->tugas_jabatan[$index] ?? '';
+        //         $fungsi = $request->fungsi_jabatan[$index] ?? '';
+        //         $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
+        //     }
+        // }
+
+        // $tugasFungsiString = implode("\n", $tugasFungsi);
         $tugasFungsi = [];
         if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
             foreach ($request->nama_jabatan as $index => $namaJabatan) {
-                $tugas = $request->tugas_jabatan[$index] ?? '';
-                $fungsi = $request->fungsi_jabatan[$index] ?? '';
-                $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
+                $tugasFungsi[] = [
+                    'nama_jabatan' => trim($namaJabatan),
+                    'tugas_jabatan' => trim($request->tugas_jabatan[$index] ?? ''),
+                    'fungsi_jabatan' => trim($request->fungsi_jabatan[$index] ?? ''),
+                ];
             }
         }
 
-        $tugasFungsiString = implode("\n", $tugasFungsi);
-
-        $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsiString]));
+        $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsi]));
 
         return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 updated successfully');
     }
@@ -197,9 +217,13 @@ class Bab2Controller extends Controller
             }
         }
 
-        $tugasFungsiString = $bab2->tugas_fungsi;
-        $tugasFungsiArray = explode("\n", $tugasFungsiString);
-
+        // $tugasFungsiString = $bab2->tugas_fungsi;
+        // $tugasFungsiArray = explode("\n", $tugasFungsiString);
+        // $tugasFungsiString = $bab2->tugas_fungsi;
+        // $tugasFungsiArray = array_filter(explode("\n", $tugasFungsiString), function ($value) {
+        //     return !empty(trim($value)); // Menghapus baris kosong dari array
+        // });
+        $tugasFungsi = json_decode($bab2->tugas_fungsi, true);
         $asetList = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
         $SDMList = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
 
@@ -209,7 +233,7 @@ class Bab2Controller extends Controller
             'selectedBidangUrusan' => $selectedBidangUrusan,
             'asets' => $asetList,
             'sumber_daya_manusia' => $SDMList,
-            'tugas_fungsi' => $tugasFungsiArray
+            'tugas_fungsi' => $tugasFungsi
         ]);
     }
 
@@ -230,9 +254,7 @@ class Bab2Controller extends Controller
             // Parse API response
             $urusan_opd = $response->json()['results'] ?? [];
 
-            $tugasFungsiString = $bab2->tugas_fungsi;
-            $tugas_fungsi = explode("\n", $tugasFungsiString);
-
+            $tugas_fungsi = json_decode($bab2->tugas_fungsi, true);
             $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
             $sumber_daya_manusia = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
 

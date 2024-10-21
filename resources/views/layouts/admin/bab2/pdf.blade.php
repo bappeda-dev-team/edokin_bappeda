@@ -139,7 +139,8 @@
                 <span>{{ $bidangUrusanText }} </span>
                 yang telah dibentuk sesuai Peraturan Daerah Kota Madiun Nomor 3 Tahun 2016 tentang Pembentukan dan
                 Susunan Perangkat Daerah sebagaimana telah diubah terakhir dengan Peraturan Daerah Kota Madiun Nomor 8
-                Tahun 2020.</p>
+                Tahun 2020.
+            </p>
             </p>
             </ol>
             <p class="indent">Tugas <span>{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan rincian tugas :</p>
@@ -149,17 +150,16 @@
                         @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
                             <li class="list-item text-center">Tidak ada data tersedia.</li>
                         @else
-                            @foreach ($tugas_fungsi as $index => $tugas)
-                                @if ($index % 3 === 0)
-                                    <!-- Menampilkan nama jabatan -->
-                                    <li class="list-item" style="display: flex; align-items: flex-start; padding: 5px 0;">
+                            @foreach ($tugas_fungsi as $item)
+                                <!-- Menampilkan nama jabatan -->
+                                <li class="list-item"
+                                    style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
                                     <span style="min-width: 200px;">
-                                        {{ ucwords(strtolower($tugas)) }} 
+                                        {{ ucwords(strtolower($item['nama_jabatan'])) }}
                                     </span>
-                                    @elseif ($index % 3 === 1)
-                                        <span style="display: inline-block;">: {{ $tugas }}</>
-                                    </li>
-                                @endif
+                                    <span style="color:red; display: inline-block;">: &nbsp;</span>
+                                    <span style="color:red; display: inline-block;"> {!! nl2br(e($item['tugas_jabatan'])) !!}</span>
+                                </li>
                             @endforeach
                         @endif
                     </ul>
@@ -170,21 +170,20 @@
                 <ol style="list-style-type: none">
                     <ul style="list-style-type: none; padding-left: 0;">
                         @if (empty($tugas_fungsi) || count($tugas_fungsi) === 0)
-                        <li class="list-item text-center">Tidak ada data tersedia.</li>
-                    @else
-                        @foreach ($tugas_fungsi as $index => $fungsi)
-                            @if ($index % 3 === 0)
+                            <li class="list-item text-center">Tidak ada data tersedia.</li>
+                        @else
+                            @foreach ($tugas_fungsi as $item)
                                 <!-- Menampilkan nama jabatan -->
-                                <li class="list-item" style="display: flex; align-items: flex-start; padding: 5px 0;">
+                                <li class="list-item"
+                                    style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
                                     <span style="min-width: 200px;">
-                                    {{ ucwords(strtolower($fungsi)) }} 
+                                        {{ ucwords(strtolower($item['nama_jabatan'])) }}
                                     </span>
-                                @elseif ($index % 3 === 2)
-                                    <span style="display: inline-block;">: {{ $fungsi }}</>
+                                    <span style="color:red; display: inline-block;">: &nbsp;</span>
+                                    <span style="color:red; display: inline-block;"> {!! nl2br(e($item['fungsi_jabatan'])) !!}</span>
                                 </li>
-                            @endif
-                        @endforeach
-                    @endif
+                            @endforeach
+                        @endif
                     </ul>
                 </ol>
 
@@ -222,26 +221,26 @@
                 </thead>
                 <tbody>
                     @if (empty($sumber_daya_manusia) || count($sumber_daya_manusia) === 0)
-                    <tr>
-                        <td colspan="11" class="text-center">Tidak ada sumber daya manusia tersedia</td>
-                    </tr>
-                @else
-                    @foreach ($sumber_daya_manusia as $index => $jabatan)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ ucwords(strtolower($jabatan['nama_jabatan'])) }}</td>
-                            <td>{{ $jabatan['status_jumlah_kepegawaian']['PNS'] ?? 0 }}</td>
-                            <td>{{ $jabatan['status_jumlah_kepegawaian']['PPPK'] ?? 0 }}</td>
-                            <td>{{ $jabatan['status_jumlah_kepegawaian']['Kontrak'] ?? 0 }}</td>
-                            <td>{{ $jabatan['status_jumlah_kepegawaian']['Upah'] ?? 0 }}</td>
-                            <td>{{ $jabatan['pendidikan_terakhir']['SD/SMP'] ?? 0 }}</td>
-                            <td>{{ $jabatan['pendidikan_terakhir']['SMA'] ?? 0 }}</td>
-                            <td>{{ $jabatan['pendidikan_terakhir']['D1/D3'] ?? 0 }}</td>
-                            <td>{{ $jabatan['pendidikan_terakhir']['D4/S1'] ?? 0 }}</td>
-                            <td>{{ $jabatan['pendidikan_terakhir']['S2/S3'] ?? 0 }}</td>
+                            <td colspan="11" class="text-center">Tidak ada sumber daya manusia tersedia</td>
                         </tr>
-                    @endforeach
-                @endif
+                    @else
+                        @foreach ($sumber_daya_manusia as $index => $jabatan)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ ucwords(strtolower($jabatan['nama_jabatan'])) }}</td>
+                                <td>{{ $jabatan['status_jumlah_kepegawaian']['PNS'] ?? 0 }}</td>
+                                <td>{{ $jabatan['status_jumlah_kepegawaian']['PPPK'] ?? 0 }}</td>
+                                <td>{{ $jabatan['status_jumlah_kepegawaian']['Kontrak'] ?? 0 }}</td>
+                                <td>{{ $jabatan['status_jumlah_kepegawaian']['Upah'] ?? 0 }}</td>
+                                <td>{{ $jabatan['pendidikan_terakhir']['SD/SMP'] ?? 0 }}</td>
+                                <td>{{ $jabatan['pendidikan_terakhir']['SMA'] ?? 0 }}</td>
+                                <td>{{ $jabatan['pendidikan_terakhir']['D1/D3'] ?? 0 }}</td>
+                                <td>{{ $jabatan['pendidikan_terakhir']['D4/S1'] ?? 0 }}</td>
+                                <td>{{ $jabatan['pendidikan_terakhir']['S2/S3'] ?? 0 }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
             <p class="indent">Selain sumber daya manusia<span>{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
@@ -274,23 +273,23 @@
                 </thead>
                 <tbody>
                     @if (empty($asets) || count($asets) === 0)
-                    <tr>
-                        <td colspan="8" class="text-center">Tidak ada aset tersedia</td>
-                    </tr>
-                @else
-                    @foreach ($asets as $index => $aset)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ ucwords(strtolower($aset['aset'])) }}</td>
-                            <td>{{ $aset['jumlah_aset'] }} {{ $aset['satuan_aset'] }}</td>
-                            <td>{{ $aset['kondisi']['Baik'] ?? 0 }}</td>
-                            <td>{{ $aset['kondisi']['Cukup'] ?? 0 }}</td>
-                            <td>{{ $aset['kondisi']['Kurang'] ?? 0 }}</td>
-                            <td>{{ implode(', ', $aset['tahun_perolehan_aset'] ?? []) }}</td>
-                            <td>{{ $aset['keterangan'] }}</td>
+                            <td colspan="8" class="text-center">Tidak ada aset tersedia</td>
                         </tr>
-                    @endforeach
-                @endif
+                    @else
+                        @foreach ($asets as $index => $aset)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ ucwords(strtolower($aset['aset'])) }}</td>
+                                <td>{{ $aset['jumlah_aset'] }} {{ $aset['satuan_aset'] }}</td>
+                                <td>{{ $aset['kondisi']['Baik'] ?? 0 }}</td>
+                                <td>{{ $aset['kondisi']['Cukup'] ?? 0 }}</td>
+                                <td>{{ $aset['kondisi']['Kurang'] ?? 0 }}</td>
+                                <td>{{ implode(', ', $aset['tahun_perolehan_aset'] ?? []) }}</td>
+                                <td>{{ $aset['keterangan'] }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
 
@@ -466,11 +465,14 @@
                     Tercapai, yaitu pada indikator :
                     <ul style="list-style-type: lower-alpha">
                         <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span> </li>
+                            <span style="color: rgb(11, 242, 11);">...</span>
+                        </li>
                         <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span> </li>
+                            <span style="color: rgb(11, 242, 11);">...</span>
+                        </li>
                         <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span> </li>
+                            <span style="color: rgb(11, 242, 11);">...</span>
+                        </li>
 
                     </ul>
                 </li>
@@ -478,11 +480,14 @@
                     Belum tercapai, yaitu pada indikator :
                     <ul style="list-style-type: lower-alpha">
                         <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span> </li>
+                            <span style="color: rgb(11, 242, 11);">...</span>
+                        </li>
                         <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span> </li>
+                            <span style="color: rgb(11, 242, 11);">...</span>
+                        </li>
                         <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span> </li>
+                            <span style="color: rgb(11, 242, 11);">...</span>
+                        </li>
 
                     </ul>
                 </li>
