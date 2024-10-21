@@ -97,7 +97,7 @@
                     </p>
 
                     <p style="text-align: center">Tabel 5.1.</p>
-                    <p style="text-align: center">Tujuan, sasaran, Strategi, dan Arah Kebijakan</p>
+                    <p style="text-align: center">Tujuan, Sasaran, Strategi, dan Arah Kebijakan</p>
                     <table >
                         <!-- VISI -->
                         <tr>
@@ -152,15 +152,18 @@
                                 @endif
                             </td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td>Tujuan 2</td>
                             <td>Sasaran 2.1</td>
                             <td>Strategi 1.2</td>
                             <td>Arah kebijakan 1.2</td>
-                        </tr>
+                        </tr> --}}
                         <!-- Add more rows as needed -->
                     
                         <!-- MISI 2 -->
+                        <tr>
+                            <th colspan="4">VISI:</th>
+                        </tr>
                         <tr>
                             <th colspan="4">MISI 2:</th>
                         </tr>
@@ -170,7 +173,7 @@
                             <th>Strategi</th>
                             <th>Arah Kebijakan</th>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td>Tujuan 1</td>
                             <td>Sasaran 1.1</td>
                             <td>Strategi 1.1</td>
@@ -181,7 +184,7 @@
                             <td>Sasaran 2.1</td>
                             <td>Strategi 1.2</td>
                             <td>Arah kebijakan 1.2</td>
-                        </tr>
+                        </tr> --}}
                         <!-- Add more rows as needed -->
                     </table>
                     

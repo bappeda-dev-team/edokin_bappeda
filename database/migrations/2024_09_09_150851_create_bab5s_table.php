@@ -21,8 +21,8 @@ return new class extends Migration
                 ->constrained('tahun_dokumen')
                 ->onDelete('cascade');
             $table->string('kode_opd');
-            $table->json('tujuan_opd')->nullable();
-            $table->json('sasaran_opd')->nullable();
+            // $table->json('tujuan_opd')->nullable();
+            // $table->json('sasaran_opd')->nullable();
             $table->timestamps();
         });
     }

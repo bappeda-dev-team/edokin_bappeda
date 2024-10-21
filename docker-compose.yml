@@ -1,0 +1,50 @@
+services:
+    app:
+        build:
+            args:
+                user: deploy
+                uid: 1000
+            context: ./
+            platforms:
+                - linux/amd64
+            dockerfile: Dockerfile
+        image: ghcr.io/bappeda-dev-team/edokin:latest
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+
+    db:
+        image: mysql:8.0.39
+        ports:
+            - "8906:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=edokin_bappeda_dev
+        restart: on-failure
+        volumes:
+            - edokin-database-volume:/var/lib/mysql
+            - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+
+    nginx:
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d
+
+    phpmyadmin:
+        image: phpmyadmin:5
+        profiles: [debug]
+        environment:
+            - PMA_HOST=db
+        depends_on:
+            - db
+        ports:
+            - "8081:80"
+        restart: "no"
+
+volumes:
+    edokin-database-volume: {}
