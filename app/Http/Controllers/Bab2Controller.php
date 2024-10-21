@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Mpdf\Mpdf;
 
+use App\Http\Api\KakKotaMadiunApi;
 use App\Models\Bab2;
 use App\Models\Jenis;
 use App\Models\TahunDokumen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Shared\Html;
@@ -106,11 +108,11 @@ class Bab2Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        $asets = $this->getAsets($bab2->kode_opd, $bab2->tahun);
+        $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
         $tugasFungsiString = $bab2->tugas_fungsi;
         $tugas_fungsi_array = explode("\n", $tugasFungsiString);
 
-        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun','asets', 'tugas_fungsi_array'));
+        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'tugas_fungsi_array'));
     }
 
     public function update(Request $request, $id)
@@ -198,8 +200,8 @@ class Bab2Controller extends Controller
         $tugasFungsiString = $bab2->tugas_fungsi;
         $tugasFungsiArray = explode("\n", $tugasFungsiString);
 
-        $asetList = $this->getAsets($bab2->kode_opd, $bab2->tahun);
-        $SDMList = $this->getSumberDayaManusia($bab2->kode_opd, $bab2->tahun);
+        $asetList = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
+        $SDMList = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
 
         return view('layouts.admin.bab2.show', [
             'bab2' => $bab2,
@@ -230,12 +232,12 @@ class Bab2Controller extends Controller
 
             $tugasFungsiString = $bab2->tugas_fungsi;
             $tugas_fungsi = explode("\n", $tugasFungsiString);
-    
-            $asets = $this->getAsets($bab2->kode_opd, $bab2->tahun);
-            $sumber_daya_manusia = $this->getSumberDayaManusia($bab2->kode_opd, $bab2->tahun);
+
+            $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
+            $sumber_daya_manusia = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
 
             // Render HTML view
-            $html = view('layouts.admin.bab2.pdf', compact('bab2', 'urusan_opd', 'tugas_fungsi', 'asets','sumber_daya_manusia'))->render();
+            $html = view('layouts.admin.bab2.pdf', compact('bab2', 'urusan_opd', 'tugas_fungsi', 'asets', 'sumber_daya_manusia'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
@@ -269,79 +271,78 @@ class Bab2Controller extends Controller
         }
     }
 
-    public function getAsets($kode_opd, $tahun)
+    public function getAsets($tahun, $kode_opd)
     {
-        $apiUrl = 'https://kak.madiunkota.go.id/api/substansi_renstra/asets?tahun=' . $tahun . '&kode_opd=' . $kode_opd;
+        try {
+            $api = new KakKotaMadiunApi();
+            $response = $api->asets($tahun, $kode_opd);
 
-        $response = Http::timeout(30)
-            ->withHeaders(['Accept' => 'application/json'])
-            ->get($apiUrl);
+            if ($response->successful()) {
+                $data = $response->json();
 
-        if (!$response->successful()) {
-            Log::error('API request failed: ' . $response->status());
-            return []; // Return an empty array if the request fails
+                Log::info('API Response:', $data);
+
+                $asetss = collect($data['asets'] ?? []);
+
+                if ($asetss->isEmpty()) {
+                    return response()->json(['message' => 'No data found or data is in an unexpected format'], 404);
+                }
+
+                return $asetss->map(function ($aset) use ($tahun) {
+                    return [
+                        'tahun' => $tahun,
+                        'aset' => $aset['aset'] ?? 'Unknown',
+                        'jumlah_aset' => $aset['jumlah_aset'] ?? 0,
+                        'satuan_aset' => $aset['satuan_aset'] ?? 'Unit',
+                        'kondisi' => $aset['kondisi'] ?? [],
+                        'tahun_perolehan_aset' => $aset['tahun_perolehan_aset'] ?? [],
+                        'keterangan' => $aset['keterangan'] ?? '',
+                    ];
+                })->values()->toArray();
+            } else {
+                Log::error('Failed to fetch data: ' . $response->body());
+                return response()->json(['message' => 'Failed to fetch data'], 500);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error fetching data: ' . $e->getMessage());
+            return response()->json(['message' => 'An error occurred'], 500);
         }
-
-        $data = $response->json();
-
-        if (empty($data)) {
-            return []; // Return an empty array if no data found
-        }
-
-        $asetss = collect($data['asets'] ?? []);
-
-        if ($asetss->isEmpty()) {
-            return []; // Return an empty array if no assets found
-        }
-
-        return $asetss->map(function ($aset) {
-            return [
-                'aset' => $aset['aset'] ?? 'Unknown',
-                'jumlah_aset' => $aset['jumlah_aset'] ?? 0,
-                'satuan_aset' => $aset['satuan_aset'] ?? 'Unit',
-                'kondisi' => $aset['kondisi'] ?? [],
-                'tahun_perolehan_aset' => $aset['tahun_perolehan_aset'] ?? [],
-                'keterangan' => $aset['keterangan'] ?? '',
-            ];
-        })->values(); // Return the list of assets
     }
 
-    public function getSumberDayaManusia($kode_opd, $tahun)
+    public function getSumberDayaManusia($tahun, $kode_opd)
     {
-        $tahun = '2024';
-        $apiUrl = 'https://kak.madiunkota.go.id/api/substansi_renstra/sumber_daya_manusia?tahun=' . $tahun . '&kode_opd=' . $kode_opd;
-        
-        $response = Http::timeout(30)
-            ->withHeaders(['Accept' => 'application/json'])
-            ->get($apiUrl);
+        try {
+            $api = new KakKotaMadiunApi();
+            $response = $api->sumberDayaManusia($tahun, $kode_opd);
 
-        if (!$response->successful()) {
-            Log::error('API request failed: ' . $response->status());
-            return []; // Return an empty array if the request fails
+            if ($response->successful()) {
+                $data = $response->json();
+                Log::info('API Response:', $data); // Log the entire response
+
+                $sumberDayaManusia = collect($data['sumber_daya_manusia'] ?? []);
+
+                if ($sumberDayaManusia->isEmpty()) {
+                    Log::info('No sumber daya manusia found for tahun: ' . $tahun . ' and kode_opd: ' . $kode_opd);
+                    return response()->json(['message' => 'No data found or data is in an unexpected format'], 404);
+                }
+
+                return $sumberDayaManusia->map(function ($jabatan) use ($tahun, $kode_opd) {
+                    return [
+                        'tahun' => $tahun,
+                        'kode_opd' => $kode_opd,
+                        'nama_jabatan' => $jabatan['nama_jabatan'] ?? 'Unknown',
+                        'status_jumlah_kepegawaian' => $jabatan['status_jumlah_kepegawaian'] ?? [],
+                        'pendidikan_terakhir' => $jabatan['pendidikan_terakhir'] ?? [],
+                    ];
+                })->values()->toArray();
+            } else {
+                Log::error('API Request Failed with status: ' . $response->status());
+                return response()->json(['message' => 'Failed to fetch data'], 500);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error fetching data: ' . $e->getMessage());
+            return response()->json(['message' => 'An error occurred'], 500);
         }
-
-        $data = $response->json();
-        // dd($data); 
-        // dd($data);
-
-        if (empty($data)) {
-            return []; // Return an empty array if no data found
-        }
-
-        $sdm = collect($data['sumber_daya_manusia'] ?? []);
-        
-        if ($sdm->isEmpty()) {
-            return []; 
-        }
-       
-
-        return $sdm->map(function ($jabatan) {
-            return [
-                'nama_jabatan' => $jabatan['nama_jabatan'] ?? 'Unknown',
-                'status_jumlah_kepegawaian' => $jabatan['status_jumlah_kepegawaian'] ?? [],
-                'pendidikan_terakhir' => $jabatan['pendidikan_terakhir'] ?? [],
-            ];
-        })->values();
     }
 
 

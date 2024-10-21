@@ -16,7 +16,7 @@ class DataNewSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'admin',
-                'email' => 'admin@gmail.com',
+                'email' => 'admin@test.com',
                 'password' => Hash::make('123456'),
                 // 'role' => 'admin', // Uncomment if you have a role column
             ],

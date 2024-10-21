@@ -68,15 +68,17 @@ class Bab5Controller extends Controller
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
             'nama_opd' => 'nullable|string|max:255',
-            'tujuan_opd' => 'nullable|string',
+            'tujuan_opd' => 'nullable|array',
             'sasaran_opd' => 'nullable|array',
-            'strategi' => 'nullable|string',
+            'strategi' => 'nullable|array',
             'arah_kebijakan' => 'nullable|array',
             'uraian' => 'nullable|string',
         ]);
 
         try {
+            $validatedData['tujuan_opd'] = json_encode($request->input('tujuan_opd'));
             $validatedData['sasaran_opd'] = json_encode($request->input('sasaran_opd'));
+            $validatedData['strategi'] = json_encode($request->input('strategi'));
             $validatedData['arah_kebijakan'] = json_encode($request->input('arah_kebijakan'));
             // Store the validated data
             Bab5::create($validatedData);
@@ -168,8 +170,10 @@ class Bab5Controller extends Controller
 
         $bab5 = Bab5::findOrFail($id);
 
-        $bab5->sasaran_opd = json_decode($bab5->sasaran_opd); // Decode JSON to array
-        $bab5->arah_kebijakan = json_decode($bab5->arah_kebijakan); // Decode JSON to array// Fetch the record you want to edit
+        $bab5->tujuan_opd = json_decode($bab5->tujuan_opd); 
+        $bab5->sasaran_opd = json_decode($bab5->sasaran_opd); 
+        $bab5->strategi = json_decode($bab5->strategi); 
+        $bab5->arah_kebijakan = json_decode($bab5->arah_kebijakan); 
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -185,9 +189,9 @@ class Bab5Controller extends Controller
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
             'nama_opd' => 'nullable|string|max:255',
-            'tujuan_opd' => 'nullable|string',
+            'tujuan_opd' => 'nullable|array',
             'sasaran_opd' => 'nullable|array',
-            'strategi' => 'nullable|string',
+            'strategi' => 'nullable|array',
             'arah_kebijakan' => 'nullable|array',
             'uraian' => 'nullable|string',
         ]);
@@ -195,7 +199,9 @@ class Bab5Controller extends Controller
         try {
             $bab5 = Bab5::findOrFail($id);
 
+            $validatedData['tujuan_opd'] = json_encode($request->input('tujuan_opd'));
             $validatedData['sasaran_opd'] = json_encode($request->input('sasaran_opd'));
+            $validatedData['strategi'] = json_encode($request->input('strategi'));
             $validatedData['arah_kebijakan'] = json_encode($request->input('arah_kebijakan'));
             // Store the validated data
             $bab5->update($validatedData); // Update the record with new data
@@ -219,30 +225,25 @@ class Bab5Controller extends Controller
     {
         $bab5 = Bab5::findOrFail($id);
 
-        $kode_opd = $bab5->kode_opd;
-        $tahun = $bab5->tahun->tahun;
-
-        $api = new KakKotaMadiunApi();
-        $strategiResponse = $api->strategiArahKebijakan($tahun, $kode_opd);
         $uraian = $bab5->uraian;
-
-        if ($strategiResponse->successful()) {
-            $strategiData = $strategiResponse->json();
-
-
-            return view('layouts.admin.bab5.show', [
-                'bab5' => $bab5,
-                'uraian' => $uraian,
-                'nama_opd' => $strategiData['nama_opd'],
-                'tujuan_opd' => $strategiData['tujuan_opd'],
-                'strategi' => $strategiData['strategi'],
-                'sasaran_opd_list' => $strategiData['sasaran_opd_list'],
-                'kebijakan_list' => $strategiData['kebijakan_list'],
-            ]);
-        } else {
-            return redirect()->back()->with('error', 'Gagal mengambil data strategi arah kebijakan.');
-        }
+        $nama_opd = $bab5->nama_opd;
+        $tujuan_opd = json_decode($bab5->tujuan_opd, true); 
+        $sasaran_opd_list = json_decode($bab5->sasaran_opd, true); 
+        $strategi = json_decode($bab5->strategi, true);
+        $kebijakan_list = json_decode($bab5->arah_kebijakan, true); 
+    
+        // Return the view with the required data
+        return view('layouts.admin.bab5.show', [
+            'bab5' => $bab5,
+            'uraian' => $uraian,
+            'nama_opd' => $nama_opd,
+            'tujuan_opd' => $tujuan_opd,
+            'sasaran_opd_list' => $sasaran_opd_list,
+            'strategi' => $strategi,
+            'kebijakan_list' => $kebijakan_list,
+        ]);
     }
+  
 
     public function getStrategiArahKebijakan($tahun, $kode_opd)
     {
@@ -259,6 +260,7 @@ class Bab5Controller extends Controller
                 $sasaran_opd = [];
                 $strategi = $data['strategi'] ?? 'Data tidak tersedia';
                 $arah_kebijakan = [];
+
                 if (isset($data['sasaran_opd_list']) && is_array($data['sasaran_opd_list'])) {
                     foreach ($data['sasaran_opd_list'] as $sasaran) {
                         $sasaran_opd[] = $sasaran['sasaran_opd'];
@@ -273,9 +275,9 @@ class Bab5Controller extends Controller
                 return response()->json([
                     'tahun' => $tahun,
                     'tujuan_opd' => $tujuan_opd,
-                    'sasaran_opd' => implode("\n", $sasaran_opd),
+                    'sasaran_opd' => $sasaran_opd,  // Kembali sebagai array
                     'strategi' => $strategi,
-                    'arah_kebijakan' => implode("\n", $arah_kebijakan),
+                    'arah_kebijakan' => $arah_kebijakan, // Kembali sebagai array
                 ]);
             } else {
                 return response()->json(['message' => 'Failed to fetch data'], 500);
@@ -292,67 +294,58 @@ class Bab5Controller extends Controller
             // Find the corresponding Bab5 record, or fail if not found
             $bab5 = Bab5::findOrFail($id);
     
-            $kode_opd = $bab5->kode_opd;
-            $tahun = $bab5->tahun->tahun;
-            // Initialize API and fetch strategi and kebijakan data
-            $api = new KakKotaMadiunApi();
-            $strategiResponse = $api->strategiArahKebijakan($tahun, $kode_opd);
+            // Fetching the necessary fields directly from the Bab5 record
+            $uraian = $bab5->uraian;
+            $nama_opd = $bab5->nama_opd;
+            $tujuan_opd = json_decode($bab5->tujuan_opd, true); 
+            $sasaran_opd_list = json_decode($bab5->sasaran_opd, true); 
+            $strategi = json_decode($bab5->strategi, true);
+            $kebijakan_list = json_decode($bab5->arah_kebijakan, true); 
     
-            // Check if the API request was successful
-            if ($strategiResponse->successful()) {
-                // Parse the response JSON
-                $strategiData = $strategiResponse->json();
+            \Log::info('Bab5 data', [
+                'uraian' => $uraian,
+                'nama_opd' => $nama_opd,
+                'tujuan_opd' => $tujuan_opd,
+                'sasaran_opd_list' => $sasaran_opd_list,
+                'strategi' => $strategi,
+                'kebijakan_list' => $kebijakan_list,
+            ]);
+            
+            // Render the view to HTML for PDF generation
+            $html = view('layouts.admin.bab5.pdf', [
+                'bab5' => $bab5,
+                'uraian' => $uraian,
+                'nama_opd' => $nama_opd,
+                'tujuan_opd' => $tujuan_opd,
+                'strategi' => $strategi,
+                'sasaran_opd_list' => $sasaran_opd_list,
+                'kebijakan_list' => $kebijakan_list,
+            ])->render();
     
-                // Validate that the expected data is present
-                if (isset($strategiData['nama_opd'], $strategiData['tujuan_opd'], $strategiData['strategi'], $strategiData['sasaran_opd_list'], $strategiData['kebijakan_list'])) {
-                    // Render the view to HTML for PDF generation
-                    $html = view('layouts.admin.bab5.pdf', [
-                        'bab5' => $bab5,
-                        'uraian' => $bab5->uraian,
-                        'nama_opd' => $strategiData['nama_opd'],
-                        'tujuan_opd' => $strategiData['tujuan_opd'],
-                        'strategi' => $strategiData['strategi'],
-                        'sasaran_opd_list' => $strategiData['sasaran_opd_list'],
-                        'kebijakan_list' => $strategiData['kebijakan_list'],
-                    ])->render();
+            // Create a new mPDF instance with the desired settings
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                'format' => [210, 330], // Custom F4 size: 210mm x 330mm
+                'orientation' => 'P',    // Portrait orientation
+                'tempDir' => storage_path('app/temp'),
+                'margin_left' => 25,      // Left margin for binding
+                'margin_right' => 15,     // Right margin
+                'margin_top' => 20,       // Top margin
+                'margin_bottom' => 20,    // Bottom margin
+            ]);
     
-                    // Create a new mPDF instance with the desired settings
-                    $mpdf = new \Mpdf\Mpdf([
-                        'mode' => 'utf-8',
-                        'format' => [210, 330], // Custom F4 size: 210mm x 330mm
-                        'orientation' => 'P',    // Portrait orientation
-                        'tempDir' => storage_path('app/temp'),
-                        'margin_left' => 25,      // Left margin for binding
-                        'margin_right' => 15,     // Right margin
-                        'margin_top' => 20,       // Top margin
-                        'margin_bottom' => 20,    // Bottom margin
-                    ]);
+            // Set the footer
+            $mpdf->SetHTMLFooter('
+                <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
+                    Renstra Elektronik Pemerintah Kota Madiun
+                </div>
+            ');
     
-                    // Set the footer
-                    $mpdf->SetHTMLFooter('
-                        <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
-                            Renstra Elektronik Pemerintah Kota Madiun
-                        </div>
-                    ');
+            // Write the HTML content to the PDF
+            $mpdf->WriteHTML($html);
     
-                    // Write the HTML content to the PDF
-                    $mpdf->WriteHTML($html);
-    
-                    $filename = 'bab5-' . $id . '.pdf';
-                    $mpdf->Output($filename, 'I');
-                } else {
-                    // Log if the expected fields are missing in the API response
-                    \Log::error('Incomplete API response', ['response' => $strategiData]);
-                    return response()->json(['error' => 'Incomplete data from API'], 500);
-                }
-            } else {
-                // Log the failed API request and response body
-                \Log::error('API request failed', [
-                    'status' => $strategiResponse->status(),
-                    'response' => $strategiResponse->body()
-                ]);
-                return response()->json(['error' => 'API request failed'], 500);
-            }
+            $filename = 'bab5-' . $id . '.pdf';
+            $mpdf->Output($filename, 'I');
         } catch (\Exception $e) {
             // Log any unexpected exceptions that occur during PDF generation
             \Log::error('Failed to generate PDF:', ['error' => $e->getMessage()]);

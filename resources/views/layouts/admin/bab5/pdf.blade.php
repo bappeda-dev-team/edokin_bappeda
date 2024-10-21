@@ -115,17 +115,41 @@
                             <th>Arah Kebijakan</th>
                         </tr>
                         <tr>
-                            <td>{{ $tujuan_opd }}</td>
                             <td>
-                                @foreach ($sasaran_opd_list as $sasaran)
-                                    <p>{{ $sasaran['sasaran_opd'] }}</p>
-                                @endforeach
+                                @if (is_array($tujuan_opd))
+                                    @foreach ($tujuan_opd as $tujuan)
+                                        <p>{{ $tujuan }}</p>
+                                    @endforeach
+                                @else
+                                    <p>{{ $tujuan_opd }}</p>
+                                @endif
                             </td>
-                            <td>{{ $strategi }}</td>
                             <td>
-                                @foreach ($kebijakan_list as $kebijakan)
-                                    <p>{{ $kebijakan['arah_kebijakan'] }}</p>
-                                @endforeach
+                                @if (is_array($sasaran_opd_list))
+                                    @foreach ($sasaran_opd_list as $sasaran)
+                                        <p>{{ $sasaran }}</p>
+                                    @endforeach
+                                @else
+                                    <p>{{ $sasaran_opd_list }}</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if (is_array($strategi))
+                                    @foreach ($strategi as $strategii)
+                                        <p>{{ $strategii }}</p>
+                                    @endforeach
+                                @else
+                                    <p>{{ $strategi }}</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if (is_array($kebijakan_list))
+                                    @foreach ($kebijakan_list as $kebijakan)
+                                        <p>{{ $kebijakan }}</p>
+                                    @endforeach
+                                @else
+                                    <p>{{ $kebijakan_list }}</p>
+                                @endif
                             </td>
                         </tr>
                         <tr>

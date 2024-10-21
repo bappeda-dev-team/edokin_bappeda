@@ -257,14 +257,12 @@
 
                 if (kodeOpd && tahun) {
                     // Fetch Sumber Daya Manusia
-                    fetch(
-                            `https://kak.madiunkota.go.id/api/substansi_renstra/sumber_daya_manusia?tahun=${tahun}&kode_opd=${kodeOpd}`
-                        )
+                    fetch(`/api/sumber-daya-manusia/${tahun}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
-                            if (data && data.sumber_daya_manusia && data.sumber_daya_manusia.length >
-                                0) {
-                                data.sumber_daya_manusia.forEach(item => {
+                            console.log('API Response:', data); // Debug: log API response
+                            if (data && Array.isArray(data) && data.length > 0) {
+                                data.forEach(item => {
                                     let row = `<tr>
                                     <td>${item.nama_jabatan || 'N/A'}</td>
                                     <td><textarea name="tugas_jabatan[]"></textarea></td>
@@ -285,13 +283,11 @@
                         });
 
                     // Fetch Asets
-                    fetch(
-                            `https://kak.madiunkota.go.id/api/substansi_renstra/asets?tahun=${tahun}&kode_opd=${kodeOpd}`
-                        )
+                    fetch(`/api/asets/${tahun}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
-                            if (data && data.asets && data.asets.length > 0) {
-                                data.asets.forEach((item, index) => {
+                            if (data && Array.isArray(data) && data.length > 0) {
+                                data.forEach((item, index) => {
                                     let row = `<tr>
                                     <td>${index + 1}</td>
                                     <td>${item.aset || 'N/A'}</td>
