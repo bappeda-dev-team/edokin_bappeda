@@ -23,7 +23,7 @@ class KakKotaMadiunApi
         $response = Http::post($apiUrl);
 
         // Tambahkan log untuk memeriksa respons API
-        \Log::info('Urusan OPD API Response:', ['response' => $response->json()]);
+        // \Log::info('Urusan OPD API Response:', ['response' => $response->json()]);
 
         return $response;
     }
