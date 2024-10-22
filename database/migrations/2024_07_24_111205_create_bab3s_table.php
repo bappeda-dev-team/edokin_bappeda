@@ -17,8 +17,6 @@ return new class extends Migration
             $table->foreignId('jenis_id')->constrained()->onDelete('cascade');
             $table->string('kode_opd');
             $table->foreignId('tahun_id')->constrained('tahun_dokumen')->onDelete('cascade');
-            $table->text('permasalahan_pelayanan');
-            $table->text('isu_strategis');
             $table->timestamps();
         });
     }
