@@ -37,18 +37,7 @@
                                     <td>{{ $bab_3->nama_bab }}</td>
                                     <td>{{ $bab_3->jenis->jenis ?? 'N/A' }}</td>
                                     <td>{{ $bab_3->tahun->tahun ?? 'N/A' }}</td> <!-- Menampilkan Tahun -->
-                                    <td>
-                                        @php
-                                            $selectedOpd = null;
-                                            foreach ($data_opd as $opd) {
-                                                if ($opd['kode_opd'] == $bab_3->kode_opd) {
-                                                    $selectedOpd = $opd;
-                                                    break;
-                                                }
-                                            }
-                                        @endphp
-                                        {{ $selectedOpd['kode_opd'] ?? 'N/A' }}
-                                    </td>
+                                    <td>{{ $bab_3->kode_opd ?? 'N/A' }}</td>
                                     <td>
                                         <a href="{{ route('bab3.show', $bab_3->id) }}" class="btn btn-info" data-id=""><i class="fa fa-eye"></i> Show</a>
                                         <a href="{{ route('bab3.edit', $bab_3->id) }}" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>

@@ -20,12 +20,7 @@ class Bab3Controller extends Controller
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/daftar_opd';
-        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-
-        $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
-
-        return view('layouts.admin.bab3.index', compact('bab3', 'jenis', 'data_opd', 'tahun'));
+        return view('layouts.admin.bab3.index', compact('bab3', 'jenis', 'tahun'));
     }
 
     public function create()

@@ -37,12 +37,7 @@
                                     <td>{{ $bab_2->nama_bab }}</td>
                                     <td>{{ $bab_2->jenis->jenis ?? 'N/A' }}</td>
                                     <td>{{ $bab_2->tahun->tahun ?? 'N/A' }}</td>
-                                    <td>
-                                        @php
-                                            $selectedOpd = collect($urusan_opd)->firstWhere('kode_opd', $bab_2->kode_opd);
-                                        @endphp
-                                        {{ $selectedOpd['kode_opd'] ?? 'N/A' }}
-                                    </td>
+                                    <td>{{ $bab_2->kode_opd ?? 'N/A' }}</td>
                                     <td>
                                         <a href="{{ route('bab2.show', $bab_2->id) }}" class="btn btn-info" data-id="{{ $bab_2->id }}"><i class="fa fa-eye"></i> Show</a>
                                         <a href="{{ route('bab2.edit', $bab_2->id) }}" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>

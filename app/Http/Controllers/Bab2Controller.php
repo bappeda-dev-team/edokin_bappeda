@@ -25,20 +25,8 @@ class Bab2Controller extends Controller
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-        $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-
-        if ($response->successful()) {
-            $urusan_opd = $response->json()['results'] ?? [];
-        } else {
-            $urusan_opd = [];
-        }
-
-        return view('layouts.admin.bab2.index', compact('bab2', 'jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.admin.bab2.index', compact('bab2', 'jenis', 'tahun'));
     }
-
-
-
 
     public function create()
     {
@@ -608,4 +596,4 @@ class Bab2Controller extends Controller
 //             return response()->json(['error' => 'Unable to generate Word document: ' . $e->getMessage()], 500);
 //         }
 //     }
-// }    
+// }
