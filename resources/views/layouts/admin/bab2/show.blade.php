@@ -209,7 +209,6 @@
 
                             <p style="text-align: center">Gambar Struktur Organisasi :
                             </p>
-<<<<<<< HEAD
                         </div> --}}
                         <p class="indent">Tugas <span
                                 style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Dengan
@@ -262,7 +261,6 @@
                             <p style="text-align: center">Gambar Struktur Organisasi
                             </p>
                         </div>
-=======
                             <div class="tf-tree" style="text-align: center">
                                 <ul>
                                   <li>
@@ -280,8 +278,6 @@
                                 </ul>
                               </div>
                             <p style="text-align: center">Gambar 2.1</p>
-                            
->>>>>>> 812504c3c2819a5d8530d60cf61348ff41bc035a
                         <h4>2.2 Sumber Daya Perangkat Daerah</h4>
                         <p class="indent"><span
                                 style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
