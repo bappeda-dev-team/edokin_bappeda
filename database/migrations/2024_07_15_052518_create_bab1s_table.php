@@ -10,10 +10,10 @@ class CreateBab1sTable extends Migration
     {
         Schema::create('bab1s', function (Blueprint $table) {
             $table->id();
-            $table->text('latar_belakang');
-            $table->text('dasar_hukum')->nullable();
-            $table->text('maksud_tujuan')->nullable();
-            $table->text('sistematika_penulisan')->nullable();
+            // $table->text('latar_belakang');
+            // $table->text('dasar_hukum')->nullable();
+            // $table->text('maksud_tujuan')->nullable();
+            // $table->text('sistematika_penulisan')->nullable();
             $table->timestamps();
         });
     }
