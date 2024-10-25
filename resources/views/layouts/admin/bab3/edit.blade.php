@@ -13,7 +13,7 @@
                 <a href="{{ route('layouts.admin.bab3.index') }}">
                     <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
                 </a>
-                <form action="{{ route('bab4.update', $bab1->id) }}" method="POST">
+                <form action="{{ route('bab4.update', $bab3->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <!-- Form Fields -->

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bab5s', function (Blueprint $table) {
-            // 
-            $table->string('uraian')->after('id');
+            //
+            $table->text('uraian')->nullable()->after('id');
         });
     }
 
@@ -24,7 +24,6 @@ return new class extends Migration
     {
         Schema::table('bab5s', function (Blueprint $table) {
             //
-            $table->dropColumn('uraian');
         });
     }
 };

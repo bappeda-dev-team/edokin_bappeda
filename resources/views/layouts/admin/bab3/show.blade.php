@@ -145,7 +145,7 @@
                             <li>Implikasi RTRW bagi pelayanan Perangkat Daerah <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian4 !!}</pre></li>
                             <li>Implikasi KLHS bagi pelayanan Perangkat Daerah <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian5 !!}</pre></li>
                         </ol>
-                        <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis dengan metode USG (Urgency, Seriousness dan Growth), maka isu strategis dinas/badan <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan ditangani dalam renstra selama ….. tahun dan prioritas penanganannya pada tahun rencana adalah:</p>    
+                        <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis dengan metode USG (Urgency, Seriousness dan Growth), maka isu strategis dinas/badan <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan ditangani dalam renstra selama 2 tahun dan prioritas penanganannya pada tahun rencana adalah:</p>    
                         <ol>
                             <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis1 !!}</span></li>
                             <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis2 !!}</span></li>
