@@ -44,7 +44,13 @@ class Bab8Controller extends Controller
         try {
             $urusan_opd = $api->urusanOpd();
             $results = $urusan_opd->json()['results'] ?? [];
-            $kodeOpds = collect($results)->pluck('kode_opd')->unique();
+            // $kodeOpds = collect($results)->pluck('kode_opd')->unique();
+            $kodeOpds = collect($results)->map(function ($item) {
+                return [
+                    'kode_opd' => $item['kode_opd'],
+                    'nama_opd' => $item['nama_opd'],
+                ];
+            })->unique('kode_opd');
         } catch (\Exception $e) {
             Log::error('Failed to fetch Urusan OPD for create form:', ['error' => $e->getMessage()]);
             $kodeOpds = collect();
@@ -55,98 +61,61 @@ class Bab8Controller extends Controller
 
         return view('layouts.admin.bab8.create', compact('kodeOpds', 'jenis', 'tahun'));
     }
-    // Remove this block to avoid duplicate method definition
-      // Store a new Bab8 record in the database
-      public function store(Request $request)
-      {
-          $validatedData = $request->validate([
-              'nama_bab' => 'required|string|max:255',
-              'jenis_id' => 'required|integer|exists:jenis,id',
-              'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
-              'kode_opd' => 'required|string|max:50',
-              'nama_opd' => 'nullable|string|max:255',
-              'tujuan_opd' => 'nullable|string',
-              'sasaran_opd' => 'nullable|string',
-              'uraian' => 'nullable|string',
-          ]);
-  
-          try {
-              Bab8::create($validatedData);
-              return redirect()->route('layouts.admin.bab8.index')->with('success', 'Data has been saved successfully!');
-          } catch (\Exception $e) {
-              Log::error('Failed to store Bab8 record:', ['error' => $e->getMessage()]);
-              return redirect()->back()->withErrors('Failed to save data.');
-          }
-      }
 
-    // Fetch details of an OPD based on kode_opd
-    public function getOpdDetails($kode_opd)
+    public function store(Request $request)
     {
-        \Log::info('Received Kode OPD:', ['kode_opd' => $kode_opd]);
+        $validatedData = $request->validate([
+            'nama_bab' => 'required|string|max:255',
+            'jenis_id' => 'required|integer|exists:jenis,id',
+            'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
+            'kode_opd' => 'required|string|max:50',
+            'nama_kepala_opd' => 'required|string|max:255',
+            'nip_kepala_opd' => 'required|string|max:50',
+            'tanggal' => 'required',
+            'tujuan_opd' => 'nullable|string',
+            'sasaran_opd' => 'nullable|string',
+            'uraian' => 'nullable|string',
+        ]);
 
-        
+        try {
+            Bab8::create($validatedData);
+            return redirect()->route('layouts.admin.bab8.index')->with('success', 'Data has been saved successfully!');
+        } catch (\Exception $e) {
+            Log::error('Failed to store Bab8 record:', ['error' => $e->getMessage()]);
+            return redirect()->back()->withErrors('Failed to save data.');
+        }
+    }
+
+    public function findOpd($kode_opd)
+    {
         try {
             $api = new KakKotaMadiunApi();
-            $response = $api->urusanOpd();
+            $response = $api->findOpd();
 
             if ($response->successful()) {
                 $data = $response->json();
-                \Log::info('Fetched OPD Data:', ['data' => $data]);
 
-                // Log the specific OPD data you are trying to retrieve
-                $opd = collect($data['results'])->firstWhere('kode_opd', $kode_opd);
-                \Log::info('Filtered OPD Data:', ['tujuan_opd' => $opd]);
+                $filteredData = collect($data['results'] ?? [])
+                    ->firstWhere('kode_opd', $kode_opd);
 
-                if ($opd) {
-                    $tujuan_response = $api->tujuanOpd($opd['kode_opd']);
-
-                    if ($tujuan_response->successful()) {
-                        $data_tujuan = $tujuan_response->json();
-                        // Cari tujuan dengan periode 2020-2028
-                        // tujuan_opd hanya membawa tujuan pertama
-                        // TODO: get all tujuan by periode
-                        $tujuan_opd = collect($data_tujuan['results']['data']['tujuan_opd'])->firstWhere('periode', '2020-2028');
-
-                        // sasaran opd kosong sebagai default
-                        $sasaran_opd = '';
-
-                        $sasaran_opd_response = $api->sasaranOpd($kode_opd, '2028');
-                        if ($sasaran_opd_response->successful()) {
-                            $data_sasaran = $sasaran_opd_response->json();
-
-                            // Data yang diambil baru data pertama
-                            // TODO: get all data sasaran opd, dan mapping ke sasaran_opd
-                            $sasaran_opd = collect($data_sasaran['results']['data']['sasaran_opds'])->first();
-                        }
-
-                        return response()->json([
-                            'nama_opd' => $opd['nama_opd'] ?? '',
-                            'tujuan_opd' => $tujuan_opd['tujuan'] ?? '',
-                            'sasaran_opd' => $sasaran_opd['sasaran_opd'] ?? '',
-                        ]);
-                    }
-                    return response()->json(['message' => 'Tujuan OPD Not Found'], 808);
+                if ($filteredData) {
+                    return response()->json([
+                        'kode_opd' => $filteredData['kode_opd'] ?? '',
+                        'nama_opd' => $filteredData['nama_opd'] ?? '',
+                        'nama_kepala_opd' => $filteredData['nama_kepala_opd'] ?? '',
+                        'nip_kepala_opd' => $filteredData['nip_kepala_opd'] ?? ''
+                    ]);
+                } else {
+                    return response()->json(['message' => 'No data found for the specified kode_opd'], 404);
                 }
-
-                return response()->json(['message' => 'OPD not found'], 808);
+            } else {
+                return response()->json(['message' => 'Failed to fetch data'], 500);
             }
-
-            \Log::error('Failed to fetch data from Urusan OPD API', [
-                'response' => $response->body(),
-            ]);
-
-            return response()->json(['message' => 'Failed to fetch data'], 500);
         } catch (\Exception $e) {
-            \Log::error('Error fetching OPD details: ' . $e->getMessage());
             return response()->json(['message' => 'An error occurred'], 500);
         }
     }
 
-
-  
-
-    // Show form to edit an existing Bab8 record
-  
     public function edit($id)
     {
         $api = new KakKotaMadiunApi();
@@ -154,7 +123,13 @@ class Bab8Controller extends Controller
         try {
             $urusan_opd = $api->urusanOpd();
             $results = $urusan_opd->json()['results'] ?? [];
-            $kodeOpds = collect($results)->pluck('kode_opd')->unique();
+            // $kodeOpds = collect($results)->pluck('kode_opd')->unique();
+            $kodeOpds = collect($results)->map(function ($item) {
+                return [
+                    'kode_opd' => $item['kode_opd'],
+                    'nama_opd' => $item['nama_opd'],
+                ];
+            })->unique('kode_opd');
         } catch (\Exception $e) {
             Log::error('Failed to fetch Urusan OPD for edit form:', ['error' => $e->getMessage()]);
             $kodeOpds = collect();
@@ -167,11 +142,6 @@ class Bab8Controller extends Controller
         return view('layouts.admin.bab8.edit', compact('bab8', 'kodeOpds', 'jenis', 'tahun'));
     }
 
-    
-    
-
-
-    // Update an existing Bab8 record in the database
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -179,9 +149,9 @@ class Bab8Controller extends Controller
             'jenis_id' => 'required|integer|exists:jenis,id',
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
-            'nama_opd' => 'nullable|string|max:255',
-            'tujuan_opd' => 'nullable|string',
-            'sasaran_opd' => 'nullable|string',
+            'nama_kepala_opd' => 'required|string|max:255',
+            'nip_kepala_opd' => 'required|string|max:50',
+            'tanggal' => 'required',
             'uraian' => 'nullable|string',
         ]);
 
@@ -203,47 +173,47 @@ class Bab8Controller extends Controller
 
         return redirect()->route('layouts.admin.bab8.index')->with('success', 'BAB 8 deleted successfully');
     }
-
     public function show($id)
     {
         $bab8 = Bab8::findOrFail($id);
 
-        // Fetch the OPD details
-        $api = new KakKotaMadiunApi();
-        $opdDetails = $this->getOpdDetails($bab8->kode_opd);
-        $opdData = json_decode($opdDetails->content(), true); // decode the JSON response
+        $opdDetails = $this->findOpd($bab8->kode_opd);
 
-        // Initialize variables
-        $nama_opd = 'Data not available';
-        $tujuan_opd = [];
-        $sasaran_opd = 'Data not available';
+        $opdData = json_decode($opdDetails->content(), true);
+        $nama_opd = $opdData['nama_opd'] ?? null;
+        $nama_kepala_opd = $opdData['nama_kepala_opd'] ?? null;
+        $nip_kepala_opd = $opdData['nip_kepala_opd'] ?? null;
 
-        // Check for errors in API response
-        if (!isset($opdData['message'])) {
-            $nama_opd = $opdData['nama_opd'] ?? 'Data not available';
-            $tujuan_opd = $opdData['tujuan_opd'] ?? [];
-            $sasaran_opd = $opdData['sasaran_opd'] ?? 'Data not available';
-        }
-
-        return view('layouts.admin.bab8.show', compact('bab8', 'nama_opd', 'tujuan_opd', 'sasaran_opd'));
+        return view('layouts.admin.bab8.show', compact('bab8', 'nama_opd', 'nama_kepala_opd', 'nip_kepala_opd'));
     }
-    
+
+
+    // public function show($id)
+    // {
+    //     $bab8 = Bab8::findOrFail($id);
+    //     $api = new KakKotaMadiunApi();
+    //     $opdDetails = $this->findOpd($bab8->kode_opd);
+    //     $opdData = json_decode($opdDetails->content(), true); // decode the JSON response
+
+    //     return view('layouts.admin.bab8.show', compact('bab8', 'nama_opd', 'tujuan_opd', 'sasaran_opd'));
+    // }
+
     public function exportPdf($id)
     {
         try {
             $bab8 = Bab8::findOrFail($id);
-    
-            $api = new KakKotaMadiunApi();
-            $opdDetails = $this->getOpdDetails($bab8->kode_opd);
+
+            $opdDetails = $this->findOpd($bab8->kode_opd);
+
             $opdData = json_decode($opdDetails->content(), true);
-    
+
             $pdfContent = view('layouts.admin.bab8.pdf', [
                 'bab8' => $bab8,
-                'nama_opd' => $opdData['nama_opd'] ?? 'Data not available',
-                'tujuan_opd' => $opdData['tujuan_opd'] ?? 'Data not available',
-                'sasaran_opd' => $opdData['sasaran_opd'] ?? 'Data not available',
+                'nama_opd' => $opdData['nama_opd'] ?? null,
+                'nama_kepala_opd' => $opdData['nama_kepala_opd'] ?? null,
+                'nip_kepala_opd' => $opdData['nip_kepala_opd'] ?? null,
             ])->render();
-    
+
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
                 // Custom F4 (HVS) paper size: 210mm x 330mm
@@ -270,6 +240,4 @@ class Bab8Controller extends Controller
             return response()->json(['error' => 'Unable to generate PDF'], 500);
         }
     }
-
-    
 }

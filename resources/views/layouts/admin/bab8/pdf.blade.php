@@ -96,19 +96,21 @@
                                 <span >{{$nama_opd}}</span>disusun sebagai pedoman dalam Menyusun Rencana Kerja Perangkat Daerah setiap Tahunnya.</p> 
                         
                                 <br><br>
-                                
-                                    <p style="text-align: right;">Madiun,.....</p>
+                                @php
+                                $tanggal = \Carbon\Carbon::parse($bab8['tanggal']);
+                            @endphp
+                                    <p style="text-align: right;">Madiun, {{ $tanggal->day }} {{ $tanggal->locale('id')->monthName }} {{ $tanggal->year }}</p>
                                     <p style="text-align: right;">Kepala <span >{{$nama_opd}}</span>
                                     </p></div><br><br><br><br>
                                    <!-- Bagian ini di-center -->
-                                    <p style="text-align: center; margin-left:85%">
-                                        <span >(nama kepala)</span>
+                                    <p style="text-align: center; margin-left:60%">
+                                        <span>({{$bab8->nama_kepala_opd}})</span>
                                     </p>
-                                    <p style="text-align: center;margin-left:85%">
+                                    <p style="text-align: center;margin-left:60%">
                                         <span >pangkat</span>
                                     </p>
-                                    <p style="text-align: center;margin-left:85%">
-                                        <span >nip</span>
+                                    <p style="text-align: center;margin-left:60%">
+                                        <span>({{$bab8->nip_kepala_opd}})</span>
                                     </p>
                                 
                                

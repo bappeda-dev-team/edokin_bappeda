@@ -12,6 +12,9 @@ class Bab8 extends Model
         'nama_bab',
         'jenis_id',
         'kode_opd',
+        'nama_kepala_opd',
+        'nip_kepala_opd',
+        'tanggal',
         'tahun_id',
         'uraian',
     ];

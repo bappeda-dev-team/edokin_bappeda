@@ -68,7 +68,6 @@ class KakKotaMadiunApiTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertArrayHasKey('dasar_hukums', $response->json());
-
     }
     public function testAsets(): void
     {
@@ -80,7 +79,6 @@ class KakKotaMadiunApiTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertArrayHasKey('asets', $response->json());
-
     }
     public function testSumberDayaManusia(): void
     {
@@ -92,6 +90,14 @@ class KakKotaMadiunApiTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertArrayHasKey('sumber_daya_manusia', $response->json());
+    }
 
+    public function testFindOpd(): void
+    {
+        $kakApi = new KakKotaMadiunApi();
+        $response = $kakApi->findOpd();
+
+        $this->assertEquals(200, $response->status());
+        $this->assertArrayHasKey('results', $response->json());
     }
 }

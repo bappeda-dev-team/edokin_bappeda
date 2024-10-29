@@ -27,6 +27,13 @@ class KakKotaMadiunApi
 
         return $response;
     }
+    public function findOpd()
+    {
+        $apiUrl = $this->BASE_URL . "/opd/find_opd.json";
+        $response = Http::post($apiUrl);
+
+        return $response;
+    }
 
 
     public function permasalahanOpd($kode_opd, $tahun)
