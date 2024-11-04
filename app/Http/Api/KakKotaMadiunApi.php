@@ -35,7 +35,7 @@ class KakKotaMadiunApi
         return $response;
     }
 
-    public function permasalahanOpd($kode_opd, $tahun)
+    public function permasalahanOpd($tahun, $kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/programs/permasalahans.json";
         $response = Http::post($apiUrl, [
