@@ -49,12 +49,12 @@
                 </div>
 
                 <div class="form-group row mb-4">
-                    <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
+                    <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                     <div class="col-sm-12 col-md-4">
                         <select name="kode_opd" class="form-control selectric" required>
-                            <option value="">Pilih Kode OPD</option>
+                            <option value="">Pilih Nama OPD</option>
                             @foreach($data_opd as $opd)
-                                <option value="{{ $opd['kode_opd'] }}" {{ $opd['kode_opd'] == $bab3->kode_opd ? 'selected' : '' }}>{{ $opd['kode_opd'] }}</option>
+                                <option value="{{ $opd['kode_opd'] }}" {{ $opd['kode_opd'] == $bab3->kode_opd ? 'selected' : '' }}>{{ $opd['nama_opd'] }}</option>
                             @endforeach
                         </select>
                     </div>

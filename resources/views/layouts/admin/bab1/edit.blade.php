@@ -54,26 +54,26 @@
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <select name="kode_opd" id="kode_opd" class="form-control select2" required>
-                                    <option value="">Pilih Kode OPD</option>
+                                    <option value="">Pilih Nama OPD</option>
                                     @foreach ($urusan_opd as $opd)
                                         <option value="{{ $opd['kode_opd'] }}"
                                             {{ $bab1->kode_opd == $opd['kode_opd'] ? 'selected' : '' }}>
-                                            {{ $opd['kode_opd'] }}</option>
+                                            {{ $opd['nama_opd'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-
+{{-- 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                            <div class="col-sm-12 col-md-4">
-                                <input type="text" name="nama_opd" id="nama_opd" class="form-control"
+                            <div class="col-sm-12 col-md-4"> --}}
+                                <input type="hidden" name="nama_opd" id="nama_opd" class="form-control"
                                     value="{{ old('nama_opd', $bab1->nama_opd) }}" readonly>
-                            </div>
-                        </div>
+                            {{-- </div>
+                        </div> --}}
 
                         {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan</label>
@@ -172,7 +172,7 @@
         $(document).ready(function() {
             // Initialize Select2
             $('.select2').select2({
-                placeholder: 'Pilih Kode OPD',
+                placeholder: 'Pilih Nama OPD',
                 allowClear: true,
                 width: '100%'
             });

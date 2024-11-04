@@ -45,7 +45,12 @@ class Bab5Controller extends Controller
         try {
             $urusan_opd = $api->urusanOpd();
             $results = $urusan_opd->json()['results'] ?? [];
-            $kodeOpds = collect($results)->pluck('kode_opd')->unique();
+            $kodeOpds = collect($results)->map(function ($item) {
+                return [
+                    'kode_opd' => $item['kode_opd'],
+                    'nama_opd' => $item['nama_opd'],
+                ];
+            })->unique('kode_opd');
         } catch (\Exception $e) {
             Log::error('Failed to fetch Urusan OPD for create form:', ['error' => $e->getMessage()]);
             $kodeOpds = collect();
@@ -162,7 +167,12 @@ class Bab5Controller extends Controller
         try {
             $urusan_opd = $api->urusanOpd();
             $results = $urusan_opd->json()['results'] ?? [];
-            $kodeOpds = collect($results)->pluck('kode_opd')->unique();
+            $kodeOpds = collect($results)->map(function ($item) {
+                return [
+                    'kode_opd' => $item['kode_opd'],
+                    'nama_opd' => $item['nama_opd'],
+                ];
+            })->unique('kode_opd');
         } catch (\Exception $e) {
             Log::error('Failed to fetch Urusan OPD for edit form:', ['error' => $e->getMessage()]);
             $kodeOpds = collect();

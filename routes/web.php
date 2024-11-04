@@ -121,6 +121,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::delete('/dashboard/delete-bab1/{id}', [Bab1Controller::class, 'destroy'])->name('bab1.destroy');
     Route::get('/api/urusan_opd/{kode_opd}', [Bab1Controller::class, 'getUrusanOpd']);
     Route::get('/api/dasar-hukum/{tahun}/{kode_opd}', [Bab1Controller::class, 'getDasarHukum']);
+    Route::get('/api/dasar-hukum-by-periode', [Bab1Controller::class, 'getDasarHukumByPeriode']);
     Route::get('/api/sumber-daya-manusia/{tahun}/{kode_opd}', [Bab2Controller::class, 'getSumberDayaManusia']);
     Route::get('/api/asets/{tahun}/{kode_opd}', [Bab2Controller::class, 'getAsets']);
     Route::get('/api/strategi-arah-kebijakan/{tahun}/{kode_opd}', [Bab5Controller::class, 'getStrategiArahKebijakan']);

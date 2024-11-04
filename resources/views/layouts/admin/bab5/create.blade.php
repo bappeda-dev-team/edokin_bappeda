@@ -68,24 +68,24 @@
 
                         <!-- Kode OPD Field -->
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <select id="kode_opd" name="kode_opd" class="form-control select2">
-                                    <option value="">Pilih Kode OPD</option>
-                                    @foreach ($kodeOpds as $kode_opd)
-                                        <option value="{{ $kode_opd }}">{{ $kode_opd }}</option>
-                                    @endforeach
+                                    <option value="">Pilih Nama OPD</option>
+                                    @foreach ($kodeOpds as $opd)
+                                    <option value="{{ $opd['kode_opd'] }}">{{ $opd['nama_opd'] }}</option>
+                                @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <!-- Nama OPD Field -->
-                        <div class="form-group row mb-4">
+                        {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                            <div class="col-sm-12 col-md-4">
-                                <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly>
-                            </div>
-                        </div>
+                            <div class="col-sm-12 col-md-4"> --}}
+                                <input type="hidden" id="nama_opd" name="nama_opd" class="form-control" readonly>
+                            {{-- </div>
+                        </div> --}}
 
                         <!-- Tujuan OPD Field -->
                         {{-- <div class="form-group row mb-4">
@@ -192,7 +192,7 @@
         $(document).ready(function() {
             // Initialize Select2
             $('.select2').select2({
-                placeholder: 'Pilih Kode OPD',
+                placeholder: 'Pilih Nama OPD',
                 allowClear: true,
                 width: '100%'
             });

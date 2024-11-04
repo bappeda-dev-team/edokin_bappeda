@@ -35,13 +35,12 @@ class KakKotaMadiunApi
         return $response;
     }
 
-
     public function permasalahanOpd($kode_opd, $tahun)
     {
         $apiUrl = $this->BASE_URL . "/programs/permasalahans.json";
         $response = Http::post($apiUrl, [
+            'tahun' => $tahun,
             'kode_opd' => $kode_opd,
-            'tahun' => $tahun
         ]);
 
         return $response;
@@ -68,16 +67,17 @@ class KakKotaMadiunApi
         return $response;
     }
 
-    public function dasarHukum($kode_opd, $tahun)
+    public function dasarHukum($tahun, $kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/substansi_renstra/dasar_hukums.json";
         $response = Http::get($apiUrl, [
+            'tahun' => $tahun,
             'kode_opd' => $kode_opd,
-            'tahun' => $tahun
         ]);
 
         return $response;
     }
+    
     public function asets($tahun,$kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/substansi_renstra/asets.json";

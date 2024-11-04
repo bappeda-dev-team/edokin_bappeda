@@ -55,22 +55,22 @@
                         <div class="col-sm-12 col-md-4">
                             <select name="kode_opd" id="kode_opd" class="form-control select2" required>
                                 <option value="">Pilih Kode OPD</option>
-                                @foreach($kodeOpds as $kode_opd)
-                                    <option value="{{ $kode_opd }}" {{ $bab4->kode_opd == $kode_opd ? 'selected' : '' }}>
-                                        {{ $kode_opd }}
-                                    </option>
-                                @endforeach
+                                @foreach ($kodeOpds as $opd)
+                                <option value="{{ $opd['kode_opd'] }}"
+                                    {{ $bab4->kode_opd == $opd['kode_opd'] ? 'selected' : '' }}>
+                                    {{ $opd['nama_opd'] }}</option>
+                            @endforeach
                             </select>
                         </div>
                     </div>
 
                     <!-- Nama OPD Field -->
-                    <div class="form-group row mb-4">
+                    {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                        <div class="col-sm-12 col-md-4">
-                            <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly>
-                        </div>
-                    </div>
+                        <div class="col-sm-12 col-md-4"> --}}
+                            <input type="hidden" id="nama_opd" name="nama_opd" class="form-control" readonly>
+                        {{-- </div>
+                    </div> --}}
 
                     <!-- Tujuan OPD Field -->
                     <div class="form-group row mb-4">

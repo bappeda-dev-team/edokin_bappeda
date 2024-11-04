@@ -56,28 +56,27 @@
 
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Kode OPD</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <select name="kode_opd" id="kode_opd" class="form-control select2" required>
-                                    <option value="">Pilih Kode OPD</option>
-                                    @foreach ($kodeOpds as $kode_opd)
-                                        <option value="{{ $kode_opd }}"
-                                            {{ $bab5->kode_opd == $kode_opd ? 'selected' : '' }}>
-                                            {{ $kode_opd }}
-                                        </option>
-                                    @endforeach
+                                    <option value="">Pilih Nama OPD</option>
+                                    @foreach ($kodeOpds as $opd)
+                                    <option value="{{ $opd['kode_opd'] }}"
+                                        {{ $bab5->kode_opd == $opd['kode_opd'] ? 'selected' : '' }}>
+                                        {{ $opd['nama_opd'] }}</option>
+                                @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <!-- Nama OPD Field -->
-                        <div class="form-group row mb-4">
+                        {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                            <div class="col-sm-12 col-md-4">
-                                <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly
+                            <div class="col-sm-12 col-md-4"> --}}
+                                <input type="hidden" id="nama_opd" name="nama_opd" class="form-control" readonly
                                     value="{{ old('nama_opd', $bab5->nama_opd) }}">
-                            </div>
-                        </div>
+                            {{-- </div>
+                        </div> --}}
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Visi dan Misi</label>
@@ -155,7 +154,7 @@
         $(document).ready(function() {
             // Initialize Select2
             $('.select2').select2({
-                placeholder: 'Pilih Kode OPD',
+                placeholder: 'Pilih Nama OPD',
                 allowClear: true,
                 width: '100%'
             });
