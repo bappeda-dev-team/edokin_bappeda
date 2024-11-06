@@ -10,7 +10,7 @@
                     <h4>Edit BAB 2</h4>
                 </div>
                 <div class="card-body">
-                    <a href="{{ route('layouts.admin.bab1.index') }}">
+                    <a href="{{ route('layouts.admin.bab2.index') }}">
                         <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back </button>
                     </a>
                     <form action="{{ route('bab2.update', $bab2->id) }}" method="POST">

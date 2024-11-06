@@ -224,7 +224,7 @@
                 $('#bidang-urusan-2').hide();
                 $('#bidang-urusan-3').hide();
             }
-            
+
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');

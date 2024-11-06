@@ -12,6 +12,7 @@ use App\Models\TahunDokumen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Shared\Html;
@@ -22,15 +23,27 @@ class Bab2Controller extends Controller
 
     public function index()
     {
-        $bab2 = Bab2::with('jenis')->get();
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab2 = Bab2::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        return view('layouts.admin.bab2.index', compact('bab2', 'jenis', 'tahun'));
+        return view('layouts.opd.renstra.bab2.index', compact('bab2', 'jenis', 'tahun', 'userKodeOpd'));
     }
 
     public function create()
     {
+
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab2 = Bab2::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -39,7 +52,7 @@ class Bab2Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab2.create', compact('jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.opd.renstra.bab2.create', compact('jenis', 'urusan_opd', 'tahun','userKodeOpd'));
     }
 
     public function store(Request $request)
@@ -52,13 +65,9 @@ class Bab2Controller extends Controller
             'bidang_urusan_2' => 'nullable|string',
             'bidang_urusan_3' => 'nullable|string',
             'kode_opd' => 'required|string',
-            // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'required',
             'uraian' => 'nullable|string',
             'uraian_asets' => 'nullable|string',
-            // 'latar_belakang' => 'required',
-            // 'maksud_tujuan' => 'required',
-            // 'sistematika_penulisan' => 'required',
         ]);
 
         $bidangUrusan = trim($request->bidang_urusan_1);
@@ -89,18 +98,23 @@ class Bab2Controller extends Controller
                 ];
             }
         }
-    
+
         // Bab1::create($request->all());
         Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => json_encode($tugasFungsi)]));
 
-        return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 created successfully');
+        return redirect()->route('layouts.opd.bab2.index')->with('success', 'BAB 2 created successfully');
     }
 
     public function edit($id)
     {
-        $bab2 = Bab2::findOrFail($id);
+
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab2 = Bab2::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->findOrFail($id);
 
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
@@ -111,7 +125,7 @@ class Bab2Controller extends Controller
         // $tugasFungsiString = $bab2->tugas_fungsi;
         // $tugas_fungsi_array = explode("\n", $tugasFungsiString);
         $tugas_fungsi = json_decode($bab2->tugas_fungsi, true);
-        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'tugas_fungsi'));
+        return view('layouts.opd.renstra.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'tugas_fungsi','userKodeOpd'));
     }
 
     public function update(Request $request, $id)
@@ -166,7 +180,7 @@ class Bab2Controller extends Controller
 
         $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsi]));
 
-        return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 updated successfully');
+        return redirect()->route('layouts.opd.bab2.index')->with('success', 'BAB 2 updated successfully');
     }
 
     public function destroy($id)
@@ -174,7 +188,7 @@ class Bab2Controller extends Controller
         $bab2 = Bab2::findOrFail($id);
         $bab2->delete();
 
-        return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 deleted successfully');
+        return redirect()->route('layouts.opd.bab2.index')->with('success', 'BAB 2 deleted successfully');
     }
 
 
@@ -216,7 +230,7 @@ class Bab2Controller extends Controller
         $asetList = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
         $SDMList = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
 
-        return view('layouts.admin.bab2.show', [
+        return view('layouts.opd.renstra.bab2.show', [
             'bab2' => $bab2,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
@@ -248,7 +262,7 @@ class Bab2Controller extends Controller
             $sumber_daya_manusia = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
 
             // Render HTML view
-            $html = view('layouts.admin.bab2.pdf', compact('bab2', 'urusan_opd', 'tugas_fungsi', 'asets', 'sumber_daya_manusia'))->render();
+            $html = view('layouts.opd.renstra.bab2.pdf', compact('bab2', 'urusan_opd', 'tugas_fungsi', 'asets', 'sumber_daya_manusia'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
@@ -420,7 +434,7 @@ class Bab2Controller extends Controller
         $section = $phpWord->addSection();
 
         // Render HTML from Blade view
-        $htmlContent = view('layouts.admin.bab2.word', compact('bab2', 'urusan_opd'))->render();
+        $htmlContent = view('layouts.opd.renstra.bab2.word', compact('bab2', 'urusan_opd'))->render();
 
         // Simplify HTML and handle unsupported tags
         $allowedTags = '<p><h2><h2><h3><h4><h5><h6><ul><ol><li><b><i><u><strong><em>';
