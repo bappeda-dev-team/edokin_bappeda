@@ -1,4 +1,4 @@
-@extends('layouts.admin.main')
+@extends('layouts.opd.main')
 
 @section('title', 'Dashboard E-DOKIN')
 
@@ -7,6 +7,6 @@
     <div class="section-header">
       <h1>Dashboard</h1>
     </div>
-    <h5>Ini Halaman Dashboard ADMIN</h5>
+    <h5>Ini Halaman Dashboard OPD</h5>
   </section>
 @endsection

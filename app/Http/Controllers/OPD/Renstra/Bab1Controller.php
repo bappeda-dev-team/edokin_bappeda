@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\OPD\Renstra;
 
 use Mpdf\Mpdf;
-
+use App\Http\Controllers\Controller;
 use App\Models\Bab1;
 use App\Models\Jenis;
 use App\Models\TahunDokumen;
@@ -17,19 +17,24 @@ use PhpOffice\PhpWord\Shared\Html;
 
 class Bab1Controller extends Controller
 {
+
     public function index()
     {
+        $userKodeOpd = Auth::user()->kode_opd;
 
-        $bab1 = Bab1::with('jenis')->get();
+        $bab1 = Bab1::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        return view('layouts.admin.bab1.index', compact('bab1', 'jenis', 'tahun'));
+        return view('layouts.opd.renstra.bab1.index', compact('bab1', 'jenis', 'tahun'));
     }
 
     public function create()
     {
-        $userKodeOpd = auth()->user()->kode_opd;
+        $userKodeOpd = Auth::user()->kode_opd;
 
         $bab1 = Bab1::with('jenis', 'tahun')
             ->where('kode_opd', $userKodeOpd)
@@ -44,7 +49,7 @@ class Bab1Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab1.create', compact('jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.opd.renstra.bab1.create', compact('jenis', 'urusan_opd', 'tahun', 'userKodeOpd'));
     }
 
     public function store(Request $request)
@@ -60,9 +65,7 @@ class Bab1Controller extends Controller
             'bidang2' => 'nullable|string',
             'bidang3' => 'nullable|string',
             'kode_opd' => 'required|string',
-            // 'kode_bidang_urusan'=>'required|string',
             'tahun_id' => 'nullable|string',
-            // 'latar_belakang' => 'required',
             'dasar_hukum' => 'nullable|string',
             'uraian' => 'nullable|string',
 
@@ -82,21 +85,24 @@ class Bab1Controller extends Controller
         // Bab1::create($request->all());
         Bab1::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan]));
 
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 created successfully');
+        return redirect()->route('layouts.opd.bab1.index')->with('success', 'BAB 1 created successfully');
     }
 
     public function edit($id)
     {
-        $bab1 = Bab1::findOrFail($id);
+        // $bab1 = Bab1::findOrFail($id);
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
-
+        $userKodeOpd = Auth::user()->kode_opd;
+        $bab1 = Bab1::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->findOrFail($id);
         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab1.edit', compact('bab1', 'jenis', 'urusan_opd', 'tahun'));
+        return view('layouts.opd.renstra.bab1.edit', compact('userKodeOpd', 'bab1', 'jenis', 'urusan_opd', 'tahun'));
     }
 
     public function update(Request $request, $id)
@@ -134,7 +140,7 @@ class Bab1Controller extends Controller
 
         // $bab1->update($request->all());
 
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 updated successfully');
+        return redirect()->route('layouts.opd.bab1.index')->with('success', 'BAB 1 updated successfully');
     }
 
     public function destroy($id)
@@ -142,7 +148,7 @@ class Bab1Controller extends Controller
         $bab1 = Bab1::findOrFail($id);
         $bab1->delete();
 
-        return redirect()->route('layouts.admin.bab1.index')->with('success', 'BAB 1 deleted successfully');
+        return redirect()->route('layouts.opd.bab1.index')->with('success', 'BAB 1 deleted successfully');
     }
 
 
@@ -188,7 +194,7 @@ class Bab1Controller extends Controller
                 }
             }
         }
-        return view('layouts.admin.bab1.show', [
+        return view('layouts.opd.renstra.bab1.show', [
             'bab1' => $bab1,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
@@ -231,7 +237,7 @@ class Bab1Controller extends Controller
             }
 
             // Render HTML view
-            $html = view('layouts.admin.bab1.pdf', compact('bab1', 'urusan_opd', 'dasar_hukums'))->render();
+            $html = view('layouts.opd.renstra.bab1.pdf', compact('bab1', 'urusan_opd', 'dasar_hukums'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
@@ -274,7 +280,7 @@ class Bab1Controller extends Controller
 
 
         // Render HTML from Blade view
-        $htmlContent = view('layouts.admin.bab1.word', compact('bab1', 'selectedOpd'))->render();
+        $htmlContent = view('layouts.opd.renstra.bab1.word', compact('bab1', 'selectedOpd'))->render();
 
         // Simplify HTML and handle unsupported tags
         $allowedTags = '<p><h1><h2><h3><h4><h5><h6><ul><ol><li><b><i><u><strong><em>';
@@ -457,7 +463,7 @@ class Bab1Controller extends Controller
 //             $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
     
 //             // Render the view with the data
-//             $html = view('layouts.admin.bab1.word', compact('bab1', 'data_opd'))->render();
+//             $html = view('layouts.opd.renstra.bab1.word', compact('bab1', 'data_opd'))->render();
     
 //             // Initialize PhpWord
 //             $phpWord = new PhpWord();

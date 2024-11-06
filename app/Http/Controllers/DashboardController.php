@@ -10,6 +10,12 @@ class DashboardController extends Controller
     public function index(){
         return view('layouts.admin.dashboard');
     }
+
+    public function dashboardOpd()
+    {
+        return view('layouts.opd.dashboard');
+        // return redirect()->route('layouts.opd.dashboard');
+    }
     public function perangkat(){
         return view('layouts.admin.perangkat.index');
     }
