@@ -89,7 +89,7 @@
             // Highlight the active menu item based on the current URL path
             var path = window.location.pathname;
 
-            Define a mapping between paths and menu items
+            // Define a mapping between paths and menu items
             var menuMapping = {
                 '/opd/dashboard': 'menu-dashboard',
                 '/opd/dashboard/perangkat': 'menu-perangkat',

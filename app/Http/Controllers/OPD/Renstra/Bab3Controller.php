@@ -10,7 +10,7 @@ use App\Models\TahunDokumen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
@@ -19,15 +19,25 @@ class Bab3Controller extends Controller
 {
     public function index()
     {
-        $bab3 = Bab3::with('jenis')->get();
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab3 = Bab3::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        return view('layouts.admin.bab3.index', compact('bab3', 'jenis', 'tahun'));
+        return view('layouts.opd.renstra.bab3.index', compact('bab3', 'jenis', 'tahun', 'userKodeOpd'));
     }
 
     public function create()
     {
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab3 = Bab3::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -36,7 +46,7 @@ class Bab3Controller extends Controller
 
         $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab3.create', compact('jenis', 'data_opd', 'tahun'));
+        return view('layouts.opd.renstra.bab3.create', compact('jenis', 'data_opd', 'tahun', 'userKodeOpd'));
     }
 
     public function store(Request $request)
@@ -53,7 +63,7 @@ class Bab3Controller extends Controller
             'uraian5' => 'nullable',
             // 'isu_strategis1' => 'nullable',
             // 'isu_strategis2' => 'nullable',
-            'isu_strategis' => 'array', 
+            'isu_strategis' => 'array',
             'isu_strategis.*' => 'nullable|string',
         ]);
 
@@ -70,15 +80,19 @@ class Bab3Controller extends Controller
             // 'isu_strategis1' => $request->isu_strategis1,
             // 'isu_strategis2' => $request->isu_strategis2,
             'uraian' => $request->uraian,
-            'isu_strategis' => json_encode($request->isu_strategis), 
+            'isu_strategis' => json_encode($request->isu_strategis),
         ]);
 
-        return redirect()->route('layouts.admin.bab3.index')->with('success', 'BAB 3 created successfully');
+        return redirect()->route('layouts.opd.bab3.index')->with('success', 'BAB 3 created successfully');
     }
 
     public function edit($id)
     {
-        $bab3 = Bab3::findOrFail($id);
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab3 = Bab3::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->findOrFail($id);
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -87,7 +101,7 @@ class Bab3Controller extends Controller
 
         $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.admin.bab3.edit', compact('bab3', 'jenis', 'data_opd', 'tahun'));
+        return view('layouts.opd.renstra.bab3.edit', compact('bab3', 'jenis', 'data_opd', 'tahun','userKodeOpd'));
     }
 
     public function update(Request $request, $id)
@@ -125,7 +139,7 @@ class Bab3Controller extends Controller
             'uraian' => $request->uraian,
         ]);
 
-        return redirect()->route('layouts.admin.bab3.index')->with('success', 'BAB 3 updated successfully');
+        return redirect()->route('layouts.opd.bab3.index')->with('success', 'BAB 3 updated successfully');
     }
 
     public function destroy($id)
@@ -133,7 +147,7 @@ class Bab3Controller extends Controller
         $bab3 = Bab3::findOrFail($id);
         $bab3->delete();
 
-        return redirect()->route('layouts.admin.bab3.index')->with('success', 'BAB 3 deleted successfully');
+        return redirect()->route('layouts.opd.bab3.index')->with('success', 'BAB 3 deleted successfully');
     }
 
     public function show($id)
@@ -162,7 +176,7 @@ class Bab3Controller extends Controller
             }
         }
 
-        return view('layouts.admin.bab3.show', [
+        return view('layouts.opd.renstra.bab3.show', [
             'bab3' => $bab3,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
@@ -187,7 +201,7 @@ class Bab3Controller extends Controller
             $urusan_opd = $response->json()['results'] ?? [];
 
             // Render HTML view
-            $html = view('layouts.admin.bab3.pdf', compact('bab3', 'urusan_opd'))->render();
+            $html = view('layouts.opd.renstra.bab3.pdf', compact('bab3', 'urusan_opd'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([

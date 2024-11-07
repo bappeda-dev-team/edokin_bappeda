@@ -66,8 +66,8 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4"> --}}
-                        <input type="hidden" name="nama_opd" id="nama_opd" class="form-control"
-                            value="{{ old('nama_opd', $bab1->nama_opd) }}" readonly>
+                        {{-- <input type="hidden" name="nama_opd" id="nama_opd" class="form-control"
+                            value="{{ old('nama_opd', $bab1->nama_opd) }}" readonly> --}}
                         {{-- </div>
                         </div> --}}
 

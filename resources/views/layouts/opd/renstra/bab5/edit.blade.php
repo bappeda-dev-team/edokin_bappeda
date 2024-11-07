@@ -58,14 +58,10 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
-                                <select name="kode_opd" id="kode_opd" class="form-control select2" required>
-                                    <option value="">Pilih Nama OPD</option>
-                                    @foreach ($kodeOpds as $opd)
-                                    <option value="{{ $opd['kode_opd'] }}"
-                                        {{ $bab5->kode_opd == $opd['kode_opd'] ? 'selected' : '' }}>
-                                        {{ $opd['nama_opd'] }}</option>
-                                @endforeach
-                                </select>
+                                <input type="hidden" name="kode_opd" id="kode_opd"
+                                    value="{{ old('kode_opd', $bab5->kode_opd) }}" class="form-control" required>
+                                <input type="text" name="nama_opd" id="nama_opd"
+                                    value="{{ old('nama_opd', $bab5->nama_opd) }}" class="form-control" readonly>
                             </div>
                         </div>
 
@@ -73,9 +69,9 @@
                         {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4"> --}}
-                                <input type="hidden" id="nama_opd" name="nama_opd" class="form-control" readonly
-                                    value="{{ old('nama_opd', $bab5->nama_opd) }}">
-                            {{-- </div>
+                        {{-- <input type="hidden" id="nama_opd" name="nama_opd" class="form-control" readonly
+                                    value="{{ old('nama_opd', $bab5->nama_opd) }}"> --}}
+                        {{-- </div>
                         </div> --}}
 
                         <div class="form-group row mb-4">
@@ -160,34 +156,34 @@
             });
 
             // Event handler for when the value of select2 changes
-            $('.select2').on('change', function() {
-                const kodeOpd = $(this).val();
-                const namaOpdInput = $('#nama_opd');
+            // $('.select2').on('change', function() {
+            const kodeOpd = $('#kode_opd').val();
+            const namaOpdInput = $('#nama_opd');
 
-                if (kodeOpd) {
-                    // Call your API to fetch nama OPD and bidang urusan based on selected kode OPD
-                    fetch(`/api/urusan_opd/${kodeOpd}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('API Response:', data); // Debug: log API response
-                            if (data.error) {
-                                console.error('API Error:', data.error);
-                                namaOpdInput.val(''); // Clear nama OPD input
-                            } else {
-                                // Set the input values based on the API response
-                                namaOpdInput.val(data.nama_opd ||
-                                    ''); // Set nama OPD                      
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Fetch Error:', error);
-                            namaOpdInput.val('');
-                        });
-                } else {
-                    // Clear fields if no kode_opd selected
-                    namaOpdInput.val('');
-                }
-            });
+            if (kodeOpd) {
+                // Call your API to fetch nama OPD and bidang urusan based on selected kode OPD
+                fetch(`/api/urusan_opd/${kodeOpd}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('API Response:', data); // Debug: log API response
+                        if (data.error) {
+                            console.error('API Error:', data.error);
+                            namaOpdInput.val(''); // Clear nama OPD input
+                        } else {
+                            // Set the input values based on the API response
+                            namaOpdInput.val(data.nama_opd ||
+                                ''); // Set nama OPD                      
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        namaOpdInput.val('');
+                    });
+            } else {
+                // Clear fields if no kode_opd selected
+                namaOpdInput.val('');
+            }
+            // });
 
             function addRowToCategory(category, value = '') {
                 const newRow = `<div>
@@ -248,6 +244,32 @@
                 minHeight: null, // set minimum height of the editor
                 maxHeight: null, // set maximum height of the editor
                 focus: true // set focus to editable area after initializing summernote
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            var userKodeOpd = @json($userKodeOpd);
+            var urusanOpd = @json($kodeOpds);
+            if (userKodeOpd) {
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === userKodeOpd;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
+                }
+            }
+
+            document.getElementById('kode_opd').addEventListener('change', function() {
+                var selectedOpdCode = this.value;
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === selectedOpdCode;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
+                }
             });
         });
     </script>

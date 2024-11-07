@@ -9,7 +9,7 @@ use App\Models\TahunDokumen;
 use Illuminate\Http\Request;
 use App\Http\Api\KakKotaMadiunApi;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
@@ -19,7 +19,13 @@ class Bab7Controller extends Controller
     // Display a list of Bab7 records
     public function index()
     {
-        $bab7 = Bab7::with('jenis')->get();
+
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab7 = Bab7::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -34,12 +40,18 @@ class Bab7Controller extends Controller
             $kodeOpds = collect();
         }
 
-        return view('layouts.admin.bab7.index', compact('bab7', 'jenis', 'urusan_opd', 'tahun', 'kodeOpds'));
+        return view('layouts.opd.renstra.bab7.index', compact('bab7', 'jenis', 'urusan_opd', 'tahun', 'kodeOpds', 'userKodeOpd'));
     }
 
     // Show form to create a new Bab7 record
     public function create()
     {
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab7 = Bab7::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $api = new KakKotaMadiunApi();
 
         try {
@@ -59,7 +71,7 @@ class Bab7Controller extends Controller
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        return view('layouts.admin.bab7.create', compact('kodeOpds', 'jenis', 'tahun'));
+        return view('layouts.opd.renstra.bab7.create', compact('kodeOpds', 'jenis', 'tahun', 'userKodeOpd'));
     }
     // Remove this block to avoid duplicate method definition
     // Store a new Bab7 record in the database
@@ -78,7 +90,7 @@ class Bab7Controller extends Controller
 
         try {
             Bab7::create($validatedData);
-            return redirect()->route('layouts.admin.bab7.index')->with('success', 'Data has been saved successfully!');
+            return redirect()->route('layouts.opd.bab7.index')->with('success', 'Data has been saved successfully!');
         } catch (\Exception $e) {
             Log::error('Failed to store Bab7 record:', ['error' => $e->getMessage()]);
             return redirect()->back()->withErrors('Failed to save data.');
@@ -155,6 +167,12 @@ class Bab7Controller extends Controller
 
     public function edit($id)
     {
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab7 = Bab7::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->findOrFail($id);
+
         $api = new KakKotaMadiunApi();
 
         try {
@@ -171,11 +189,10 @@ class Bab7Controller extends Controller
             $kodeOpds = collect();
         }
 
-        $bab7 = Bab7::findOrFail($id); // Fetch the record you want to edit
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        return view('layouts.admin.bab7.edit', compact('bab7', 'kodeOpds', 'jenis', 'tahun'));
+        return view('layouts.opd.renstra.bab7.edit', compact('bab7', 'kodeOpds', 'jenis', 'tahun', 'userKodeOpd'));
     }
 
 
@@ -199,7 +216,7 @@ class Bab7Controller extends Controller
         try {
             $bab7 = Bab7::findOrFail($id);
             $bab7->update($validatedData); // Update the record with new data
-            return redirect()->route('layouts.admin.bab7.index')->with('success', 'Data has been updated successfully!');
+            return redirect()->route('layouts.opd.bab7.index')->with('success', 'Data has been updated successfully!');
         } catch (\Exception $e) {
             Log::error('Failed to update Bab7 record:', ['error' => $e->getMessage()]);
             return redirect()->back()->withErrors('Failed to update data.');
@@ -212,7 +229,7 @@ class Bab7Controller extends Controller
         $bab7 = Bab7::findOrFail($id);
         $bab7->delete();
 
-        return redirect()->route('layouts.admin.bab7.index')->with('success', 'BAB 7 deleted successfully');
+        return redirect()->route('layouts.opd.bab7.index')->with('success', 'BAB 7 deleted successfully');
     }
 
     public function show($id)
@@ -236,7 +253,7 @@ class Bab7Controller extends Controller
             $sasaran_opd = $opdData['sasaran_opd'] ?? 'Data not available';
         }
 
-        return view('layouts.admin.bab7.show', compact('bab7', 'nama_opd', 'tujuan_opd', 'sasaran_opd'));
+        return view('layouts.opd.renstra.bab7.show', compact('bab7', 'nama_opd', 'tujuan_opd', 'sasaran_opd'));
     }
 
     public function exportPdf($id)
@@ -249,7 +266,7 @@ class Bab7Controller extends Controller
             $opdData = json_decode($opdDetails->content(), true);
 
 
-            $pdfContent = view('layouts.admin.bab7.pdf', [
+            $pdfContent = view('layouts.opd.renstra.bab7.pdf', [
                 'bab7' => $bab7,
                 'nama_opd' => $opdData['nama_opd'] ?? 'Data not available',
                 'tujuan_opd' => $opdData['tujuan_opd'] ?? 'Data not available',

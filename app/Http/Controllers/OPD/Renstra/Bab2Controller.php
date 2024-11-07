@@ -19,8 +19,6 @@ use PhpOffice\PhpWord\Shared\Html;
 
 class Bab2Controller extends Controller
 {
-
-
     public function index()
     {
         $userKodeOpd = Auth::user()->kode_opd;

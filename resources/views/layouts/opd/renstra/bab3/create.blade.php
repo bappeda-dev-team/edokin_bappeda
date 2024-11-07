@@ -50,19 +50,15 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
-                                <select name="kode_opd" class="form-control select2" required>
-                                    <option value="">Pilih Nama OPD</option>
-                                    @foreach ($data_opd as $opd)
-                                        <option value="{{ $opd['kode_opd'] }}">{{ $opd['nama_opd'] }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="hidden" name="kode_opd" id="kode_opd" class="form-control" required>
+                                <input type="text" name="nama_opd" id="nama_opd" class="form-control" readonly>
                             </div>
                         </div>
 
                         {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                         <div class="col-sm-12 col-md-4"> --}}
-                        <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly>
+                        {{-- <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly> --}}
                         {{-- </div>
                     </div> --}}
 
@@ -190,8 +186,8 @@
             });
 
             // Event listener for Select2 change event
-            $('.select2').on('change', function() {
-                const kodeOpd = $(this).val();
+            // $('.select2').on('change', function() {
+                const kodeOpd = $('#kode_opd').val();
                 const namaOpdInput = $('#nama_opd');
 
                 if (kodeOpd) {
@@ -216,7 +212,7 @@
                     // Clear fields if no kode_opd selected
                     namaOpdInput.val('');
                 }
-            });
+            // });
 
             // $(document).ready(function() {
                 $('#isu_strategis').summernote({
@@ -255,114 +251,39 @@
                             });
                     }
                 });
-            // });
-
-
-
-            // $('.select2').on('change', function() {
-            //     const kodeOpd = $(this).val();
-            //     const tahun = $('#tahun_id').find(':selected').data('tahun');
-            //     const namaOpdInput = $('#nama_opd');
-            //     const isuStrategisInputs = [
-            //         $('#isu_strategis1'),
-            //         $('#isu_strategis2'),
-            //         $('#isu_strategis3'),
-            //         $('#isu_strategis4')
-            //     ];
-
-            //     // Clear previous inputs
-            //     namaOpdInput.val('');
-            //     isuStrategisInputs.forEach(input => input.val(''));
-            //     $('#urusan-strategis-2').hide();
-            //     $('#urusan-strategis-3').hide();
-            //     $('#urusan-strategis-4').hide();
-
-            //     if (kodeOpd && tahun) {
-            //         fetch(`/api/isu-strategis/${tahun}/${kodeOpd}`)
-            //             .then(response => response.json())
-            //             .then(data => {
-            //                 console.log('API Response:', data); // Debug: log API response
-            //                 if (data.error) {
-            //                     console.error('API Error:', data.error);
-            //                 } else {
-            //                     // Set the input values based on the API response
-            //                     namaOpdInput.val(data.nama_opd || ''); // Set nama OPD
-
-            //                     // Populate isu strategis based on response
-            //                     const isuStrategis = data.results || [];
-
-            //                     isuStrategis.forEach((isu, index) => {
-            //                         if (isu && index < isuStrategisInputs.length) {
-            //                             const isuTextArea = isuStrategisInputs[index];
-            //                             isuTextArea.val(isu);
-            //                             $(`#urusan-strategis-${index + 1}`)
-            //                                 .show(); // Show corresponding issue text area
-            //                         }
-            //                     });
-            //                 }
-            //             })
-            //             .catch(error => {
-            //                 console.error('Fetch Error:', error);
-            //             });
-            //     }
-            // });
-
-            // $('.select2').on('change', function() {
-            //     const kodeOpd = $(this).val();
-            //     const tahun = $('#tahun_id').find(':selected').data('tahun');
-            //     const namaOpdInput = $('#nama_opd');
-            //     const isuStrategisInputs = [
-            //         $('#isu_strategis1'),
-            //         $('#isu_strategis2'),
-            //         $('#isu_strategis3'),
-            //         $('#isu_strategis4')
-            //     ];
-
-            //     // Clear previous inputs
-            //     namaOpdInput.val('');
-            //     isuStrategisInputs.forEach(input => input.val(''));
-            //     $('#urusan-strategis-2').hide();
-            //     $('#urusan-strategis-3').hide();
-            //     $('#urusan-strategis-4').hide();
-
-            //     if (kodeOpd && tahun) {
-            //         // Call your API to fetch data based on selected kode OPD and tahun
-            //         fetch(`/api/isu-strategis/${tahun}/${kodeOpd}`)
-            //             .then(response => response.json())
-            //             .then(data => {
-            //                 console.log('API Response:', data); // Debug: log API response
-            //                 if (data.error) {
-            //                     console.error('API Error:', data.error);
-            //                 } else {
-            //                     // Set the input values based on the API response
-            //                     namaOpdInput.val(data.nama_opd || ''); // Set nama OPD
-
-            //                     // Populate isu strategis based on response
-            //                     const isuStrategis = data.results.flatMap(result => result.details.map(
-            //                         detail => detail.isu_strategis));
-
-            //                     isuStrategis.forEach((isu, index) => {
-            //                         if (isu && index < isuStrategisInputs.length) {
-            //                             const isuTextArea = isuStrategisInputs[index];
-            //                             isuTextArea.val(isu);
-            //                             $(`#urusan-strategis-${index + 2}`)
-            //                                 .show(); // Show corresponding issue text area
-            //                         }
-            //                     });
-            //                 }
-            //             })
-            //             .catch(error => {
-            //                 console.error('Fetch Error:', error);
-            //             });
-            //     }
-            // });
-
-            // Initialize Summernote
+           
             $('.summernote').summernote({
                 height: 300,
                 minHeight: null,
                 maxHeight: null,
                 focus: true
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var userKodeOpd = @json($userKodeOpd);
+            var urusanOpd = @json($data_opd);
+            if (userKodeOpd) {
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === userKodeOpd;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
+                }
+            }
+
+            document.getElementById('kode_opd').addEventListener('change', function() {
+                var selectedOpdCode = this.value;
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === selectedOpdCode;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
+                }
             });
         });
     </script>

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Api\KakKotaMadiunApi;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
@@ -20,7 +20,12 @@ class Bab5Controller extends Controller
 
     public function index()
     {
-        $bab5 = Bab5::with('jenis')->get();
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab5 = Bab5::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
@@ -35,12 +40,19 @@ class Bab5Controller extends Controller
             $kodeOpds = collect();
         }
 
-        return view('layouts.admin.bab5.index', compact('bab5', 'jenis', 'urusan_opd', 'tahun', 'kodeOpds'));
+        return view('layouts.opd.renstra.bab5.index', compact('bab5', 'jenis', 'urusan_opd', 'tahun', 'kodeOpds', 'userKodeOpd'));
     }
 
     // Show form to create a new Bab4 record
     public function create()
     {
+
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab5 = Bab5::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->get();
+
         $api = new KakKotaMadiunApi();
 
         try {
@@ -59,9 +71,9 @@ class Bab5Controller extends Controller
 
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
-        $bab5 = Bab5::all();
+        // $bab5 = Bab5::all();
 
-        return view('layouts.admin.bab5.create', compact('kodeOpds', 'jenis', 'tahun'));
+        return view('layouts.opd.renstra.bab5.create', compact('kodeOpds', 'jenis', 'tahun','userKodeOpd'));
     }
     // Remove this block to avoid duplicate method definition
     // Store a new Bab4 record in the database
@@ -88,7 +100,7 @@ class Bab5Controller extends Controller
             $validatedData['arah_kebijakan'] = json_encode($request->input('arah_kebijakan'));
             // Store the validated data
             Bab5::create($validatedData);
-            return redirect()->route('layouts.admin.bab5.index')->with('success', 'Data has been saved successfully!');
+            return redirect()->route('layouts.opd.bab5.index')->with('success', 'Data has been saved successfully!');
         } catch (\Exception $e) {
             Log::error('Failed to store Bab5 record:', ['error' => $e->getMessage()]);
             return redirect()->back()->withErrors('Failed to save data.');
@@ -163,6 +175,13 @@ class Bab5Controller extends Controller
 
     public function edit($id)
     {
+
+        $userKodeOpd = Auth::user()->kode_opd;
+
+        $bab5 = Bab5::with('jenis', 'tahun')
+            ->where('kode_opd', $userKodeOpd)
+            ->findOrFail($id);
+
         $api = new KakKotaMadiunApi();
 
         try {
@@ -181,14 +200,14 @@ class Bab5Controller extends Controller
 
         $bab5 = Bab5::findOrFail($id);
 
-        $bab5->tujuan_opd = json_decode($bab5->tujuan_opd); 
-        $bab5->sasaran_opd = json_decode($bab5->sasaran_opd); 
-        $bab5->strategi = json_decode($bab5->strategi); 
-        $bab5->arah_kebijakan = json_decode($bab5->arah_kebijakan); 
+        $bab5->tujuan_opd = json_decode($bab5->tujuan_opd);
+        $bab5->sasaran_opd = json_decode($bab5->sasaran_opd);
+        $bab5->strategi = json_decode($bab5->strategi);
+        $bab5->arah_kebijakan = json_decode($bab5->arah_kebijakan);
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
 
-        return view('layouts.admin.bab5.edit', compact('bab5', 'kodeOpds', 'jenis', 'tahun'));
+        return view('layouts.opd.renstra.bab5.edit', compact('bab5', 'kodeOpds', 'jenis', 'tahun','userKodeOpd'));
     }
 
     // Update an existing Bab5 record in the database
@@ -216,7 +235,7 @@ class Bab5Controller extends Controller
             $validatedData['arah_kebijakan'] = json_encode($request->input('arah_kebijakan'));
             // Store the validated data
             $bab5->update($validatedData); // Update the record with new data
-            return redirect()->route('layouts.admin.bab5.index')->with('success', 'Data has been updated successfully!');
+            return redirect()->route('layouts.opd.bab5.index')->with('success', 'Data has been updated successfully!');
         } catch (\Exception $e) {
             Log::error('Failed to update Bab5 record:', ['error' => $e->getMessage()]);
             return redirect()->back()->withErrors('Failed to update data.');
@@ -229,7 +248,7 @@ class Bab5Controller extends Controller
         $bab5 = Bab5::findOrFail($id);
         $bab5->delete();
 
-        return redirect()->route('layouts.admin.bab5.index')->with('success', 'BAB 1 deleted successfully');
+        return redirect()->route('layouts.opd.bab5.index')->with('success', 'BAB 1 deleted successfully');
     }
 
     public function show($id)
@@ -238,13 +257,13 @@ class Bab5Controller extends Controller
 
         $uraian = $bab5->uraian;
         $nama_opd = $bab5->nama_opd;
-        $tujuan_opd = json_decode($bab5->tujuan_opd, true); 
-        $sasaran_opd_list = json_decode($bab5->sasaran_opd, true); 
+        $tujuan_opd = json_decode($bab5->tujuan_opd, true);
+        $sasaran_opd_list = json_decode($bab5->sasaran_opd, true);
         $strategi = json_decode($bab5->strategi, true);
-        $kebijakan_list = json_decode($bab5->arah_kebijakan, true); 
-    
+        $kebijakan_list = json_decode($bab5->arah_kebijakan, true);
+
         // Return the view with the required data
-        return view('layouts.admin.bab5.show', [
+        return view('layouts.opd.renstra.bab5.show', [
             'bab5' => $bab5,
             'uraian' => $uraian,
             'nama_opd' => $nama_opd,
@@ -254,7 +273,7 @@ class Bab5Controller extends Controller
             'kebijakan_list' => $kebijakan_list,
         ]);
     }
-  
+
 
     public function getStrategiArahKebijakan($tahun, $kode_opd)
     {
@@ -304,15 +323,15 @@ class Bab5Controller extends Controller
         try {
             // Find the corresponding Bab5 record, or fail if not found
             $bab5 = Bab5::findOrFail($id);
-    
+
             // Fetching the necessary fields directly from the Bab5 record
             $uraian = $bab5->uraian;
             $nama_opd = $bab5->nama_opd;
-            $tujuan_opd = json_decode($bab5->tujuan_opd, true); 
-            $sasaran_opd_list = json_decode($bab5->sasaran_opd, true); 
+            $tujuan_opd = json_decode($bab5->tujuan_opd, true);
+            $sasaran_opd_list = json_decode($bab5->sasaran_opd, true);
             $strategi = json_decode($bab5->strategi, true);
-            $kebijakan_list = json_decode($bab5->arah_kebijakan, true); 
-    
+            $kebijakan_list = json_decode($bab5->arah_kebijakan, true);
+
             \Log::info('Bab5 data', [
                 'uraian' => $uraian,
                 'nama_opd' => $nama_opd,
@@ -321,9 +340,9 @@ class Bab5Controller extends Controller
                 'strategi' => $strategi,
                 'kebijakan_list' => $kebijakan_list,
             ]);
-            
+
             // Render the view to HTML for PDF generation
-            $html = view('layouts.admin.bab5.pdf', [
+            $html = view('layouts.opd.renstra.bab5.pdf', [
                 'bab5' => $bab5,
                 'uraian' => $uraian,
                 'nama_opd' => $nama_opd,
@@ -332,7 +351,7 @@ class Bab5Controller extends Controller
                 'sasaran_opd_list' => $sasaran_opd_list,
                 'kebijakan_list' => $kebijakan_list,
             ])->render();
-    
+
             // Create a new mPDF instance with the desired settings
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
@@ -344,17 +363,17 @@ class Bab5Controller extends Controller
                 'margin_top' => 20,       // Top margin
                 'margin_bottom' => 20,    // Bottom margin
             ]);
-    
+
             // Set the footer
             $mpdf->SetHTMLFooter('
                 <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
                     Renstra Elektronik Pemerintah Kota Madiun
                 </div>
             ');
-    
+
             // Write the HTML content to the PDF
             $mpdf->WriteHTML($html);
-    
+
             $filename = 'bab5-' . $id . '.pdf';
             $mpdf->Output($filename, 'I');
         } catch (\Exception $e) {
@@ -363,5 +382,4 @@ class Bab5Controller extends Controller
             return response()->json(['error' => 'Unable to generate PDF'], 500);
         }
     }
-    
 }

@@ -68,37 +68,34 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
-                                <select id="kode_opd" name="kode_opd" class="form-control select2">
-                                    <option value="">Pilih Nama OPD</option>
-                                    @foreach ($kodeOpds as $opd)
-                                        <option value="{{ $opd['kode_opd'] }}"
-                                            {{ $bab8->kode_opd == $opd['kode_opd'] ? 'selected' : '' }}>
-                                            {{ $opd['nama_opd'] }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="hidden" name="kode_opd" id="kode_opd"
+                                    value="{{ old('kode_opd', $bab8->kode_opd) }}" class="form-control" required>
+                                <input type="text" name="nama_opd" id="nama_opd"
+                                    value="{{ old('nama_opd', $bab8->nama_opd) }}" class="form-control" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama Kepala OPD</label>
                             <div class="col-sm-12 col-md-4">
-                                <input type="text" id="nama_kepala_opd" name="nama_kepala_opd" class="form-control" value="{{ old('nama_kepala_opd', $bab8->nama_kepala_opd) }}"
-                                    readonly>
+                                <input type="text" id="nama_kepala_opd" name="nama_kepala_opd" class="form-control"
+                                    value="{{ old('nama_kepala_opd', $bab8->nama_kepala_opd) }}" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">NIP Kepala OPD</label>
                             <div class="col-sm-12 col-md-4">
-                                <input type="text" id="nip_kepala_opd" name="nip_kepala_opd" class="form-control" value="{{ old('nip_kepala_opd', $bab8->nip_kepala_opd) }}"
-                                    readonly>
+                                <input type="text" id="nip_kepala_opd" name="nip_kepala_opd" class="form-control"
+                                    value="{{ old('nip_kepala_opd', $bab8->nip_kepala_opd) }}" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tanggal</label>
                             <div class="col-sm-12 col-md-4">
-                                <input type="date" id="tanggal" name="tanggal" class="form-control" value="{{ old('tanggal', $bab8->tanggal) }}">
+                                <input type="date" id="tanggal" name="tanggal" class="form-control"
+                                    value="{{ old('tanggal', $bab8->tanggal) }}">
                             </div>
                         </div>
 
@@ -132,31 +129,31 @@
                 width: '100%'
             });
 
-            $('#kode_opd').on('change', function() {
-                const kodeOpd = $(this).val();
+            // $('#kode_opd').on('change', function() {
+            const kodeOpd = $('#kode_opd').val();
 
-                if (kodeOpd) {
-                    fetch(`/api/find-opd/${kodeOpd}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data) {
-                                $('#nama_kepala_opd').val(data.nama_kepala_opd || 'Not available');
-                                $('#nip_kepala_opd').val(data.nip_kepala_opd || 'Not available');
-                            } else {
-                                $('#nama_kepala_opd').val('Not available');
-                                $('#nip_kepala_opd').val('Not available');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Fetch Error:', error);
+            if (kodeOpd) {
+                fetch(`/api/find-opd/${kodeOpd}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            $('#nama_kepala_opd').val(data.nama_kepala_opd || 'Not available');
+                            $('#nip_kepala_opd').val(data.nip_kepala_opd || 'Not available');
+                        } else {
                             $('#nama_kepala_opd').val('Not available');
                             $('#nip_kepala_opd').val('Not available');
-                        });
-                } else {
-                    $('#nama_kepala_opd').val('');
-                    $('#nip_kepala_opd').val('');
-                }
-            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        $('#nama_kepala_opd').val('Not available');
+                        $('#nip_kepala_opd').val('Not available');
+                    });
+            } else {
+                $('#nama_kepala_opd').val('');
+                $('#nip_kepala_opd').val('');
+            }
+            // });
 
 
             // Initialize Summernote for all elements with the class 'summernote'
@@ -165,6 +162,33 @@
                 minHeight: null, // set minimum height of the editor
                 maxHeight: null, // set maximum height of the editor
                 focus: true // set focus to editable area after initializing summernote
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var userKodeOpd = @json($userKodeOpd);
+            var urusanOpd = @json($kodeOpds);
+            if (userKodeOpd) {
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === userKodeOpd;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
+                }
+            }
+
+            document.getElementById('kode_opd').addEventListener('change', function() {
+                var selectedOpdCode = this.value;
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === selectedOpdCode;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
+                }
             });
         });
     </script>

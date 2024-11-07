@@ -24,8 +24,7 @@
                                     <th class="text-center">#</th>
                                     <th>Nama Bab</th>
                                     <th>Jenis</th>
-                                    <th>Tahun</th> <!-- Kolom Tahun ditambahkan di sini -->
-                                    <th>Kode OPD</th>
+                                    <th>Tahun</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -37,14 +36,6 @@
                                     <td>{{ $bab_4->nama_bab }}</td>
                                     <td>{{ $bab_4->jenis->jenis ?? 'N/A' }}</td>
                                     <td>{{ $bab_4->tahun->tahun ?? 'N/A' }}</td>
-                                    {{-- <td>{{ $bab_4->kode_opd->kode_opd ?? 'N/A' }}</td> --}}
-                                    <td>
-                                        @php
-                                        // Ensure that urusan_opd is being processed correctly
-                                            $kodeOpds = collect($urusan_opd['results'] ?? [])->firstWhere('kode_opd', $bab_4->kode_opd);
-                                        @endphp
-                                        {{ $kodeOpds['kode_opd'] ?? 'N/A' }}
-                                    </td>
                                     <td>
                                         <a href="{{ route('opd.bab4.show', $bab_4->id) }}" class="btn btn-info" data-id="{{ $bab_4->id }}"><i class="fa fa-eye"></i> Show</a>
                                         <a href="{{ route('opd.bab4.edit', $bab_4->id) }}" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>

@@ -24,8 +24,7 @@
                                     <th class="text-center">#</th>
                                     <th>Nama Bab</th>
                                     <th>Jenis</th>
-                                    <th>Tahun</th> <!-- Kolom Tahun ditambahkan di sini -->
-                                    <th>Kode OPD</th>
+                                    <th>Tahun</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -36,8 +35,7 @@
                                     <td class="text-center">{{ $i++ }}</td>
                                     <td>{{ $bab_3->nama_bab }}</td>
                                     <td>{{ $bab_3->jenis->jenis ?? 'N/A' }}</td>
-                                    <td>{{ $bab_3->tahun->tahun ?? 'N/A' }}</td> <!-- Menampilkan Tahun -->
-                                    <td>{{ $bab_3->kode_opd ?? 'N/A' }}</td>
+                                    <td>{{ $bab_3->tahun->tahun ?? 'N/A' }}</td> 
                                     <td>
                                         <a href="{{ route('opd.bab3.show', $bab_3->id) }}" class="btn btn-info" data-id=""><i class="fa fa-eye"></i> Show</a>
                                         <a href="{{ route('opd.bab3.edit', $bab_3->id) }}" class="btn btn-warning mx-2">Edit <i class="fas fa-edit"></i></a>

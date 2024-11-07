@@ -52,7 +52,7 @@
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <input type="hidden" name="kode_opd" id="kode_opd" class="form-control" required>
-                                <input type="text" name="nama_opd" id="nama_opd" class="form-control" readonly>
+                                <input type="text" name="nama_opd" id="nama_opd" class="form-control" disabled>
                             </div>
                         </div>
 
@@ -197,6 +197,7 @@
                                 $('#bidang-urusan-2').hide();
                                 $('#uraian-bidang2').hide();
                             }
+
 
                             if (bidangUrusan.length > 2) {
                                 bidangUrusan3Input.val(bidangUrusan[2] || '');

@@ -70,22 +70,18 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
-                                <select id="kode_opd" name="kode_opd" class="form-control select2">
-                                    <option value="">Pilih Nama OPD</option>
-                                    @foreach ($kodeOpds as $opd)
-                                        <option value="{{ $opd['kode_opd'] }}">{{ $opd['nama_opd'] }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="hidden" name="kode_opd" id="kode_opd" class="form-control" required>
+                                <input type="text" name="nama_opd" id="nama_opd" class="form-control" disabled>
                             </div>
                         </div>
 
                         <!-- Nama OPD Field -->
-                        <div class="form-group row mb-4">
+                        {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- Tujuan OPD Field -->
                         <div class="form-group row mb-4">
@@ -125,52 +121,79 @@
 
 @section('scripts')
     <script>
-        $(document).ready(function() {
-            // Initialize Select2 on the Kode OPD dropdown
-            $('#kode_opd').select2({
-                placeholder: 'Pilih Nama OPD',
-                allowClear: true,
-                width: '100%'
-            }).on('select2:select', function(e) {
-                // Fetch the selected OPD code and call the fetchOpdDetails function
-                const kodeOpd = e.params.data.id;
-                if (kodeOpd) {
-                    fetchOpdDetails(kodeOpd);
-                } else {
-                    // Clear fields if no OPD is selected
-                    document.getElementById('nama_opd').value = '';
-                    document.getElementById('tujuan_opd').value = '';
-                    document.getElementById('sasaran_opd').value = '';
-                }
-            });
+        // $(document).ready(function() {
+        //     // Initialize Select2 on the Kode OPD dropdown
+        //     $('#kode_opd').select2({
+        //         placeholder: 'Pilih Nama OPD',
+        //         allowClear: true,
+        //         width: '100%'
+        //     }).on('select2:select', function(e) {
+        //         // Fetch the selected OPD code and call the fetchOpdDetails function
+        //         const kodeOpd = e.params.data.id;
+        //         if (kodeOpd) {
+        //             fetchOpdDetails(kodeOpd);
+        //         } else {
+        //             // Clear fields if no OPD is selected
+        //             document.getElementById('nama_opd').value = '';
+        //             document.getElementById('tujuan_opd').value = '';
+        //             document.getElementById('sasaran_opd').value = '';
+        //         }
+        //     });
 
-            // Function to fetch OPD details
-            async function fetchOpdDetails(kodeOpd) {
-                try {
-                    console.log(`Fetching details for OPD code: ${kodeOpd}`);
-                    const response = await fetch(`/api/opd-details/${encodeURIComponent(kodeOpd)}`);
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        console.error(
-                            `Network response was not ok. Status: ${response.status}, Response: ${errorText}`
-                            );
-                        throw new Error(
-                            `Network response was not ok. Status: ${response.status}, Response: ${errorText}`
-                            );
-                    }
-                    const data = await response.json();
-                    console.log('Fetched data:', data);
-                    if (data) {
-                        document.getElementById('nama_opd').value = data.nama_opd || '';
-                        document.getElementById('tujuan_opd').value = data.tujuan_opd || '';
-                        document.getElementById('sasaran_opd').value = data.sasaran_opd || '';
-                    } else {
-                        console.error('Error fetching OPD details: No data received.');
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch OPD details:', error);
+        //     // Function to fetch OPD details
+        //     // async function fetchOpdDetails(kodeOpd) {
+        //     //     try {
+        //     //         console.log(`Fetching details for OPD code: ${kodeOpd}`);
+        //     //         const response = await fetch(`/api/opd-details/${encodeURIComponent(kodeOpd)}`);
+        //     //         if (!response.ok) {
+        //     //             const errorText = await response.text();
+        //     //             console.error(
+        //     //                 `Network response was not ok. Status: ${response.status}, Response: ${errorText}`
+        //     //             );
+        //     //             throw new Error(
+        //     //                 `Network response was not ok. Status: ${response.status}, Response: ${errorText}`
+        //     //             );
+        //     //         }
+        //     //         const data = await response.json();
+        //     //         console.log('Fetched data:', data);
+        //     //         if (data) {
+        //     //             document.getElementById('nama_opd').value = data.nama_opd || '';
+        //     //             document.getElementById('tujuan_opd').value = data.tujuan_opd || '';
+        //     //             document.getElementById('sasaran_opd').value = data.sasaran_opd || '';
+        //     //         } else {
+        //     //             console.error('Error fetching OPD details: No data received.');
+        //     //         }
+        //     //     } catch (error) {
+        //     //         console.error('Failed to fetch OPD details:', error);
+        //     //     }
+        //     // }
+        // });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var userKodeOpd = @json($userKodeOpd);
+            var urusanOpd = @json($kodeOpds);
+            if (userKodeOpd) {
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === userKodeOpd;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
                 }
             }
+
+            document.getElementById('kode_opd').addEventListener('change', function() {
+                var selectedOpdCode = this.value;
+                var selectedOpd = urusanOpd.find(function(opd) {
+                    return opd.kode_opd === selectedOpdCode;
+                });
+
+                if (selectedOpd) {
+                    document.getElementById('nama_opd').value = selectedOpd.nama_opd;
+                    document.getElementById('kode_opd').value = selectedOpd.kode_opd;
+                }
+            });
         });
     </script>
 @endsection
