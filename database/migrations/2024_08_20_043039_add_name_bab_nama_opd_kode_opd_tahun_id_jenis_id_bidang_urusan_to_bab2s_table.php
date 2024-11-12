@@ -21,8 +21,9 @@ return new class extends Migration
             // Add other columns
             $table->string('nama_bab')->after('kode_opd');
             $table->text('bidang_urusan')->nullable()->after('nama_opd');
-            $table->foreignId('jenis_id')->constrained()->after('nama_bab');
+            // $table->foreignId('jenis_id')->constrained()->after('nama_bab');
             $table->unsignedBigInteger('tahun_id')->nullable();
+            // $table->unsignedBigInteger('jenis_id')->nullable();
 
             // Add foreign key constraint
             $table->foreign('tahun_id')->references('id')->on('tahun_dokumen')->onDelete('cascade');

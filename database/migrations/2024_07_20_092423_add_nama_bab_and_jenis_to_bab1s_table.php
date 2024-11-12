@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('bab1s', function (Blueprint $table) {
             $table->string('nama_bab')->after('id'); // Add the 'nama_bab' column
-            $table->foreignId('jenis_id')->constrained()->after('nama_bab'); // Add the 'jenis_id' column as a foreign key
+            // $table->foreignId('jenis_id')->constrained()->after('nama_bab'); // Add the 'jenis_id' column as a foreign key
+            // $table->unsignedBigInteger('jenis_id')->nullable();
         });
     }
 

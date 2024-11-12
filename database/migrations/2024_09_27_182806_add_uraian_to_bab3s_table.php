@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bab3', function (Blueprint $table) {
+        Schema::table('bab3s', function (Blueprint $table) {
             //  
             $table->text('uraian')->nullable()->after('id');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bab3', function (Blueprint $table) {
+        Schema::table('bab3s', function (Blueprint $table) {
             //
         });
     }

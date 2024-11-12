@@ -66,7 +66,7 @@ class Bab4Controller extends Controller
     {
         $validatedData = $request->validate([
             'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|integer|exists:jenis,id',
+            // 'jenis_id' => 'required|integer|exists:jenis,id',
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
             'nama_opd' => 'nullable|string|max:255',
@@ -187,7 +187,7 @@ class Bab4Controller extends Controller
     {
         $validatedData = $request->validate([
             'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|integer|exists:jenis,id',
+            // 'jenis_id' => 'required|integer|exists:jenis,id',
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
             'nama_opd' => 'nullable|string|max:255',

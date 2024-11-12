@@ -35,7 +35,7 @@
                                 <tr>
                                     <td class="text-center">{{ $i++ }}</td>
                                     <td>{{ $bab_3->nama_bab }}</td>
-                                    <td>{{ $bab_3->jenis->jenis ?? 'N/A' }}</td>
+                                    {{-- <td>{{ $bab_3->jenis->jenis ?? 'N/A' }}</td> --}}
                                     <td>{{ $bab_3->tahun->tahun ?? 'N/A' }}</td> <!-- Menampilkan Tahun -->
                                     <td>{{ $bab_3->kode_opd ?? 'N/A' }}</td>
                                     <td>

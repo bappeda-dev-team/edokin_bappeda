@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bab3', function (Blueprint $table) {
+        Schema::create('bab3s', function (Blueprint $table) {
             $table->id();
             $table->string('nama_bab');
-            $table->foreignId('jenis_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('jenis_id')->constrained()->onDelete('cascade');
             $table->string('kode_opd');
             $table->foreignId('tahun_id')->constrained('tahun_dokumen')->onDelete('cascade');
             $table->timestamps();
+            // $table->unsignedBigInteger('jenis_id')->nullable();
         });
     }
 

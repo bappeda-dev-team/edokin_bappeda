@@ -29,7 +29,7 @@ class Bab1Controller extends Controller
 
     public function create()
     {
-        $userKodeOpd = auth()->user()->kode_opd;
+        $userKodeOpd = Auth::user()->kode_opd;
 
         $bab1 = Bab1::with('jenis', 'tahun')
             ->where('kode_opd', $userKodeOpd)
@@ -51,7 +51,7 @@ class Bab1Controller extends Controller
     {
         $request->validate([
             'nama_bab' => 'required',
-            'jenis_id' => 'required',
+            // 'jenis_id' => 'required',
             'nama_opd' => 'required',
             'bidang_urusan_1' => 'nullable|string',
             'bidang_urusan_2' => 'nullable|string',
@@ -103,7 +103,7 @@ class Bab1Controller extends Controller
     {
         $request->validate([
             'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|exists:jenis,id',
+            // 'jenis_id' => 'required|exists:jenis,id',
             'nama_opd' => 'required|string',
             'bidang_urusan_1' => 'nullable|string',
             'bidang_urusan_2' => 'nullable|string',

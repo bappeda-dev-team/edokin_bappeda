@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('bab6s', function (Blueprint $table) {
             $table->id();
             $table->string('nama_bab');
-            $table->foreignId('jenis_id')
-                ->constrained('jenis')
-                ->onDelete('cascade');
+            // $table->foreignId('jenis_id')
+            //     ->constrained('jenis')
+            //     ->onDelete('cascade');
+            // $table->unsignedBigInteger('jenis_id')->nullable();
             $table->foreignId('tahun_id')
                 ->constrained('tahun_dokumen')
                 ->onDelete('cascade');

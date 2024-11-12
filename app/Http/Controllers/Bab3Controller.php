@@ -42,7 +42,7 @@ class Bab3Controller extends Controller
     {
         $request->validate([
             'nama_bab' => 'required',
-            'jenis_id' => 'required',
+            // 'jenis_id' => 'required',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required',
             'uraian1'  => 'nullable',
@@ -58,7 +58,7 @@ class Bab3Controller extends Controller
 
         Bab3::create([
             'nama_bab' => $request->nama_bab,
-            'jenis_id' => $request->jenis_id,
+            // 'jenis_id' => $request->jenis_id,
             'kode_opd' => $request->kode_opd,
             'tahun_id' => $request->tahun_id,
             'uraian1' => $request->uraian1,
@@ -93,7 +93,7 @@ class Bab3Controller extends Controller
     {
         $request->validate([
             'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|exists:jenis,id',
+            // 'jenis_id' => 'required|exists:jenis,id',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             'uraian1'  => 'required|string',
@@ -111,7 +111,7 @@ class Bab3Controller extends Controller
 
         $bab3->update([
             'nama_bab' => $request->nama_bab,
-            'jenis_id' => $request->jenis_id,
+            // 'jenis_id' => $request->jenis_id,
             'kode_opd' => $request->kode_opd,
             'tahun_id' => $request->tahun_id,
             'uraian1' => $request->uraian1,
