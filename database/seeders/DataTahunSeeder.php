@@ -16,16 +16,16 @@ class DataTahunSeeder extends Seeder
         DB::table('tahun_dokumen')->insert([
             [
                 'id' => '1',
-                'tahun' => '2024',
+                'tahun' => '2025-2026',
             ],
             [
                 'id' => '2',
-                'tahun' => '2025',
+                'tahun' => '2025-2029',
             ],
-            [
-                'id' => '3',
-                'tahun' => '2026',
-            ],
+            // [
+            //     'id' => '3',
+            //     'tahun' => '2026',
+            // ],
         ]);
 
     }

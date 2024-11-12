@@ -23,8 +23,8 @@
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th>Nama Bab</th>
-                                    <th>Jenis</th>
-                                    <th>Tahun</th> <!-- Kolom Tahun ditambahkan di sini -->
+                                    {{-- <th>Jenis</th> --}}
+                                    <th>Periode</th> <!-- Kolom Tahun ditambahkan di sini -->
                                     <th>Kode OPD</th>
                                     <th>Action</th>
                                 </tr>
@@ -35,7 +35,7 @@
                                 <tr>
                                     <td class="text-center">{{ $i++ }}</td>
                                     <td>{{ $bab_8->nama_bab }}</td>
-                                    <td>{{ $bab_8->jenis->jenis ?? 'N/A' }}</td>
+                                    {{-- <td>{{ $bab_8->jenis->jenis ?? 'N/A' }}</td> --}}
                                     <td>{{ $bab_8->tahun->tahun ?? 'N/A' }}</td>
                                     {{-- <td>{{ $bab_4->kode_opd->kode_opd ?? 'N/A' }}</td> --}}
                                     <td>

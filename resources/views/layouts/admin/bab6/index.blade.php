@@ -23,8 +23,8 @@
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th>Nama Bab</th>
-                                    <th>Jenis</th>
-                                    <th>Tahun</th> <!-- Kolom Tahun ditambahkan di sini -->
+                                    {{-- <th>Jenis</th> --}}
+                                    <th>Periode</th> <!-- Kolom Tahun ditambahkan di sini -->
                                     <th>Kode OPD</th>
                                     <th>Action</th>
                                 </tr>

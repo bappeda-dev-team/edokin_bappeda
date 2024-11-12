@@ -16,9 +16,9 @@
                     <li id="menu-pegawai"><a class="nav-link" href="/admin/dashboard/pegawai">Pegawai</a></li>
                 </ul>
             </li>
-            <li class="menu-header" style="font-size: 14px;">Renstra</li>
+            <li class="menu-header" style="font-size: 14px;">Dokumen</li>
             <li class="dropdown" id="menu-renstra">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th"></i> <span>2025-2026</span></a>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th"></i> <span>Renstra</span></a>
                 <ul class="dropdown-menu">
                     
                     <li id="menu-kata-pengantar"><a class="nav-link" href="/admin/dashboard/kata-pengantar">Kata Pengantar</a></li>
@@ -34,6 +34,22 @@
                 </ul>
             </li>
             <li class="dropdown" id="menu-renstra">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th"></i> <span>Renja</span></a>
+                {{-- <ul class="dropdown-menu">
+                    
+                    <li id="menu-kata-pengantar"><a class="nav-link" href="/admin/dashboard/kata-pengantar">Kata Pengantar</a></li>
+                    <li id="menu-daftar-isi"><a class="nav-link" href="/admin/dashboard/daftar-isi">Daftar Isi</a></li>
+                    <li id="menu-bab1"><a class="nav-link" href="/admin/dashboard/bab1">BAB 1</a></li>
+                    <li id="menu-bab2"><a class="nav-link" href="/admin/dashboard/bab2">BAB 2</a></li>
+                    <li id="menu-bab3"><a class="nav-link" href="/admin/dashboard/bab3">BAB 3</a></li>
+                    <li id="menu-bab4"><a class="nav-link" href="/admin/dashboard/bab4">BAB 4</a></li>
+                    <li id="menu-bab5"><a class="nav-link" href="/admin/dashboard/bab5">BAB 5</a></li>
+                    <li id="menu-bab6"><a class="nav-link" href="/admin/dashboard/bab6">BAB 6</a></li>
+                    <li id="menu-bab7"><a class="nav-link" href="/admin/dashboard/bab7">BAB 7</a></li>
+                    <li id="menu-bab8"><a class="nav-link" href="/admin/dashboard/bab8">BAB 8</a></li>
+                </ul> --}}
+            </li>
+            {{-- <li class="dropdown" id="menu-renstra">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th"></i> <span>2025-2029</span></a>
                 <ul class="dropdown-menu">
                     
@@ -48,7 +64,7 @@
                     <li id="menu-bab7"><a class="nav-link" href="/admin/dashboard/bab7">BAB 7</a></li>
                     <li id="menu-bab8"><a class="nav-link" href="/admin/dashboard/bab8">BAB 8</a></li>
                 </ul>
-            </li>
+            </li> --}}
         </ul>
     </aside>
 </div>

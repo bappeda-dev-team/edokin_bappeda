@@ -25,7 +25,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-4">
+                        {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Jenis</label>
                             <div class="col-sm-12 col-md-4">
                                 <select name="jenis_id" class="form-control selectric" required>
@@ -37,13 +37,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tahun</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Periode</label>
                             <div class="col-sm-12 col-md-4">
                                 <select name="tahun_id" id="tahun_id" class="form-control selectric" required>
-                                    <option value="">Pilih Tahun</option>
+                                    <option value="">Pilih Periode</option>
                                     @foreach ($tahun as $year)
                                         <option value="{{ $year->id }}" data-tahun="{{ $year->tahun }}"
                                             {{ $bab1->tahun_id == $year->id ? 'selected' : '' }}>{{ $year->tahun }}

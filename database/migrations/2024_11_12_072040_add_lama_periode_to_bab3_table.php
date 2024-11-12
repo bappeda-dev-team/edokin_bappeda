@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tahun_dokumen', function (Blueprint $table) {
-            $table->id();
-            $table->string('tahun');
-            $table->timestamps();
+        Schema::table('bab3', function (Blueprint $table) {
+            $table->string('lama_periode')->nullable()->after('id');
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tahun_dokumen');
+        Schema::table('bab3', function (Blueprint $table) {
+            //
+        });
     }
 };
