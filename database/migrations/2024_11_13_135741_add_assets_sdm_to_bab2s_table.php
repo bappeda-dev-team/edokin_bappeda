@@ -11,20 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bab1s', function (Blueprint $table) {
-            // $table->string('kode_bidang_urusan')->default('default_value')->after('id');
+        Schema::table('bab2s', function (Blueprint $table) {
+            $table->json('asets_data')->nullable()->after('tahun_id');
+            $table->json('sdm_data')->nullable()->after('asets_data');
         });
     }
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('bab1s', function (Blueprint $table) {
+        Schema::table('bab2s', function (Blueprint $table) {
             //
-            $table->dropColumn('kode_bidang_urusan');
         });
     }
 };
