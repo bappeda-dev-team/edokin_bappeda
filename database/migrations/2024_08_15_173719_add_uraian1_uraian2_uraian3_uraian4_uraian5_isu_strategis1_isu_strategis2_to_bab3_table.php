@@ -17,8 +17,9 @@ return new class extends Migration
             $table->text('uraian3')->after('uraian2')->nullable();
             $table->text('uraian4')->after('uraian3')->nullable();
             $table->text('uraian5')->after('uraian4')->nullable();
-            $table->text('isu_strategis1')->after('uraian5')->nullable();
-            $table->text('isu_strategis2')->after('isu_strategis1')->nullable();
+            $table->json('isu_strategis')->after('uraian5')->nullable();
+            // $table->text('isu_strategis1')->after('uraian5')->nullable();
+            // $table->text('isu_strategis2')->after('isu_strategis1')->nullable();
         });
     }
 

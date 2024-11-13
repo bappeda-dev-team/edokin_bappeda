@@ -25,6 +25,8 @@ class Bab2 extends Model
         'uraian',
         'uraian_asets',
         'tugas_fungsi',
+        'asets_data',
+        'sdm_data'
         // 'kode_bidang_urusan'
     ];
 

@@ -10,7 +10,8 @@ use App\Models\TahunDokumen;
 use App\Models\FetchOpd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Http\Api\KakKotaMadiunApi;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Shared\Html;
@@ -29,11 +30,8 @@ class Bab1Controller extends Controller
 
     public function create()
     {
-        $userKodeOpd = Auth::user()->kode_opd;
 
-        $bab1 = Bab1::with('jenis', 'tahun')
-            ->where('kode_opd', $userKodeOpd)
-            ->get();
+        $bab1 = Bab1::with('jenis', 'tahun')->get();
 
         $jenis = Jenis::all();
         $tahun = TahunDokumen::all();
@@ -330,40 +328,69 @@ class Bab1Controller extends Controller
             'bidang_urusan' => trim($bidang_urusan), // Trim to remove trailing newline
         ]);
     }
-
-    public function getDasarHukum($kode_opd, $tahun)
+    public function getDasarHukum($tahun, $kode_opd)
     {
-        $apiUrl = 'https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=' . $tahun . '&kode_opd=' . $kode_opd;
+        try {
+            $api = new KakKotaMadiunApi();
+            $response = $api->dasarHukum($tahun, $kode_opd);
 
-        $response = Http::timeout(30)
-            ->withHeaders(['Accept' => 'application/json'])
-            ->get($apiUrl);
+            if ($response->successful()) {
+                $data = $response->json();
 
-        if (!$response->successful()) {
-            Log::error('API request failed: ' . $response->status());
-            return response()->json(['error' => 'Failed to fetch data from API'], 500);
+                Log::info('API Response:', $data);
+
+                $dasar_hukum = collect($data['dasar_hukums'] ?? []);
+
+                if ($dasar_hukum->isEmpty()) {
+                    return response()->json(['error' => 'No Dasar Hukum found'], 404);
+                }
+
+                return response()->json([
+                    'nama_opd' => $data['nama_opd'] ?? 'Unknown OPD',
+                    'dasar_hukum' => $dasar_hukum->values(),
+                ]);
+            } else {
+                Log::error('Failed to fetch data: ' . $response->body());
+                return []; // Return an empty array if the response is not successful
+            }
+        } catch (\Exception $e) {
+            Log::error('Error fetching data: ' . $e->getMessage());
+            return []; // Return an empty array on exception
         }
-
-        $data = $response->json();
-
-        if (empty($data)) {
-            return response()->json(['error' => 'No data found'], 404);
-        }
-
-        $dasar_hukum = collect($data['dasar_hukums'] ?? []);
-        $dasarHukumList = $dasar_hukum
-            ->where('kode_opd', $kode_opd)
-            ->where('tahun', $tahun);
-
-
-        if ($dasarHukumList->isEmpty()) {
-            return response()->json(['error' => 'No Dasar Hukum found'], 404);
-        }
-        return response()->json([
-            'nama_opd' => $data['nama_opd'] ?? 'Unknown OPD',
-            'dasar_hukum' => $dasarHukumList->values(),
-        ]);
     }
+    // public function getDasarHukum($tahun, $kode_opd)
+    // {
+    //     $apiUrl = 'https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=' . $tahun . '&kode_opd=' . $kode_opd;
+
+    //     $response = Http::timeout(30)
+    //         ->withHeaders(['Accept' => 'application/json'])
+    //         ->get($apiUrl);
+
+    //     if (!$response->successful()) {
+    //         Log::error('API request failed: ' . $response->status());
+    //         return response()->json(['error' => 'Failed to fetch data from API'], 500);
+    //     }
+
+    //     $data = $response->json();
+
+    //     if (empty($data)) {
+    //         return response()->json(['error' => 'No data found'], 404);
+    //     }
+
+    //     $dasar_hukum = collect($data['dasar_hukums'] ?? []);
+    //     $dasarHukumList = $dasar_hukum
+    //         ->where('kode_opd', $kode_opd)
+    //         ->where('tahun', $tahun);
+
+
+    //     if ($dasarHukumList->isEmpty()) {
+    //         return response()->json(['error' => 'No Dasar Hukum found'], 404);
+    //     }
+    //     return response()->json([
+    //         'nama_opd' => $data['nama_opd'] ?? 'Unknown OPD',
+    //         'dasar_hukum' => $dasarHukumList->values(),
+    //     ]);
+    // }
 }
     
         // public function getBidangUrusan($kode_bidang_urusan)

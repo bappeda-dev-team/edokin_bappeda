@@ -27,7 +27,6 @@ class Bab1 extends Model
         'tahun_id',
         'dasar_hukum',
         'uraian',
-        // 'kode_bidang_urusan'
     ];
 
     public function tahun()
@@ -39,6 +38,5 @@ class Bab1 extends Model
     public function jenis()
     {
         return $this->belongsTo(Jenis::class, 'jenis_id');
-        // return $this->belongsTo(Tahun::class, 'tahun_id');
     }
 }

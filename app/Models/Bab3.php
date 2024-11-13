@@ -10,7 +10,7 @@ class Bab3 extends Model
     use HasFactory;
 
     // Nama tabel yang sesuai di database
-    protected $table = 'bab3';
+    protected $table = 'bab3s';
 
     // Kolom yang dapat diisi mass-assignable
     protected $fillable = [

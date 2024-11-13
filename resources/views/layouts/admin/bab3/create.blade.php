@@ -234,11 +234,12 @@
                     const tahun = $('#tahun_id').find(':selected').data('tahun');
                     const namaOpdInput = $('#nama_opd');
                     const isuStrategisInput = $('#isu_strategis');
+                    const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
                     namaOpdInput.val('');
                     isuStrategisInput.summernote('code', '');
 
-                    if (kodeOpd && tahun) {
-                        fetch(`/api/isu-strategis/${tahun}/${kodeOpd}`)
+                    if (kodeOpd && tahunAkhir) {
+                        fetch(`/api/isu-strategis/${tahunAkhir}/${kodeOpd}`)
                             .then(response => response.json())
                             .then(data => {
                                 console.log('API Response:', data);

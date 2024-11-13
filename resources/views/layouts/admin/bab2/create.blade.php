@@ -60,12 +60,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                            <div class="col-sm-12 col-md-4"> --}}
-                                <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly>
-                            {{-- </div>
-                        </div> --}}
+                        <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly>
 
                         <div id="bidang-urusan-container">
                             <!-- Bidang Urusan 1 -->
@@ -94,6 +89,24 @@
                             </div>
                         </div>
 
+                        <!-- Container for Tugas dan Fungsi -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tugas dan Fungsi</label>
+                            <div class="col-sm-12 col-md-10">
+                                <table class="table table-bordered" id="jabatan-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Jabatan</th>
+                                            <th>Tugas</th>
+                                            <th>Fungsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                         <!-- Container for Sumber Daya Manusia -->
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sumber Daya Manusia</label>
@@ -101,9 +114,21 @@
                                 <table class="table table-bordered" id="sdm-table">
                                     <thead>
                                         <tr>
-                                            <th>Jabatan</th>
-                                            <th>Tugas</th>
-                                            <th>Fungsi</th>
+                                            <th rowspan="2">No.</th>
+                                            <th rowspan="2">Jabatan</th>
+                                            <th colspan="4">Status Kepegawaian</th>
+                                            <th colspan="6">Pendidikan Terakhir</th>
+                                        </tr>
+                                        <tr>
+                                            <th>PNS</th>
+                                            <th>PPPK</th>
+                                            <th>Kontrak</th>
+                                            <th>Upah</th>
+                                            <th>SD/SMP</th>
+                                            <th>SMA</th>
+                                            <th>D1/D3</th>
+                                            <th>D4/S1</th>
+                                            <th>S2/S3</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -142,6 +167,8 @@
                                 </table>
                             </div>
                         </div>
+                        <input type="text" name="asets_data" id="asets_data">
+                        <input type="text" name="sdm_data" id="sdm_data">
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Asets</label>
@@ -249,15 +276,20 @@
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
+
+                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
+
                 const sdmTableBody = $('#sdm-table tbody');
                 const asetsTableBody = $('#asets-table tbody');
+                const jabatanTableBody = $('#jabatan-table tbody');
 
                 sdmTableBody.empty();
                 asetsTableBody.empty();
+                jabatanTableBody.empty();
 
-                if (kodeOpd && tahun) {
-                    // Fetch Sumber Daya Manusia
-                    fetch(`/api/sumber-daya-manusia/${tahun}/${kodeOpd}`)
+                if (kodeOpd && tahunAkhir) {
+                    // Fetch Tugas dan Fungsi Jabatan
+                    fetch(`/api/sumber-daya-manusia/${tahunAkhir}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
                             console.log('API Response:', data); // Debug: log API response
@@ -269,11 +301,53 @@
                                     <td><textarea name="fungsi_jabatan[]"></textarea></td>
                                     <input type="hidden" name="nama_jabatan[]" value="${item.nama_jabatan || ''}"
                                 </tr>`;
-                                    sdmTableBody.append(row);
+                                    jabatanTableBody.append(row);
                                 });
+                            } else {
+                                jabatanTableBody.append(
+                                    '<tr><td colspan="3">Tidak ada data jabatan.</td></tr>'
+                                );
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching jabatan:', error);
+                            jabatanTableBody.append(
+                                '<tr><td colspan="3">Error fetching data.</td></tr>');
+                        });
+
+                    fetch(`/api/sumber-daya-manusia/${tahunAkhir}/${kodeOpd}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('API Response:', data);
+                            if (data && Array.isArray(data) && data.length > 0) {
+                                let sdmData = [];
+
+                                data.forEach(item => {
+                                    let row = `<tr>
+                                    <td>${item.nama_jabatan || 'N/A'}</td>
+                                    <td>${item.status_jumlah_kepegawaian ? item.status_jumlah_kepegawaian['PNS'] || 0 : 0}</td>
+                                    <td>${item.status_jumlah_kepegawaian ? item.status_jumlah_kepegawaian['PPPK'] || 0 : 0}</td>
+                                    <td>${item.status_jumlah_kepegawaian ? item.status_jumlah_kepegawaian['Kontrak'] || 0 : 0}</td>
+                                    <td>${item.status_jumlah_kepegawaian ? item.status_jumlah_kepegawaian['Upah'] || 0 : 0}</td>
+                                    <td>${item.pendidikan_terakhir ? item.pendidikan_terakhir['SD/SMP'] || 0 : 0}</td>
+                                    <td>${item.pendidikan_terakhir ? item.pendidikan_terakhir['SMA'] || 0 : 0}</td>
+                                    <td>${item.pendidikan_terakhir ? item.pendidikan_terakhir['D1/D3'] || 0 : 0}</td>
+                                    <td>${item.pendidikan_terakhir ? item.pendidikan_terakhir['D4/S1'] || 0 : 0}</td>
+                                    <td>${item.pendidikan_terakhir ? item.pendidikan_terakhir['S2/S3'] || 0 : 0}</td>
+                                </tr>`;
+                                    sdmTableBody.append(row);
+                                    sdmData.push({
+                                        nama_jabatan: item.nama_jabatan,
+                                        status_jumlah_kepegawaian: item
+                                            .status_jumlah_kepegawaian,
+                                        pendidikan_terakhir: item.pendidikan_terakhir,
+                                    });
+                                });
+                                document.getElementById('sdm_data').value = JSON.stringify(sdmData);
                             } else {
                                 sdmTableBody.append(
                                     '<tr><td colspan="3">Tidak ada data sumber daya manusia.</td></tr>'
+
                                 );
                             }
                         })
@@ -283,23 +357,40 @@
                         });
 
                     // Fetch Asets
-                    fetch(`/api/asets/${tahun}/${kodeOpd}`)
+                    fetch(`/api/asets/${tahunAkhir}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
                             if (data && Array.isArray(data) && data.length > 0) {
+                                let asetData = []; // Initialize an array to store asset data
+
                                 data.forEach((item, index) => {
-                                    let row = `<tr>
-                                    <td>${index + 1}</td>
-                                    <td>${item.aset || 'N/A'}</td>
-                                    <td>${item.jumlah_aset || 0} ${item.satuan_aset || 0}</td>
-                                    <td>${item.kondisi ? item.kondisi.Baik || 0 : 0}</td>
-                                    <td>${item.kondisi ? item.kondisi.Cukup || 0 : 0}</td>
-                                    <td>${item.kondisi ? item.kondisi.Kurang || 0 : 0}</td>
-                                    <td>${item.tahun_perolehan_aset.join(', ') || 'N/A'}</td>
-                                    <td>${item.keterangan || '-'}</td>
-                                </tr>`;
+                                    let row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.aset || 'N/A'}</td>
+                        <td>${item.jumlah_aset || 0} ${item.satuan_aset || ''}</td>
+                        <td>${item.kondisi ? item.kondisi.Baik || 0 : 0}</td>
+                        <td>${item.kondisi ? item.kondisi.Cukup || 0 : 0}</td>
+                        <td>${item.kondisi ? item.kondisi.Kurang || 0 : 0}</td>
+                        <td>${item.tahun_perolehan_aset.join(', ') || 'N/A'}</td>
+                        <td>${item.keterangan || '-'}</td>
+                    </tr>
+                `;
                                     asetsTableBody.append(row);
+
+                                    // Add the item data to the asetData array
+                                    asetData.push({
+                                        aset: item.aset,
+                                        jumlah_aset: item.jumlah_aset,
+                                        satuan_aset: item.satuan_aset,
+                                        kondisi: item.kondisi,
+                                        tahun_perolehan_aset: item.tahun_perolehan_aset,
+                                        keterangan: item.keterangan
+                                    });
                                 });
+
+                                // Convert asetData array to JSON format and add it to a hidden input field
+                                document.getElementById('asets_data').value = JSON.stringify(asetData);
                             } else {
                                 asetsTableBody.append(
                                     '<tr><td colspan="8">Tidak ada data aset.</td></tr>');
@@ -312,6 +403,8 @@
                 } else {
                     sdmTableBody.append('<tr><td colspan="3">Silakan pilih Nama OPD dan Tahun.</td></tr>');
                     asetsTableBody.append(
+                        '<tr><td colspan="8">Silakan pilih Nama OPD dan Tahun.</td></tr>');
+                    jabatanTableBody.append(
                         '<tr><td colspan="8">Silakan pilih Nama OPD dan Tahun.</td></tr>');
                 }
             });

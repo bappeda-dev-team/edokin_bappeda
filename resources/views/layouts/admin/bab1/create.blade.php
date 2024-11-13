@@ -47,7 +47,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
@@ -61,19 +61,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                            <div class="col-sm-12 col-md-4"> --}}
-                                <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly>
-                            {{-- </div>
-                        </div> --}}
-
-                        {{-- <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan</label>
-                        <div class="col-sm-12 col-md-4">
-                            <input type="text" name="bidang_urusan" id="bidang_urusan" class="form-control" readonly>
-                        </div>
-                    </div> --}}
+                        <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly>
 
                         <div id="bidang-urusan-container">
                             <!-- Bidang Urusan 1 -->
@@ -133,6 +121,7 @@
                                 <textarea name="dasar_hukum" id="dasar_hukum" class="summernote"></textarea>
                             </div>
                         </div>
+
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
                             <div class="col-sm-12 col-md-10">
@@ -239,12 +228,14 @@
 
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
-                const tahun = $('#tahun_id').find(':selected').data('tahun');
-                const dasarHukumTextarea = $('#dasar_hukum');
+                let tahun = $('#tahun_id').find(':selected').data('tahun');
 
-                if (kodeOpd && tahun) {
+                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
+
+                const dasarHukumTextarea = $('#dasar_hukum');
+                if (kodeOpd && tahunAkhir) {
                     fetch(
-                            `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${tahun}&kode_opd=${kodeOpd}`
+                            `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${tahunAkhir}&kode_opd=${kodeOpd}`
                         )
                         .then(response => {
                             if (!response.ok) {
@@ -287,7 +278,6 @@
                     dasarHukumTextarea.summernote('code', '');
                 }
             });
-
 
             // Initialize Summernote
             $('.summernote').summernote({
