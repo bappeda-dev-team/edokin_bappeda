@@ -215,6 +215,91 @@
             
                                     </table>
                                     <h4>4.2. Cascading Kinerja Perangkat Daerah</h4>
+                                    <div class="tf-tree">
+                                        <ul>
+                                          <li>
+                                            <span class="tf-nc">
+                                               <table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">A</td></tr>
+                                                    <tr><td class="tf-cell">B</td></tr>
+                                                </table>
+                                            </span>
+                                            <ul>
+                                              <li>
+                                                <span class="tf-nc">
+                                                  <table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">C</td></tr>
+                                                    <tr><td class="tf-cell">D</td></tr>
+                                                </table>
+                                                </span>
+                                                </li>
+                                                <li>
+                                                <span class="tf-nc">
+                                                  <table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">E</td></tr>
+                                                    <tr><td class="tf-cell">F</td></tr>
+                                                </table>
+                                                </span>
+                                                </li>
+                                                <li>
+                                                <span class="tf-nc">
+                                                  <table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">G</td></tr>
+                                                    <tr><td class="tf-cell">H</td></tr>
+                                                </table>
+                                                </span>
+                                                </li>
+                                                <li>
+                                                <span class="tf-nc">
+                                                  <table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">I</td></tr>
+                                                    <tr><td class="tf-cell">J</td></tr>
+                                                </table>
+                                                </span>
+                                                </li>
+                                                <li>
+                                                <span class="tf-nc">
+                                                  <table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">K</td></tr>
+                                                    <tr><td class="tf-cell">L</td></tr>
+                                                </table>
+                                                </span>
+                                                </li>
+                                                <li>
+                                                <span class="tf-nc"><table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">M</td></tr>
+                                                    <tr><td class="tf-cell">N</td></tr>
+                                                </table></span>
+                                                </li>
+                                                <li>
+                                                <span class="tf-nc">
+                                                  <table>
+                                                  <!-- Nested Row Inside the Third Child -->
+                                                    <tr><td class="tf-cell">O</td></tr>
+                                                    <tr><td class="tf-cell">P</td></tr>
+                                                </table>
+                                                </span>
+                                                </li>
+                                                <li>
+                                                <span class="tf-nc">
+                                                   <table>
+                                                          <!-- Nested Row Inside the Third Child -->
+                                                          <tr><td class="tf-cell">Q</td></tr>
+                                                          <tr><td class="tf-cell">R</td></tr>
+                                                      </table>
+                                                </span>
+                                                </li>
+                                            </ul>
+                                          </li>
+                                        </ul>
+                                      </div>
                                     
                         </div>
                     </div>

@@ -93,21 +93,21 @@
                         <div id="uraian-bidang">
                             <!-- Bidang1 Uraian -->
                             <div class="form-group row mb-4">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Bidang 1</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang1" class="summernote"></textarea>
                                 </div>
                             </div>
                             <!-- Bidang2 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang2" style="display:none;">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Bidang 2</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang2" class="summernote"></textarea>
                                 </div>
                             </div>
                             <!-- Bidang3 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang3" style="display:none;">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 3</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Bidang 3</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang3" class="summernote"></textarea>
                                 </div>
@@ -123,7 +123,7 @@
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
