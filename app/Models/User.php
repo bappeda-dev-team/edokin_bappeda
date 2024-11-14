@@ -51,8 +51,9 @@ class User extends Authenticatable
 
     protected function role(): Attribute
     {
+        // Periksa jika role adalah 0 maka admin
         return new Attribute(
-            get: fn($value) => $value == 0 ? 'admin' : 'opd', // Periksa jika role adalah 1 maka admin, 0 berarti opd
+            get: fn($value) => $value == 0 ? 'admin' : 'opd',
         );
     }
 }
