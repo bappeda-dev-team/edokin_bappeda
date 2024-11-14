@@ -70,9 +70,9 @@
                         {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4"> --}}
-                                <input type="hidden" name="nama_opd" id="nama_opd" class="form-control"
-                                    value="{{ old('nama_opd', $bab2->nama_opd) }}" readonly>
-                            {{-- </div>
+                        <input type="hidden" name="nama_opd" id="nama_opd" class="form-control"
+                            value="{{ old('nama_opd', $bab2->nama_opd) }}" readonly>
+                        {{-- </div>
                         </div> --}}
 
                         <div id="bidang-urusan-container">
@@ -107,12 +107,12 @@
                             </div>
                         </div>
 
-                        <!-- Container for Sumber Daya Manusia -->
+                        <!-- Container for Tugas dan Fungsi -->
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sumber Daya Manusia</label>
                             <div class="col-sm-12 col-md-10">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="sdm-table">
+                                    <table class="table table-bordered" id="jabatan-table">
                                         <thead>
                                             <tr>
                                                 <th>Jabatan</th>
@@ -140,6 +140,61 @@
                                                         <td>
                                                             <textarea name="fungsi_jabatan[]" id="">{!! strip_tags($item['fungsi_jabatan'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</textarea>
                                                         </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Container for Sumber Daya Manusia -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sumber Daya Manusia</label>
+                            <div class="col-sm-12 col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="sdm-table">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2">No.</th>
+                                                <th rowspan="2">Jabatan</th>
+                                                <th colspan="4">Status Kepegawaian</th>
+                                                <th colspan="6">Pendidikan Terakhir</th>
+                                            </tr>
+                                            <tr>
+                                                <th>PNS</th>
+                                                <th>PPPK</th>
+                                                <th>Kontrak</th>
+                                                <th>Upah</th>
+                                                <th>SD/SMP</th>
+                                                <th>SMA</th>
+                                                <th>D1/D3</th>
+                                                <th>D4/S1</th>
+                                                <th>S2/S3</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (empty($sumber_daya_manusia) || count($sumber_daya_manusia) === 0)
+                                                <tr>
+                                                    <td colspan="11" class="text-center">Tidak ada sumber daya manusia
+                                                        tersedia</td>
+                                                </tr>
+                                            @else
+                                                @foreach ($sumber_daya_manusia as $index => $jabatan)
+                                                    <tr>
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ ucwords(strtolower($jabatan['nama_jabatan'])) }}</td>
+                                                        <td>{{ $jabatan['status_jumlah_kepegawaian']['PNS'] ?? 0 }}</td>
+                                                        <td>{{ $jabatan['status_jumlah_kepegawaian']['PPPK'] ?? 0 }}</td>
+                                                        <td>{{ $jabatan['status_jumlah_kepegawaian']['Kontrak'] ?? 0 }}
+                                                        </td>
+                                                        <td>{{ $jabatan['status_jumlah_kepegawaian']['Upah'] ?? 0 }}</td>
+                                                        <td>{{ $jabatan['pendidikan_terakhir']['SD/SMP'] ?? 0 }}</td>
+                                                        <td>{{ $jabatan['pendidikan_terakhir']['SMA'] ?? 0 }}</td>
+                                                        <td>{{ $jabatan['pendidikan_terakhir']['D1/D3'] ?? 0 }}</td>
+                                                        <td>{{ $jabatan['pendidikan_terakhir']['D4/S1'] ?? 0 }}</td>
+                                                        <td>{{ $jabatan['pendidikan_terakhir']['S2/S3'] ?? 0 }}</td>
                                                     </tr>
                                                 @endforeach
                                             @endif
@@ -314,24 +369,29 @@
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
-                const sdmTableBody = $('#sdm-table tbody');
-                const asetsTableBody = $('#asets-table tbody');
+  
+                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
 
-                // Clear the tables before repopulating
+const sdmTableBody = $('#sdm-table tbody');
+const asetsTableBody = $('#asets-table tbody');
+const jabatanTableBody = $('#jabatan-table tbody');
+
+
                 sdmTableBody.empty();
                 asetsTableBody.empty();
+                jabatanTableBody.empty();
 
-                if (kodeOpd && tahun) {
+                if (kodeOpd && tahunAkhir) {
                     lastKodeOpd = kodeOpd;
-                    lastTahun = tahun;
+                    lastTahun = tahunAkhir;
                 }
 
                 const fetchKodeOpd = kodeOpd || lastKodeOpd;
-                const fetchTahun = tahun || lastTahun;
+                const fetchTahun = tahunAkhir || lastTahun;
 
                 if (fetchKodeOpd && fetchTahun) {
                     // Fetch Sumber Daya Manusia
-                    fetch(`/api/sumber-daya-manusia/${tahun}/${kodeOpd}`)
+                    fetch(`/api/sumber-daya-manusia/${tahunAkhir}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
                             console.log('API Response:', data); // Debug: log API response

@@ -215,9 +215,10 @@
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
+                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
 
-                if (kodeOpd && tahun) {
-                    fetch(`/api/strategi-arah-kebijakan/${tahun}/${kodeOpd}`)
+                if (kodeOpd && tahunAkhir) {
+                    fetch(`/api/strategi-arah-kebijakan/${tahunAkhir}/${kodeOpd}`)
                         .then(response => response.json())
                         .then(data => {
                             console.log('API Response:', data);
