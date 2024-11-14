@@ -153,12 +153,12 @@
                             @foreach ($tugas_fungsi as $item)
                                 <!-- Menampilkan nama jabatan -->
                                 <li class="list-item"
-                                    style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
+                                    style="display: flex; align-items: flex-start; padding: 5px 0;">
                                     <span style="min-width: 200px;">
                                         {{ ucwords(strtolower($item['nama_jabatan'])) }}
                                     </span>
-                                    <span style="color:red; display: inline-block;">: &nbsp;</span>
-                                    <span style="color:red; display: inline-block;"> {!! nl2br(e($item['tugas_jabatan'])) !!}</span>
+                                    <span style="display: inline-block;">: &nbsp;</span>
+                                    <span style="display: inline-block;"> {!! nl2br(e($item['tugas_jabatan'])) !!}</span>
                                 </li>
                             @endforeach
                         @endif
@@ -175,12 +175,12 @@
                             @foreach ($tugas_fungsi as $item)
                                 <!-- Menampilkan nama jabatan -->
                                 <li class="list-item"
-                                    style="color: rgb(11, 242, 11); display: flex; align-items: flex-start; padding: 5px 0;">
+                                    style="display: flex; align-items: flex-start; padding: 5px 0;">
                                     <span style="min-width: 200px;">
                                         {{ ucwords(strtolower($item['nama_jabatan'])) }}
                                     </span>
-                                    <span style="color:red; display: inline-block;">: &nbsp;</span>
-                                    <span style="color:red; display: inline-block;"> {!! nl2br(e($item['fungsi_jabatan'])) !!}</span>
+                                    <span style="display: inline-block;">: &nbsp;</span>
+                                    <span style="display: inline-block;"> {!! nl2br(e($item['fungsi_jabatan'])) !!}</span>
                                 </li>
                             @endforeach
                         @endif
@@ -293,14 +293,14 @@
                 </tbody>
             </table>
 
-            <p style="text-align: center"><span style="color: rgb(255, 0, 0);">{!! strip_tags($bab2['uraian_asets'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</span>
+            <p style="text-align: center"><span style="">{!! strip_tags($bab2['uraian_asets'] ?? 'N/A', '<br><b><u><i><strong><em>') !!}</span>
             </p>
 
             <h4>2.3 Kinerja Pelayanan Perangkat Daerah</h4>
             <p class="indent">Pelayanan kinerja perangkat daerah yang dilaksanakan pada periode tahun sebulmnya memuat
                 indikator SPM untuk Urusan Wajib, Indikator Kinerja Daerah (IKD), indikator Tujuan dan Indikator Sasaran
                 sesuai dengan yang telah diampu dan di amanatkan pada
-                <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
+                <span style="">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
 
             </p>
 
@@ -310,7 +310,7 @@
             </p>
 
             <p class="indent">
-                <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
+                <span style="">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span>
             </p>
 
             <table border="1" cellspacing="0" cellpadding="5">
@@ -464,14 +464,14 @@
                 <li>
                     Tercapai, yaitu pada indikator :
                     <ul style="list-style-type: lower-alpha">
-                        <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span>
+                        <li><span style="">...</span> Faktor yang mempengaruhi keberhasilan
+                            <span style="">...</span>
                         </li>
-                        <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span>
+                        <li><span style="">...</span> Faktor yang mempengaruhi keberhasilan
+                            <span style="">...</span>
                         </li>
-                        <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span>
+                        <li><span style="">...</span> Faktor yang mempengaruhi keberhasilan
+                            <span style="">...</span>
                         </li>
 
                     </ul>
@@ -479,14 +479,14 @@
                 <li>
                     Belum tercapai, yaitu pada indikator :
                     <ul style="list-style-type: lower-alpha">
-                        <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span>
+                        <li><span style="">...</span> Faktor yang mempengaruhi keberhasilan
+                            <span style="">...</span>
                         </li>
-                        <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span>
+                        <li><span style="">...</span> Faktor yang mempengaruhi keberhasilan
+                            <span style="">...</span>
                         </li>
-                        <li><span style="color: rgb(11, 242, 11);">...</span> Faktor yang mempengaruhi keberhasilan
-                            <span style="color: rgb(11, 242, 11);">...</span>
+                        <li><span style="">...</span> Faktor yang mempengaruhi keberhasilan
+                            <span style="">...</span>
                         </li>
 
                     </ul>
@@ -496,9 +496,9 @@
                 dari kinerja pelayanan periode sebelumnya tersebut adalah :
             </p>
             <ol>
-                <li><span style="color: rgb(11, 242, 11);">...</span></li>
-                <li><span style="color: rgb(11, 242, 11);">...</span></li>
-                <li><span style="color: rgb(11, 242, 11);">...</span></li>
+                <li><span style="">...</span></li>
+                <li><span style="">...</span></li>
+                <li><span style="">...</span></li>
             </ol>
 
             <h4>2.4 Kelompok Sasaran Layanan</h4>
@@ -506,18 +506,18 @@
                 tercapai pelayanan yang berorientasi hasil serta menjaga Kerjasama yang baik dengan stakeholder, mitra
                 serta Kerjasama lainnya dalam penyelenggaraan pemerintahan daerah maka diperlukan upaya
                 pemerintah daerah dalam menentukan kelompok sasaran yang akan terdampak dalam pelayanan pada dinas/badan
-                <span style="color: rgb(11, 242, 11);">...</span><br>
-            <p class="indent">Kelompok sasaran <span style="color: rgb(11, 242, 11);">...</span> dalam kegiatan yang
+                <span style="">...</span><br>
+            <p class="indent">Kelompok sasaran <span style="">...</span> dalam kegiatan yang
                 akan dilaksanakan berupa kerjasama dalam pencapaian kinerja yaitu </p>
 
             </p>
             <ol style="list-style-type: lower-alpha">
                 <li>Mitra PD </li>
-                <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                <li style=" list-style-type: none;"><span style="">...</span> </li>
                 <li>Dukungan Instansi/perusahaan</li>
-                <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                <li style=" list-style-type: none;"><span style="">...</span> </li>
                 <li>Kerjasama dengan pemerintah daerah lain</li>
-                <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                <li style=" list-style-type: none;"><span style="">...</span> </li>
                 </li>
             </ol>
 
