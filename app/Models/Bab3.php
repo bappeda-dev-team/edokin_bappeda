@@ -23,6 +23,7 @@ class Bab3 extends Model
         'uraian3',
         'uraian4',
         'uraian5',
+        'lama_periode',
         // 'isu_strategis1',
         // 'isu_strategis2',
         'uraian',

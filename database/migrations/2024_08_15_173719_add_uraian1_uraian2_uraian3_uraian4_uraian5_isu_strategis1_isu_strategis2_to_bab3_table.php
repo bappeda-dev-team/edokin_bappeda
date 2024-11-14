@@ -35,8 +35,8 @@ return new class extends Migration
                 'uraian3',
                 'uraian4',
                 'uraian5',
-                'isu_strategis1',
-                'isu_strategis2',
+                'isu_strategis',
+                // 'isu_strategis2',
             ]);
         });
     }
