@@ -50,7 +50,7 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Lama Periode</label>
                             <div class="col-sm-12 col-md-4">
-                                <input type="text" name="nama_bab" class="form-control" required>
+                                <input type="text" name="lama_periode" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group row mb-4">
