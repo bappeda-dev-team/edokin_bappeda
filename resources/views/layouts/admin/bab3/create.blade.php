@@ -80,53 +80,49 @@
                     </div> --}}
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                1)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Gambar Pelayanan Perangkat Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian1" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                2)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran Jangka Menengah pada Renstra Kementerian/Lembaga</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian2" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                3)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran Jangka Menengah dari Renstra Perangkat Daerah Provinsi
+                            </label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian3" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                4)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Implikasi RTRW bagi Pelayanan Perangkat Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian4" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                5)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Implikasi KLHS bagi Pelayanan Perangkat Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian5" class="summernote"></textarea>
                             </div>
                         </div>
 
                         {{-- <div id="urusan-strategis-container"> --}}
-                        <div class="form-group row mb-4">
+                        {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Isu
                                 Strategis)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="isu_strategis[]" id="isu_strategis" class="summernote" rows="4"></textarea>
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- </div> --}}
 
                         {{-- <div id="urusan-strategis-container">
