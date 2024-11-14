@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('bab5s', function (Blueprint $table) {
             //
-            $table->text('uraian')->nullable()->after('id');
+            $table->text('uraian')->nullable()->after('nama_opd');
         });
     }
 
