@@ -146,10 +146,30 @@
                             <li>Implikasi KLHS bagi pelayanan Perangkat Daerah <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian5 !!}</pre></li>
                         </ol>
                         <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis dengan metode USG (Urgency, Seriousness dan Growth), maka isu strategis dinas/badan <span style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan ditangani dalam renstra selama {{ $bab3['lama_periode'] }} tahun dan prioritas penanganannya pada tahun rencana adalah:</p>    
-                        <ol>
+                        {{-- <ol>
                             <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis1 !!}</span></li>
                             <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis2 !!}</span></li>
-                        </ol>
+                        </ol> --}}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <th>4</th>
+                                    <th>5</th> <!-- Kolom Tahun ditambahkan di sini -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td>Masalah Pokok 1</td>
+                                    <td>Masalah 1</td>
+                                    <td>Akar Masalah 1</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                         <div class="indent">
                             <span style="color: rgb(250, 5, 5);">{!!$bab3->uraian!!}</span>

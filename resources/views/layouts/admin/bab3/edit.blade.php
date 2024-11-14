@@ -47,6 +47,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Lama Periode</label>
+                    <div class="col-sm-12 col-md-4">
+                        <input type="text" name="lama_periode" class="form-control" value="{{ old('lama_periode', $bab3->lama_periode) }}" required>
+                    </div>
+                </div>
 
                 <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
