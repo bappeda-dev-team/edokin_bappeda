@@ -64,7 +64,7 @@ class Bab2Controller extends Controller
         if (!empty($request->bidang_urusan_3)) {
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
-        
+
         $tugasFungsi = [];
         if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
             foreach ($request->nama_jabatan as $index => $namaJabatan) {
@@ -79,7 +79,7 @@ class Bab2Controller extends Controller
         $sdmData = $request->sdm_data ? json_decode($request->sdm_data) : [];
 
         // Bab1::create($request->all());
-        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => json_encode($tugasFungsi), 'asets_data' => json_encode($asetsData), 'sdm_data'=>json_encode($sdmData)]));
+        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => json_encode($tugasFungsi), 'asets_data' => json_encode($asetsData), 'sdm_data' => json_encode($sdmData)]));
 
         return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 created successfully');
     }
@@ -95,11 +95,11 @@ class Bab2Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
-        // $tugasFungsiString = $bab2->tugas_fungsi;
-        // $tugas_fungsi_array = explode("\n", $tugasFungsiString);
+        $asets = json_decode($bab2->asets_data, true);
+        $sumber_daya_manusia = json_decode($bab2->sdm_data, true);
+
         $tugas_fungsi = json_decode($bab2->tugas_fungsi, true);
-        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'tugas_fungsi'));
+        return view('layouts.admin.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'sumber_daya_manusia', 'tugas_fungsi'));
     }
 
     public function update(Request $request, $id)
@@ -137,8 +137,10 @@ class Bab2Controller extends Controller
                 ];
             }
         }
+        $asetsData = $request->asets_data ? json_decode($request->asets_data) : [];
+        $sdmData = $request->sdm_data ? json_decode($request->sdm_data) : [];
 
-        $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsi]));
+        $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsi, 'asets_data' => json_encode($asetsData), 'sdm_data' => json_encode($sdmData)]));
 
         return redirect()->route('layouts.admin.bab2.index')->with('success', 'BAB 2 updated successfully');
     }
@@ -209,8 +211,8 @@ class Bab2Controller extends Controller
             $urusan_opd = $response->json()['results'] ?? [];
 
             $tugas_fungsi = json_decode($bab2->tugas_fungsi, true);
-            $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
-            $sumber_daya_manusia = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
+            $asets = json_decode($bab2->asets_data, true);
+            $sumber_daya_manusia = json_decode($bab2->sdm_data, true);
 
             // Render HTML view
             $html = view('layouts.admin.bab2.pdf', compact('bab2', 'urusan_opd', 'tugas_fungsi', 'asets', 'sumber_daya_manusia'))->render();

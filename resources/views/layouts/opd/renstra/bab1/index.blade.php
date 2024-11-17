@@ -23,7 +23,6 @@
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th>Nama Bab</th>
-                                    <th>Jenis</th>
                                     <th>Tahun</th> <!-- Kolom Tahun ditambahkan di sini -->
                                     <th>Action</th>
                                 </tr>
@@ -34,7 +33,6 @@
                                 <tr>
                                     <td class="text-center">{{ $i++ }}</td>
                                     <td>{{ $bab_1->nama_bab }}</td>
-                                    <td>{{ $bab_1->jenis->jenis ?? 'N/A' }}</td>
                                     <td>{{ $bab_1->tahun->tahun ?? 'N/A' }}</td>
                                     <td>
                                         <a href="{{ route('opd.bab1.show', $bab_1->id) }}" class="btn btn-info" data-id="{{ $bab_1->id }}"><i class="fa fa-eye"></i> Show</a>

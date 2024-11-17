@@ -93,21 +93,24 @@
                         <div id="uraian-bidang">
                             <!-- Bidang1 Uraian -->
                             <div class="form-group row mb-4">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
+                                    id="label-bidang-1">Uraian Bidang 1</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang1" class="summernote"></textarea>
                                 </div>
                             </div>
                             <!-- Bidang2 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang2" style="display:none;">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
+                                    id="label-bidang-2">Uraian Bidang 2</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang2" class="summernote"></textarea>
                                 </div>
                             </div>
                             <!-- Bidang3 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang3" style="display:none;">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 3</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
+                                    id="label-bidang-3">Uraian Bidang 3</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang3" class="summernote"></textarea>
                                 </div>
@@ -123,7 +126,8 @@
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian pada Paragraf
+                                Terakhir</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
@@ -184,11 +188,16 @@
 
                                 let bidangUrusan = data.bidang_urusan.split('\n');
                                 bidangUrusan1Input.val(bidangUrusan[0] || '');
+                                $('#label-bidang-1').text(
+                                    `Uraian Bidang ${bidangUrusan[0] || 'Uraian Bidang 1'}`);
+
                                 $('#bidang-urusan-2').toggle(bidangUrusan.length > 1);
                                 $('#bidang-urusan-3').toggle(bidangUrusan.length > 2);
 
                                 if (bidangUrusan.length > 1) {
                                     bidangUrusan2Input.val(bidangUrusan[1] || '');
+                                    $('#label-bidang-2').text(
+                                        `Uraian Bidang ${bidangUrusan[1] || 'Uraian Bidang 2'}`);
                                     $('#bidang-urusan-2').show();
                                     $('#uraian-bidang2').show();
                                 } else {
@@ -198,6 +207,8 @@
                                 }
                                 if (bidangUrusan.length > 2) {
                                     bidangUrusan3Input.val(bidangUrusan[2] || '');
+                                    $('#label-bidang-3').text(
+                                        `Uraian Bidang ${bidangUrusan[2] || 'Uraian Bidang 3'}`);
                                     $('#bidang-urusan-3').show();
                                     $('#uraian-bidang3').show();
                                 } else {
@@ -228,54 +239,60 @@
 
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
-                let tahun = $('#tahun_id').find(':selected').data('tahun');
-
-                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
-
+                const tahun = $('#tahun_id').find(':selected').data('tahun');
                 const dasarHukumTextarea = $('#dasar_hukum');
-                if (kodeOpd && tahunAkhir) {
-                    fetch(
-                            `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${tahunAkhir}&kode_opd=${kodeOpd}`
-                        )
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('404 - Data not found');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.dasar_hukums) {
-                                let dasarHukumArray = [];
 
-                                data.dasar_hukums.forEach(item => {
-                                    dasarHukumArray.push({
-                                        judul: item.judul,
-                                        peraturan: item.peraturan.replace(
-                                            /<br>\s*-\s*<br>/, '<br>')
+                const tahunRange = tahun ? tahun.split('-') : [];
+                const tahunStart = parseInt(tahunRange[0]);
+                const tahunEnd = tahunRange.length > 1 ? parseInt(tahunRange[1]) : tahunStart;
+
+                if (kodeOpd && tahunStart) {
+                    let allDasarHukumData = '';
+                    let fetchPromises = [];
+
+                    for (let year = tahunStart; year <= tahunEnd; year++) {
+                        fetchPromises.push(
+                            fetch(
+                                `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${year}&kode_opd=${kodeOpd}`
+                            )
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('404 - Data not found');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.dasar_hukums) {
+                                    data.dasar_hukums.forEach(item => {
+                                        allDasarHukumData += `
+                                <div>
+                                    <strong>${item.judul}</strong><br>
+                                    ${item.peraturan.replace(/<br>\s*-\s*<br>/, '<br>')}
+                                </div><br>
+                            `;
                                     });
-                                });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Fetch Error:', error);
+                            })
+                        );
+                    }
 
-                                let dasarHukumContent = '';
-
-                                dasarHukumArray.forEach((item, index) => {
-                                    dasarHukumContent += `
-                                    <div>
-                                        <strong>${item.judul}</strong><br>
-                                        ${item.peraturan}
-                                    </div>`;
-                                });
-
-                                dasarHukumTextarea.summernote('code', dasarHukumContent);
+                    Promise.all(fetchPromises)
+                        .then(() => {
+                            if (allDasarHukumData) {
+                                dasarHukumTextarea.summernote('code', allDasarHukumData);
                             } else {
                                 dasarHukumTextarea.summernote('code', 'No data found');
                             }
                         })
                         .catch(error => {
-                            console.error('Fetch Error:', error);
+                            console.error('Error completing fetch requests:', error);
                             dasarHukumTextarea.summernote('code', 'Error fetching data');
                         });
                 } else {
-                    dasarHukumTextarea.summernote('code', '');
+                    dasarHukumTextarea.summernote('code', 'Pilih OPD dan Periode');
                 }
             });
 

@@ -91,7 +91,7 @@
 
                         <!-- Container for Tugas dan Fungsi -->
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tugas dan Fungsi</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tugas dan Fungsi Jabatan</label>
                             <div class="col-sm-12 col-md-10">
                                 <table class="table table-bordered" id="jabatan-table">
                                     <thead>
@@ -111,29 +111,31 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sumber Daya Manusia</label>
                             <div class="col-sm-12 col-md-10">
-                                <table class="table table-bordered" id="sdm-table">
-                                    <thead>
-                                        <tr>
-                                            <th rowspan="2">No.</th>
-                                            <th rowspan="2">Jabatan</th>
-                                            <th colspan="4">Status Kepegawaian</th>
-                                            <th colspan="6">Pendidikan Terakhir</th>
-                                        </tr>
-                                        <tr>
-                                            <th>PNS</th>
-                                            <th>PPPK</th>
-                                            <th>Kontrak</th>
-                                            <th>Upah</th>
-                                            <th>SD/SMP</th>
-                                            <th>SMA</th>
-                                            <th>D1/D3</th>
-                                            <th>D4/S1</th>
-                                            <th>S2/S3</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="sdm-table">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2">No.</th>
+                                                <th rowspan="2">Jabatan</th>
+                                                <th colspan="4">Status Kepegawaian</th>
+                                                <th colspan="6">Pendidikan Terakhir</th>
+                                            </tr>
+                                            <tr>
+                                                <th>PNS</th>
+                                                <th>PPPK</th>
+                                                <th>Kontrak</th>
+                                                <th>Upah</th>
+                                                <th>SD/SMP</th>
+                                                <th>SMA</th>
+                                                <th>D1/D3</th>
+                                                <th>D4/S1</th>
+                                                <th>S2/S3</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
@@ -141,34 +143,36 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Asets</label>
                             <div class="col-sm-12 col-md-10">
-                                <table class="table table-bordered" id="asets-table">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Asset Pendukung</th>
-                                            <th>Jumlah</th>
-                                            <th colspan="3">Kondisi Asset</th>
-                                            <th>Perolehan Asset</th>
-                                            <th>Keterangan</th>
-                                        </tr>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th>Baik</th>
-                                            <th>Cukup</th>
-                                            <th>Kurang</th>
-                                            <th>Tahun</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="asets-table">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Asset Pendukung</th>
+                                                <th>Jumlah</th>
+                                                <th colspan="3">Kondisi Asset</th>
+                                                <th>Perolehan Asset</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Baik</th>
+                                                <th>Cukup</th>
+                                                <th>Kurang</th>
+                                                <th>Tahun</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <input type="text" name="asets_data" id="asets_data">
-                        <input type="text" name="sdm_data" id="sdm_data">
+                        <input type="hidden" name="asets_data" id="asets_data">
+                        <input type="hidden" name="sdm_data" id="sdm_data">
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Asets</label>
@@ -178,7 +182,8 @@
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian pada Paragraf
+                                Terakhir</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
@@ -322,8 +327,9 @@
                             if (data && Array.isArray(data) && data.length > 0) {
                                 let sdmData = [];
 
-                                data.forEach(item => {
+                                data.forEach((item, index) => {
                                     let row = `<tr>
+                                    <td>${index + 1}</td>
                                     <td>${item.nama_jabatan || 'N/A'}</td>
                                     <td>${item.status_jumlah_kepegawaian ? item.status_jumlah_kepegawaian['PNS'] || 0 : 0}</td>
                                     <td>${item.status_jumlah_kepegawaian ? item.status_jumlah_kepegawaian['PPPK'] || 0 : 0}</td>
@@ -361,7 +367,7 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data && Array.isArray(data) && data.length > 0) {
-                                let asetData = []; // Initialize an array to store asset data
+                                let asetData = [];
 
                                 data.forEach((item, index) => {
                                     let row = `

@@ -79,7 +79,7 @@ class Bab8Controller extends Controller
     {
         $validatedData = $request->validate([
             'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|integer|exists:jenis,id',
+            // 'jenis_id' => 'required|integer|exists:jenis,id',
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
             'nama_kepala_opd' => 'required|string|max:255',
@@ -165,7 +165,7 @@ class Bab8Controller extends Controller
     {
         $validatedData = $request->validate([
             'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|integer|exists:jenis,id',
+            // 'jenis_id' => 'required|integer|exists:jenis,id',
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
             'nama_kepala_opd' => 'required|string|max:255',

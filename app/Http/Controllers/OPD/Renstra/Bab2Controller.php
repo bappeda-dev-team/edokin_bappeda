@@ -50,14 +50,14 @@ class Bab2Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.opd.renstra.bab2.create', compact('jenis', 'urusan_opd', 'tahun','userKodeOpd'));
+        return view('layouts.opd.renstra.bab2.create', compact('jenis', 'urusan_opd', 'tahun', 'userKodeOpd'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_bab' => 'required',
-            'jenis_id' => 'required',
+            // 'jenis_id' => 'required',
             'nama_opd' => 'required',
             'bidang_urusan_1' => 'nullable|string',
             'bidang_urusan_2' => 'nullable|string',
@@ -76,16 +76,6 @@ class Bab2Controller extends Controller
         if (!empty($request->bidang_urusan_3)) {
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
-
-        // $tugasFungsi = [];
-        // if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
-        //     foreach ($request->nama_jabatan as $index => $namaJabatan) {
-        //         $tugas = $request->tugas_jabatan[$index] ?? '';
-        //         $fungsi = $request->fungsi_jabatan[$index] ?? '';
-        //         $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
-        //     }
-        // }
-        // $tugasFungsiString = implode("\n", $tugasFungsi);
         $tugasFungsi = [];
         if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
             foreach ($request->nama_jabatan as $index => $namaJabatan) {
@@ -97,8 +87,10 @@ class Bab2Controller extends Controller
             }
         }
 
-        // Bab1::create($request->all());
-        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => json_encode($tugasFungsi)]));
+        $asetsData = $request->asets_data ? json_decode($request->asets_data) : [];
+        $sdmData = $request->sdm_data ? json_decode($request->sdm_data) : [];
+
+        Bab2::create(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => json_encode($tugasFungsi), 'asets_data' => json_encode($asetsData), 'sdm_data' => json_encode($sdmData)]));
 
         return redirect()->route('layouts.opd.bab2.index')->with('success', 'BAB 2 created successfully');
     }
@@ -119,18 +111,17 @@ class Bab2Controller extends Controller
 
         $urusan_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
-        // $tugasFungsiString = $bab2->tugas_fungsi;
-        // $tugas_fungsi_array = explode("\n", $tugasFungsiString);
+        $asets = json_decode($bab2->asets_data, true);
+        $sumber_daya_manusia = json_decode($bab2->sdm_data, true);
         $tugas_fungsi = json_decode($bab2->tugas_fungsi, true);
-        return view('layouts.opd.renstra.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'tugas_fungsi','userKodeOpd'));
+        return view('layouts.opd.renstra.bab2.edit', compact('bab2', 'jenis', 'urusan_opd', 'tahun', 'asets', 'sumber_daya_manusia', 'tugas_fungsi', 'userKodeOpd'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'nama_bab' => 'required|string|max:255',
-            'jenis_id' => 'required|exists:jenis,id',
+            // 'jenis_id' => 'required|exists:jenis,id',
             'nama_opd' => 'required|string',
             'bidang_urusan_1' => 'nullable|string',
             'bidang_urusan_2' => 'nullable|string',
@@ -139,10 +130,6 @@ class Bab2Controller extends Controller
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             'uraian' => 'nullable|string',
             'uraian_asets' => 'nullable|string',
-            // 'kode_bidang_urusan'=>'required|string',
-            // 'latar_belakang' => 'required|string',
-            // 'maksud_tujuan' => 'required|string',
-            // 'sistematika_penulisan' => 'required|string',
         ]);
 
         $bab2 = Bab2::findOrFail($id);
@@ -155,16 +142,6 @@ class Bab2Controller extends Controller
             $bidangUrusan .= "\n" . trim($request->bidang_urusan_3);
         }
 
-        // $tugasFungsi = [];
-        // if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
-        //     foreach ($request->nama_jabatan as $index => $namaJabatan) {
-        //         $tugas = $request->tugas_jabatan[$index] ?? '';
-        //         $fungsi = $request->fungsi_jabatan[$index] ?? '';
-        //         $tugasFungsi[] = trim($namaJabatan) . "\n" . trim($tugas) . "\n" . trim($fungsi);
-        //     }
-        // }
-
-        // $tugasFungsiString = implode("\n", $tugasFungsi);
         $tugasFungsi = [];
         if ($request->has('nama_jabatan') && $request->has('tugas_jabatan') && $request->has('fungsi_jabatan')) {
             foreach ($request->nama_jabatan as $index => $namaJabatan) {
@@ -176,7 +153,10 @@ class Bab2Controller extends Controller
             }
         }
 
-        $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsi]));
+        $asetsData = $request->asets_data ? json_decode($request->asets_data) : [];
+        $sdmData = $request->sdm_data ? json_decode($request->sdm_data) : [];
+
+        $bab2->update(array_merge($request->all(), ['bidang_urusan' => $bidangUrusan, 'tugas_fungsi' => $tugasFungsi, 'asets_data' => json_encode($asetsData), 'sdm_data' => json_encode($sdmData)]));
 
         return redirect()->route('layouts.opd.bab2.index')->with('success', 'BAB 2 updated successfully');
     }
@@ -188,9 +168,6 @@ class Bab2Controller extends Controller
 
         return redirect()->route('layouts.opd.bab2.index')->with('success', 'BAB 2 deleted successfully');
     }
-
-
-
 
     public function show($id)
     {
@@ -218,15 +195,9 @@ class Bab2Controller extends Controller
             }
         }
 
-        // $tugasFungsiString = $bab2->tugas_fungsi;
-        // $tugasFungsiArray = explode("\n", $tugasFungsiString);
-        // $tugasFungsiString = $bab2->tugas_fungsi;
-        // $tugasFungsiArray = array_filter(explode("\n", $tugasFungsiString), function ($value) {
-        //     return !empty(trim($value)); // Menghapus baris kosong dari array
-        // });
         $tugasFungsi = json_decode($bab2->tugas_fungsi, true);
-        $asetList = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
-        $SDMList = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
+        $asetList = json_decode($bab2->asets_data, true);
+        $SDMList = json_decode($bab2->sdm_data, true);
 
         return view('layouts.opd.renstra.bab2.show', [
             'bab2' => $bab2,
@@ -256,8 +227,8 @@ class Bab2Controller extends Controller
             $urusan_opd = $response->json()['results'] ?? [];
 
             $tugas_fungsi = json_decode($bab2->tugas_fungsi, true);
-            $asets = $this->getAsets($bab2->tahun->tahun, $bab2->kode_opd);
-            $sumber_daya_manusia = $this->getSumberDayaManusia($bab2->tahun->tahun, $bab2->kode_opd);
+            $asets = json_decode($bab2->asets_data, true);
+            $sumber_daya_manusia = json_decode($bab2->sdm_data, true);
 
             // Render HTML view
             $html = view('layouts.opd.renstra.bab2.pdf', compact('bab2', 'urusan_opd', 'tugas_fungsi', 'asets', 'sumber_daya_manusia'))->render();
@@ -369,53 +340,6 @@ class Bab2Controller extends Controller
     }
 
 
-    // public function exportWord($id)
-    // {
-    //     try {
-    //         // Fetch the Bab2 record
-    //         $bab2 = Bab2::findOrFail($id);
-
-    //         // API URL and fetching data
-    //         $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
-    //         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
-
-    //         if (!$response->successful()) {
-    //             throw new \Exception('Failed to fetch data from API');
-    //         }
-
-    //         // Parse API response
-    //         $urusan_opd = $response->json()['results'] ?? [];
-
-    //         // Render HTML view
-    //         $html = view('layouts.admin.bab2.word', compact('bab2', 'urusan_opd'))->render();
-
-    //         // Initialize PhpWord
-    //         $phpWord = new PhpWord();
-
-    //         // Add a section to the Word document
-    //         $section = $phpWord->addSection();
-
-    //         // Convert HTML to plain text for Word document
-    //         $text = strip_tags($html); // You may need more complex parsing here based on your needs
-
-    //         // Add text to the section
-    //         $section->addText($text);
-
-    //         // Save the Word document
-    //         $fileName = 'bab2-' . $id . '.docx';
-    //         $tempFile = storage_path('app/' . $fileName);
-    //         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-    //         $objWriter->save($tempFile);
-
-    //         // Return Word document response
-    //         return response()->download($tempFile)->deleteFileAfterSend(true);
-
-    //     } catch (\Exception $e) {
-    //         // Log error and return JSON response
-    //         \Log::error('Word generation error: ' . $e->getMessage());
-    //         return response()->json(['error' => 'Unable to generate Word document: ' . $e->getMessage()], 500);
-    //     }
-    // }
     public function exportWord($id)
     {
         $bab2 = Bab2::findOrFail($id);

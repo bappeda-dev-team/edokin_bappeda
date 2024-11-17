@@ -241,56 +241,62 @@
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
-
-                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
-
                 const dasarHukumTextarea = $('#dasar_hukum');
 
-                if (kodeOpd && tahunAkhir) {
-                    fetch(
-                            `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${tahunAkhir}&kode_opd=${kodeOpd}`
-                        )
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('404 - Data not found');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.dasar_hukums) {
-                                let dasarHukumArray = [];
+                const tahunRange = tahun ? tahun.split('-') : [];
+                const tahunStart = parseInt(tahunRange[0]);
+                const tahunEnd = tahunRange.length > 1 ? parseInt(tahunRange[1]) : tahunStart;
 
-                                data.dasar_hukums.forEach(item => {
-                                    dasarHukumArray.push({
-                                        judul: item.judul,
-                                        peraturan: item.peraturan.replace(
-                                            /<br>\s*-\s*<br>/, '<br>')
+                if (kodeOpd && tahunStart) {
+                    let allDasarHukumData = '';
+                    let fetchPromises = [];
+
+                    for (let year = tahunStart; year <= tahunEnd; year++) {
+                        fetchPromises.push(
+                            fetch(
+                                `https://kak.madiunkota.go.id/api/substansi_renstra/dasar_hukums?tahun=${year}&kode_opd=${kodeOpd}`
+                            )
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('404 - Data not found');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.dasar_hukums) {
+                                    data.dasar_hukums.forEach(item => {
+                                        allDasarHukumData += `
+                                <div>
+                                    <strong>${item.judul}</strong><br>
+                                    ${item.peraturan.replace(/<br>\s*-\s*<br>/, '<br>')}
+                                </div><br>
+                            `;
                                     });
-                                });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Fetch Error:', error);
+                            })
+                        );
+                    }
 
-                                let dasarHukumContent = '';
-
-                                dasarHukumArray.forEach((item, index) => {
-                                    dasarHukumContent += `
-                                    <div>
-                                        <strong>${item.judul}</strong><br>
-                                        ${item.peraturan}
-                                    </div>`;
-                                });
-
-                                dasarHukumTextarea.summernote('code', dasarHukumContent);
+                    Promise.all(fetchPromises)
+                        .then(() => {
+                            if (allDasarHukumData) {
+                                dasarHukumTextarea.summernote('code', allDasarHukumData);
                             } else {
                                 dasarHukumTextarea.summernote('code', 'No data found');
                             }
                         })
                         .catch(error => {
-                            console.error('Fetch Error:', error);
+                            console.error('Error completing fetch requests:', error);
                             dasarHukumTextarea.summernote('code', 'Error fetching data');
                         });
                 } else {
-                    dasarHukumTextarea.summernote('code', '');
+                    dasarHukumTextarea.summernote('code', 'Pilih OPD dan Periode');
                 }
             });
+            
             // Initialize Summernote
             $('.summernote').summernote({
                 height: 300, // Set the height of the editor
