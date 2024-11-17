@@ -182,8 +182,12 @@
                         </div>
 
                         <div class="form-group row mb-4">
+<<<<<<< HEAD
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian pada Paragraf
                                 Terakhir</label>
+=======
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
+>>>>>>> 0296bfab08694161017dea64037b5c198742f62e
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
