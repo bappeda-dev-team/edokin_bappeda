@@ -93,36 +93,24 @@
                         <div id="uraian-bidang">
                             <!-- Bidang1 Uraian -->
                             <div class="form-group row mb-4">
-<<<<<<< HEAD
                                 <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
                                     id="label-bidang-1">Uraian Bidang 1</label>
-=======
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Bidang 1</label>
->>>>>>> 0296bfab08694161017dea64037b5c198742f62e
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang1" class="summernote"></textarea>
                                 </div>
                             </div>
                             <!-- Bidang2 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang2" style="display:none;">
-<<<<<<< HEAD
                                 <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
                                     id="label-bidang-2">Uraian Bidang 2</label>
-=======
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Bidang 2</label>
->>>>>>> 0296bfab08694161017dea64037b5c198742f62e
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang2" class="summernote"></textarea>
                                 </div>
                             </div>
                             <!-- Bidang3 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang3" style="display:none;">
-<<<<<<< HEAD
                                 <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
                                     id="label-bidang-3">Uraian Bidang 3</label>
-=======
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Bidang 3</label>
->>>>>>> 0296bfab08694161017dea64037b5c198742f62e
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang3" class="summernote"></textarea>
                                 </div>
@@ -138,12 +126,8 @@
                         </div>
 
                         <div class="form-group row mb-4">
-<<<<<<< HEAD
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian pada Paragraf
-                                Terakhir</label>
-=======
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
->>>>>>> 0296bfab08694161017dea64037b5c198742f62e
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir
+                                (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>

@@ -105,7 +105,8 @@
                         <div id="uraian-bidang">
                             <!-- Bidang1 Uraian -->
                             <div class="form-group row mb-4">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 1</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
+                                id="label-bidang-1">Uraian Bidang 1</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang1" class="summernote">{{ old('bidang1', $bab1->bidang1) }}</textarea>
                                 </div>
@@ -113,7 +114,8 @@
                             <!-- Bidang2 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang2"
                                 style="{{ substr_count($bab1->bidang_urusan, "\n") >= 1 ?: 'display: none;' }}">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 2</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
+                                id="label-bidang-2">Uraian Bidang 2</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang2" class="summernote">{{ old('bidang2', $bab1->bidang2) }}</textarea>
                                 </div>
@@ -121,7 +123,8 @@
                             <!-- Bidang3 Uraian -->
                             <div class="form-group row mb-4" id="uraian-bidang3"
                                 style="{{ substr_count($bab1->bidang_urusan, "\n") >= 2 ?: 'display: none;' }}">
-                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang 3</label>
+                                <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2"
+                                    id="label-bidang-3">Uraian Bidang 3</label>
                                 <div class="col-sm-12 col-md-10">
                                     <textarea name="bidang3" class="summernote">{{ old('bidang3', $bab1->bidang3) }}</textarea>
                                 </div>
@@ -135,7 +138,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" id="uraian" class="summernote">{{ old('uraian', $bab1->uraian) }}</textarea>
                             </div>
@@ -195,11 +198,16 @@
 
                                 let bidangUrusan = data.bidang_urusan.split('\n');
                                 bidangUrusan1Input.val(bidangUrusan[0] || '');
+                                $('#label-bidang-1').text(
+                                    `Uraian Bidang ${bidangUrusan[0] || 'Uraian Bidang 1'}`);
+
                                 $('#bidang-urusan-2').toggle(bidangUrusan.length > 1);
                                 $('#bidang-urusan-3').toggle(bidangUrusan.length > 2);
 
                                 if (bidangUrusan.length > 1) {
                                     bidangUrusan2Input.val(bidangUrusan[1] || '');
+                                    $('#label-bidang-2').text(
+                                        `Uraian Bidang ${bidangUrusan[1] || 'Uraian Bidang 2'}`);
                                     $('#bidang-urusan-2').show();
                                     $('#uraian-bidang2').show();
                                 } else {
@@ -209,6 +217,8 @@
                                 }
                                 if (bidangUrusan.length > 2) {
                                     bidangUrusan3Input.val(bidangUrusan[2] || '');
+                                    $('#label-bidang-3').text(
+                                        `Uraian Bidang ${bidangUrusan[2] || 'Uraian Bidang 3'}`);
                                     $('#bidang-urusan-3').show();
                                     $('#uraian-bidang3').show();
                                 } else {

@@ -29,31 +29,12 @@
                             </div>
                         </div>
 
-                        <!-- Jenis Field -->
-                        <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Jenis</label>
-                            <div class="col-sm-12 col-md-4">
-                                <select name="jenis_id" class="form-control selectric" required>
-                                    <option value="">Pilih Jenis</option>
-                                    @foreach ($jenis as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
-                                            {{ $item->jenis }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('jenis_id')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
                         <!-- Tahun Field -->
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tahun</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Periode</label>
                             <div class="col-sm-12 col-md-4">
                                 <select name="tahun_id" id="tahun_id" class="form-control selectric" required>
-                                    <option value="">Pilih Tahun</option>
+                                    <option value="">Pilih Periode</option>
                                     @foreach ($tahun as $year)
                                         <option value="{{ $year->id }}" data-tahun="{{ $year->tahun }}">
                                             {{ $year->tahun }}
@@ -118,23 +99,7 @@
                                         <th>Strategi</th>
                                         <th>Arah Kebijakan</th>
                                     </tr>
-                                    {{-- <tr>
-                                        <td>
-                                            <textarea name="tujuan_opd" id="tujuan_opd"></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="sasaran_opd[]" id="sasaran_opd"></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="strategi" id="strategi"></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="arah_kebijakan[]" id="arah_kebijakan"></textarea>
-                                        </td>
-                                    </tr> --}}
 
-                                    {{-- <tbody id="dynamic-rows"> --}}
-                                    <!-- Input rows akan ditambahkan di sini -->
                                     <tr>
                                         <td>
                                             <div id="tujuan_opd-rows"></div>
@@ -164,7 +129,7 @@
 
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>

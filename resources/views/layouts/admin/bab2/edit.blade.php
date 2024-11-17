@@ -506,7 +506,8 @@
                             asetsTableBody.append('<tr><td colspan="8">Error fetching data.</td></tr>');
                         });
                 } else {
-                    sdmTableBody.append('<tr><td colspan="3">Silakan pilih Nama OPD dan Periode.</td></tr>');
+                    sdmTableBody.append(
+                    '<tr><td colspan="3">Silakan pilih Nama OPD dan Periode.</td></tr>');
                     asetsTableBody.append(
                         '<tr><td colspan="8">Silakan pilih Nama OPD dan Periode.</td></tr>');
                     jabatanTableBody.append(

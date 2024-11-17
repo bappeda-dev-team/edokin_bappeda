@@ -48,22 +48,6 @@
                                     value="{{ old('nama_opd', $bab1->nama_opd) }}" class="form-control" readonly>
                             </div>
                         </div>
-                        {{-- 
-                        <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                            <div class="col-sm-12 col-md-4"> --}}
-                        {{-- <input type="hidden" name="nama_opd" id="nama_opd" class="form-control"
-                            value="{{ old('nama_opd', $bab1->nama_opd) }}" readonly> --}}
-                        {{-- </div>
-                        </div> --}}
-
-                        {{-- <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Bidang Urusan</label>
-                        <div class="col-sm-12 col-md-4">
-                            <input type="text" name="bidang_urusan" id="bidang_urusan" class="form-control" value="{{ old('bidang_urusan', $bab1->bidang_urusan) }}" readonly>
-                        </div>
-                    </div> --}}
-
                         <div id="bidang-urusan-container">
                             <!-- Bidang Urusan 1 -->
                             <div class="form-group row mb-4">
@@ -132,7 +116,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" id="uraian" class="summernote">{{ old('uraian', $bab1->uraian) }}</textarea>
                             </div>
