@@ -34,7 +34,7 @@ class Bab3Controller extends Controller
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
 
         $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
-
+        
         return view('layouts.admin.bab3.create', compact('jenis', 'data_opd', 'tahun'));
     }
 
@@ -51,10 +51,6 @@ class Bab3Controller extends Controller
             'uraian4' => 'nullable',
             'uraian5' => 'nullable',
             'lama_periode' => 'nullable',
-            // 'isu_strategis1' => 'nullable',
-            // 'isu_strategis2' => 'nullable',
-            'isu_strategis' => 'array', 
-            'isu_strategis.*' => 'nullable|string',
         ]);
 
         Bab3::create([
@@ -68,10 +64,9 @@ class Bab3Controller extends Controller
             'uraian4' => $request->uraian4,
             'uraian5' => $request->uraian5,
             'lama_periode' => $request->lama_peirode,
-            // 'isu_strategis1' => $request->isu_strategis1,
-            // 'isu_strategis2' => $request->isu_strategis2,
             'uraian' => $request->uraian,
-            'isu_strategis' => json_encode($request->isu_strategis), 
+            'isu_strategis' => json_encode($request->isu_strategis),
+            'akar_masalah' => $request->akar_masalah,
         ]);
 
         return redirect()->route('layouts.admin.bab3.index')->with('success', 'BAB 3 created successfully');
@@ -104,8 +99,6 @@ class Bab3Controller extends Controller
             'uraian4' => 'required|string',
             'uraian5' => 'required|string',
             'lama_periode' => 'nullable',
-            'isu_strategis1' => 'required|string',
-            'isu_strategis2' => 'required|string',
             'uraian' => 'nullable|string',
 
         ]);
@@ -123,8 +116,9 @@ class Bab3Controller extends Controller
             'uraian4' => $request->uraian4,
             'uraian5' => $request->uraian5,
             'lama_periode' => 'nullable',
-            'isu_strategis1' => $request->isu_strategis1,
-            'isu_strategis2' => $request->isu_strategis2,
+            'isu_strategis' => json_encode($request->isu_strategis),
+            // 'isu_strategis1' => $request->isu_strategis1,
+            // 'isu_strategis2' => $request->isu_strategis2,
             'uraian' => $request->uraian,
         ]);
 
@@ -165,10 +159,13 @@ class Bab3Controller extends Controller
             }
         }
 
+        $permasalahanList = json_decode($bab3->akar_masalah, true);
+
         return view('layouts.admin.bab3.show', [
             'bab3' => $bab3,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
+            'permasalahanList' => $permasalahanList,
         ]);
     }
 
@@ -188,9 +185,9 @@ class Bab3Controller extends Controller
 
             // Parse API response
             $urusan_opd = $response->json()['results'] ?? [];
-
+            $permasalahanList = json_decode($bab3->akar_masalah, true);
             // Render HTML view
-            $html = view('layouts.admin.bab3.pdf', compact('bab3', 'urusan_opd'))->render();
+            $html = view('layouts.admin.bab3.pdf', compact('bab3', 'urusan_opd','permasalahanList'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
@@ -264,6 +261,68 @@ class Bab3Controller extends Controller
             return response()->json(['message' => 'An error occurred'], 500);
         }
     }
+
+    public function getAkarMasalah($tahun, $kode_opd)
+    {
+        try {
+            $api = new KakKotaMadiunApi();
+            $response = $api->akarMasalah($tahun, $kode_opd);
+
+            \Log::info('API Response Status:', ['status' => $response->status()]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+
+                $masalahPokoks = [];
+                if (isset($data['masalah_pokoks']) && is_array($data['masalah_pokoks'])) {
+                    foreach ($data['masalah_pokoks'] as $masalahPokok) {
+                        $masalahList = [];
+
+                        // Iterate "masalahs" pada setiap "masalah_pokok"
+                        if (isset($masalahPokok['masalahs']) && is_array($masalahPokok['masalahs'])) {
+                            foreach ($masalahPokok['masalahs'] as $masalah) {
+                                $akarMasalahList = [];
+
+                                // Iterate "akar_masalahs" pada setiap "masalah"
+                                if (isset($masalah['akar_masalahs']) && is_array($masalah['akar_masalahs'])) {
+                                    foreach ($masalah['akar_masalahs'] as $akarMasalah) {
+                                        $akarMasalahList[] = [
+                                            'id_masalah' => $akarMasalah['id_masalah'],
+                                            'akar_masalah' => $akarMasalah['akar_masalah'] ?? 'Data tidak tersedia',
+                                        ];
+                                    }
+                                }
+
+                                $masalahList[] = [
+                                    'id_masalah' => $masalah['id_masalah'],
+                                    'masalah' => $masalah['masalah'] ?? 'Data tidak tersedia',
+                                    'akar_masalahs' => $akarMasalahList,
+                                ];
+                            }
+                        }
+
+                        $masalahPokoks[] = [
+                            'id_masalah_pokok' => $masalahPokok['id_masalah_pokok'],
+                            'masalah_pokok' => $masalahPokok['masalah_pokok'] ?? 'Data tidak tersedia',
+                            'masalahs' => $masalahList,
+                        ];
+                    }
+                }
+
+                return response()->json([
+                    'tahun' => $tahun,
+                    'kode_opd' => $kode_opd,
+                    'masalah_pokoks' => $masalahPokoks,
+                ]);
+            } else {
+                return response()->json(['message' => 'Failed to fetch data'], 500);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error fetching data: ' . $e->getMessage());
+            return response()->json(['message' => 'An error occurred'], 500);
+        }
+    }
+
 
     //     public function getPermasalahanOpd($tahun, $kode_opd)
     // {

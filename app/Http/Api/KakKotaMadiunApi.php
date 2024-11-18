@@ -77,8 +77,8 @@ class KakKotaMadiunApi
 
         return $response;
     }
-    
-    public function asets($tahun,$kode_opd)
+
+    public function asets($tahun, $kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/substansi_renstra/asets.json";
         $response = Http::get($apiUrl, [
@@ -88,7 +88,7 @@ class KakKotaMadiunApi
 
         return $response;
     }
-    public function sumberDayaManusia($tahun,$kode_opd)
+    public function sumberDayaManusia($tahun, $kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/substansi_renstra/sumber_daya_manusia.json";
         $response = Http::get($apiUrl, [
@@ -101,6 +101,16 @@ class KakKotaMadiunApi
     public function strategiArahKebijakan($tahun, $kode_opd)
     {
         $apiUrl = $this->BASE_URL . "/substansi_renstra/strategi_arah_kebijakan.json";
+        $response = Http::get($apiUrl, [
+            'tahun' => $tahun,
+            'kode_opd' => $kode_opd,
+        ]);
+
+        return $response;
+    }
+    public function akarMasalah($tahun, $kode_opd)
+    {
+        $apiUrl = $this->BASE_URL . "/substansi_renstra/akar_masalah.json";
         $response = Http::get($apiUrl, [
             'tahun' => $tahun,
             'kode_opd' => $kode_opd,

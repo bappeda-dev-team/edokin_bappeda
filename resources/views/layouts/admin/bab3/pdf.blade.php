@@ -114,13 +114,57 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-center">1</td>
-                                    <td>Masalah Pokok 1</td>
-                                    <td>Masalah 1</td>
-                                    <td>Akar Masalah 1</td>
-                                </tr>
-                                <!-- Tambahkan baris tambahan sesuai dengan data dari $bab3 jika diperlukan -->
+                                @php $no = 1; @endphp
+                                @foreach ($permasalahanList as $masalahPokok)
+                                    @php 
+                                        $masalahCount = count($masalahPokok['masalahs']);
+                                        $rowspanMasalahPokok = 0;
+                                    @endphp
+                                    @foreach ($masalahPokok['masalahs'] as $masalah)
+                                        @php 
+                                            $akarMasalahCount = count($masalah['akar_masalahs']);
+                                            $rowspanMasalahPokok += $akarMasalahCount;
+                                        @endphp
+                                    @endforeach
+                                    
+                                    @php $firstMasalah = true; @endphp
+                                    @foreach ($masalahPokok['masalahs'] as $masalah)
+                                        @php 
+                                            $firstAkarMasalah = true;
+                                            $akarMasalahCount = count($masalah['akar_masalahs']);
+                                        @endphp
+                                        @foreach ($masalah['akar_masalahs'] as $akarMasalah)
+                                            <tr>
+                                                @if ($firstMasalah && $firstAkarMasalah)
+                                                    <td class="text-center" rowspan="{{ $rowspanMasalahPokok }}">
+                                                        {{ $no++ }}
+                                                    </td>
+                                                @endif
+                                                
+                                                <!-- Display Masalah Pokok 1x once per masalah pokok -->
+                                                @if ($firstMasalah && $firstAkarMasalah)
+                                                    <td rowspan="{{ $rowspanMasalahPokok }}">
+                                                        {{ $masalahPokok['masalah_pokok'] ?? 'Data tidak tersedia' }}
+                                                    </td>
+                                                @endif
+                            
+                                                <!-- Display Masalah 1x per masalah -->
+                                                @if ($firstAkarMasalah)
+                                                    <td rowspan="{{ $akarMasalahCount }}">
+                                                        {{ $masalah['masalah'] ?? 'Data tidak tersedia' }}
+                                                    </td>
+                                                @endif
+                                                
+                                                <!-- Display Akar Masalah -->
+                                                <td>
+                                                    {{ $akarMasalah['akar_masalah'] ?? 'Data tidak tersedia' }}
+                                                </td>
+                                            </tr>
+                                            @php $firstAkarMasalah = false; @endphp
+                                        @endforeach
+                                        @php $firstMasalah = false; @endphp
+                                    @endforeach
+                                @endforeach
                             </tbody>
                         </table>
                         

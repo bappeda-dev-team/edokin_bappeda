@@ -301,6 +301,7 @@ Route::get('/api/asets/{tahun}/{kode_opd}', [Bab2Controller::class, 'getAsets'])
 Route::get('/api/isu-strategis/{tahun}/{kode_opd}', [Bab3Controller::class, 'getPermasalahanOpd']);
 Route::get('/api/strategi-arah-kebijakan/{tahun}/{kode_opd}', [Bab5Controller::class, 'getStrategiArahKebijakan']);
 Route::get('/api/find-opd/{kode_opd}', [Bab8Controller::class, 'findOpd']);
+Route::get('/api/permasalahan/{tahun}/{kode_opd}', [Bab3Controller::class, 'getAkarMasalah']);
     // Route::get('/api/bidang_urusan/{kode_bidang_urusan}', [Bab1Controller::class, 'getBidangUrusan']);
     // Route::get('/get-bidang-urusan/{kode_opd}', [Bab1Controller::class, 'getUrusanOpd']);
     // Route::get('/get-nama-bidang-urusan/{kode_bidang_urusan}', [Bab1Controller::class, 'getNamaBidangUrusan']);

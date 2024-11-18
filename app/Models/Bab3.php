@@ -15,7 +15,6 @@ class Bab3 extends Model
     // Kolom yang dapat diisi mass-assignable
     protected $fillable = [
         'nama_bab',
-        'jenis_id',
         'kode_opd',
         'tahun_id',
         'uraian1',
@@ -27,7 +26,8 @@ class Bab3 extends Model
         // 'isu_strategis1',
         // 'isu_strategis2',
         'uraian',
-        'isu_strategis'
+        'isu_strategis',
+        'akar_masalah',
     ];
 
     // Definisikan relasi dengan model Jenis (jika ada)
@@ -35,12 +35,12 @@ class Bab3 extends Model
     {
         return $this->belongsTo(TahunDokumen::class, 'tahun_id');
     }
-    
+
     public function jenis()
     {
         return $this->belongsTo(Jenis::class, 'jenis_id');
     }
-    
+
     public function opd()
     {
         return $this->belongsTo(OPD::class, 'kode_opd', 'kode_opd'); // Adjust 'kode_opd' based on the foreign key and local key
