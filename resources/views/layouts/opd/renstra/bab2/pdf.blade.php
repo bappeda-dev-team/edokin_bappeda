@@ -513,11 +513,14 @@
             </p>
             <ol style="list-style-type: lower-alpha">
                 <li>Mitra PD </li>
-                <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                <li style=" list-style-type: none;"><span
+                        style="color: rgb(11, 242, 11);">{!! $bab2->uraian_mitra_pd !!}</span> </li>
                 <li>Dukungan Instansi/perusahaan</li>
-                <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                <li style=" list-style-type: none;"><span
+                        style="color: rgb(11, 242, 11);">{!! $bab2->uraian_dukungan_instansi !!}</span> </li>
                 <li>Kerjasama dengan pemerintah daerah lain</li>
-                <li style=" list-style-type: none;"><span style="color: rgb(11, 242, 11);">...</span> </li>
+                <li style=" list-style-type: none;"><span
+                        style="color: rgb(11, 242, 11);">{!! $bab2->uraian_kerjasama_dengan_pemda_lain !!}</span> </li>
                 </li>
             </ol>
 

@@ -37,9 +37,9 @@ return new class extends Migration
     {
         Schema::table('bab2s', function (Blueprint $table) {
             // Drop columns in the reverse order of addition
-            $table->dropForeign(['jenis_id']);
+            // $table->dropForeign(['jenis_id']);
             $table->dropForeign(['tahun_id']);
-            $table->dropColumn(['kode_opd', 'nama_opd', 'nama_bab', 'bidang_urusan', 'jenis_id', 'tahun_id']);
+            $table->dropColumn(['kode_opd', 'nama_opd', 'nama_bab', 'bidang_urusan', 'tahun_id']);
         });
     }
 };

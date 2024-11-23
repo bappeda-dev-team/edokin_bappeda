@@ -152,8 +152,7 @@
                         @else
                             @foreach ($tugas_fungsi as $item)
                                 <!-- Menampilkan nama jabatan -->
-                                <li class="list-item"
-                                    style="display: flex; align-items: flex-start; padding: 5px 0;">
+                                <li class="list-item" style="display: flex; align-items: flex-start; padding: 5px 0;">
                                     <span style="min-width: 200px;">
                                         {{ ucwords(strtolower($item['nama_jabatan'])) }}
                                     </span>
@@ -174,8 +173,7 @@
                         @else
                             @foreach ($tugas_fungsi as $item)
                                 <!-- Menampilkan nama jabatan -->
-                                <li class="list-item"
-                                    style="display: flex; align-items: flex-start; padding: 5px 0;">
+                                <li class="list-item" style="display: flex; align-items: flex-start; padding: 5px 0;">
                                     <span style="min-width: 200px;">
                                         {{ ucwords(strtolower($item['nama_jabatan'])) }}
                                     </span>
@@ -513,11 +511,11 @@
             </p>
             <ol style="list-style-type: lower-alpha">
                 <li>Mitra PD </li>
-                <li style=" list-style-type: none;"><span style="">...</span> </li>
+                <li style=" list-style-type: none;"><span style="">{!! $bab2->uraian_mitra_pd !!}</span> </li>
                 <li>Dukungan Instansi/perusahaan</li>
-                <li style=" list-style-type: none;"><span style="">...</span> </li>
+                <li style=" list-style-type: none;"><span style="">{!! $bab2->uraian_dukungan_instansi !!}</span> </li>
                 <li>Kerjasama dengan pemerintah daerah lain</li>
-                <li style=" list-style-type: none;"><span style="">...</span> </li>
+                <li style=" list-style-type: none;"><span style="">{!! $bab2->uraian_kerjasama_dengan_pemda_lain !!}</span> </li>
                 </li>
             </ol>
 

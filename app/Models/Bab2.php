@@ -26,7 +26,10 @@ class Bab2 extends Model
         'uraian_asets',
         'tugas_fungsi',
         'asets_data',
-        'sdm_data'
+        'sdm_data',
+        'uraian_mitra_pd',
+        'uraian_dukungan_instansi',
+        'uraian_kerjasama_dengan_pemda_lain',
         // 'kode_bidang_urusan'
     ];
 

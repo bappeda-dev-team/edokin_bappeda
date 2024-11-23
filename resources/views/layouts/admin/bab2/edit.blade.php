@@ -275,6 +275,29 @@
                                 <textarea name="uraian" class="summernote">{{ old('uraian', $bab2->uraian) }}</textarea>
                             </div>
                         </div>
+                        
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Mitra PD</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea name="uraian_mitra_pd" class="summernote">{{ old('uraian_mitra_pd', $bab2->uraian_mitra_pd) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Dukungan
+                                Instansi/Perusahaan</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea name="uraian_dukungan_instansi" class="summernote">{{ old('uraian_dukungan_instansi', $bab2->uraian_dukungan_instansi) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Kerjasama dengan
+                                Pemerintah Daerah Lain</label>
+                            <div class="col-sm-12 col-md-10">
+                                <textarea name="uraian_kerjasama_dengan_pemda_lain" class="summernote">{{ old('uraian_kerjasama_dengan_pemda_lain', $bab2->uraian_kerjasama_dengan_pemda_lain) }}</textarea>
+                            </div>
+                        </div>
 
                         <div class="form-group row mb-4">
                             <div class="col-12 d-flex justify-content-center align-items-center">

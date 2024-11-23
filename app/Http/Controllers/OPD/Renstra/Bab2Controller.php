@@ -66,6 +66,9 @@ class Bab2Controller extends Controller
             'tahun_id' => 'required',
             'uraian' => 'nullable|string',
             'uraian_asets' => 'nullable|string',
+            'uraian_mitra_pd' => 'nullable|string',
+            'uraian_dukungan_instansi' => 'nullable|string',
+            'uraian_kerjasama_dengan_pemda_lain' => 'nullable|string',
         ]);
 
         $bidangUrusan = trim($request->bidang_urusan_1);
@@ -130,6 +133,9 @@ class Bab2Controller extends Controller
             'tahun_id' => 'required|exists:tahun_dokumen,id',
             'uraian' => 'nullable|string',
             'uraian_asets' => 'nullable|string',
+            'uraian_mitra_pd' => 'nullable|string',
+            'uraian_dukungan_instansi' => 'nullable|string',
+            'uraian_kerjasama_dengan_pemda_lain' => 'nullable|string',
         ]);
 
         $bab2 = Bab2::findOrFail($id);
