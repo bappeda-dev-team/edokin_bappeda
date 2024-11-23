@@ -227,10 +227,6 @@
                                 style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan
                             ditangani dalam renstra selama {{ $bab3->lama_periode ?? 'N/A' }} tahun dan prioritas
                             penanganannya pada tahun rencana adalah:</p>
-                        {{-- <ol>
-                            <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis1 !!}</span></li>
-                            <li><span style="color: rgb(244, 11, 11);">{!! $bab3->isu_strategis2 !!}</span></li>
-                        </ol> --}}
                         <table>
                             <thead>
                                 <tr>

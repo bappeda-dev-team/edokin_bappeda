@@ -101,7 +101,7 @@
                             </div>
                         </div>
 
-                        <input type="text" name="akar_masalah" id="akar_masalah">
+                        <input type="hidden" name="akar_masalah" id="akar_masalah">
 
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Gambar Pelayanan Perangkat

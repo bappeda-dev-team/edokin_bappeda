@@ -34,8 +34,8 @@ class Bab3Controller extends Controller
         $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
 
         $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
-        
-        return view('layouts.admin.bab3.create', compact('jenis', 'data_opd', 'tahun'));
+
+        return view('layouts.admin.bab3.create', compact('jenis', 'data_opd','tahun'));
     }
 
     public function store(Request $request)
@@ -45,12 +45,13 @@ class Bab3Controller extends Controller
             // 'jenis_id' => 'required',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required',
-            'uraian1'  => 'nullable',
+            'uraian1' => 'nullable',
             'uraian2' => 'nullable',
             'uraian3' => 'nullable',
             'uraian4' => 'nullable',
             'uraian5' => 'nullable',
             'lama_periode' => 'nullable',
+
         ]);
 
         Bab3::create([
@@ -63,7 +64,7 @@ class Bab3Controller extends Controller
             'uraian3' => $request->uraian3,
             'uraian4' => $request->uraian4,
             'uraian5' => $request->uraian5,
-            'lama_periode' => $request->lama_peirode,
+            'lama_periode' => $request->lama_periode,
             'uraian' => $request->uraian,
             'isu_strategis' => json_encode($request->isu_strategis),
             'akar_masalah' => $request->akar_masalah,
@@ -93,13 +94,14 @@ class Bab3Controller extends Controller
             // 'jenis_id' => 'required|exists:jenis,id',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
-            'uraian1'  => 'required|string',
+            'uraian1' => 'required|string',
             'uraian2' => 'required|string',
             'uraian3' => 'required|string',
             'uraian4' => 'required|string',
             'uraian5' => 'required|string',
             'lama_periode' => 'nullable',
             'uraian' => 'nullable|string',
+            'isu_strategis' => 'nullable'
 
         ]);
 
@@ -115,10 +117,8 @@ class Bab3Controller extends Controller
             'uraian3' => $request->uraian3,
             'uraian4' => $request->uraian4,
             'uraian5' => $request->uraian5,
-            'lama_periode' => 'nullable',
+            'lama_periode' => $request->lama_periode,
             'isu_strategis' => json_encode($request->isu_strategis),
-            // 'isu_strategis1' => $request->isu_strategis1,
-            // 'isu_strategis2' => $request->isu_strategis2,
             'uraian' => $request->uraian,
         ]);
 
@@ -187,7 +187,7 @@ class Bab3Controller extends Controller
             $urusan_opd = $response->json()['results'] ?? [];
             $permasalahanList = json_decode($bab3->akar_masalah, true);
             // Render HTML view
-            $html = view('layouts.admin.bab3.pdf', compact('bab3', 'urusan_opd','permasalahanList'))->render();
+            $html = view('layouts.admin.bab3.pdf', compact('bab3', 'urusan_opd', 'permasalahanList'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([
