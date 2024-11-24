@@ -81,8 +81,7 @@
 
                         <!-- Container for Akar Masalah -->
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Permasalahan
-                                Masalah</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Akar Masalah</label>
                             <div class="col-sm-12 col-md-10">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="masalah-table">
@@ -144,13 +143,37 @@
                         </div>
 
                         {{-- <div id="urusan-strategis-container"> --}}
-                        <div class="form-group row mb-4">
+                        {{-- <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Isu
                                 Strategis)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="isu_strategis[]" id="isu_strategis" class="summernote" rows="4"></textarea>
                             </div>
+                        </div> --}}
+
+                        <!-- Container for Isu Strategis -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Permasalahan dan Isu
+                                Strategis</label>
+                            <div class="col-sm-12 col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="isu-strategis-table">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Program</th>
+                                                <th>Isu Strategis</th>
+                                                <th>Permasalahan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
+
+                        <input type="text" name="isu_strategis" id="isu_strategis">
                         {{-- </div> --}}
 
                         {{-- <div id="urusan-strategis-container">
@@ -193,7 +216,6 @@
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
                         </div>
-
 
 
                         <div class="form-group row mb-4">
@@ -249,38 +271,69 @@
                 }
             });
 
-            // $(document).ready(function() {
-            $('#isu_strategis').summernote({
-                height: 200,
-            });
-
             $('#tahun_id, #kode_opd').on('change', function() {
                 const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
                 const namaOpdInput = $('#nama_opd');
                 const isuStrategisInput = $('#isu_strategis');
                 const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
-                namaOpdInput.val('');
-                isuStrategisInput.summernote('code', '');
 
                 if (kodeOpd && tahunAkhir) {
                     fetch(`/api/isu-strategis/${tahunAkhir}/${kodeOpd}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('API Response:', data);
-                            if (data.error) {
-                                console.error('API Error:', data.error);
-                            } else {
-                                namaOpdInput.val(data.nama_opd || '');
-
-                                const isuStrategis = data.results || [];
-                                const isuStrategisText = isuStrategis.join(
-                                    '\n');
-
-                                isuStrategisInput.summernote('code', isuStrategisText
-                                    .replace(/\n/g, '<br>')
-                                );
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
                             }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Isu Strategis API Response:', data);
+
+                            const isuStrategisTableBody = $('#isu-strategis-table tbody');
+                            isuStrategisTableBody.empty();
+                            if (data.error) {
+                                console.error('Isu Strategis API Error:', data.error);
+                                return;
+                            }
+
+                            const isuStrategisItems = data.results || [];
+                            let tableRows = '';
+                            let isuStrategisData = [];
+
+                            isuStrategisItems.forEach((item, index) => {
+                                const permasalahanList = Array.isArray(item.permasalahans) ?
+                                    item.permasalahans
+                                    .map((permasalahans) => `<li>${permasalahans}</li>`)
+                                    .join('') :
+                                    `<li>Data tidak tersedia</li>`;
+
+                                tableRows += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>(${item.kode_program})</br> ${item.program || 'Data tidak tersedia'}</td>
+                                    <td>${item.isu_strategis || 'Data tidak tersedia'}</td>
+                                    <td>
+                                        <ul>${permasalahanList}</ul>
+                                    </td>
+                                </tr>`;
+
+                                isuStrategisData.push({
+                                    kode_program: item.kode_program,
+                                    program: item.program,
+                                    isu_strategis: item.isu_strategis,
+                                    permasalahans: item.permasalahans
+                                });
+                            });
+
+                            if (tableRows) {
+                                isuStrategisTableBody.html(tableRows);
+                            } else {
+                                tableRows =
+                                    '<tr><td colspan="4" class="text-center">Data tidak tersedia</td></tr>';
+                                isuStrategisTableBody.html(tableRows);
+                            }
+                            document.getElementById('isu_strategis').value = JSON.stringify(
+                                isuStrategisData);
                         })
                         .catch(error => {
                             console.error('Fetch Error:', error);
@@ -311,15 +364,17 @@
                                         masalahs: []
                                     };
 
-                                    const masalahPokokRowspan = pokok.masalahs.reduce((count,
-                                            masalah) => count + masalah.akar_masalahs
+                                    const masalahPokokRowspan = pokok.masalahs.reduce((
+                                            count, masalah) => count + masalah
+                                        .akar_masalahs
                                         .length, 0);
 
                                     tableRows += `
-                    <tr>
-                        <td rowspan="${masalahPokokRowspan}">${index + 1}</td>
-                        <td rowspan="${masalahPokokRowspan}">${pokok.masalah_pokok || 'Data tidak tersedia'}</td>
-                `;
+                                        <tr>
+                                            <td rowspan="${masalahPokokRowspan}">${index + 1}</td>
+                                            <td rowspan="${masalahPokokRowspan}">${pokok.masalah_pokok || 'Data tidak tersedia'}</td>
+                                     
+                                        `;
 
                                     pokok.masalahs.forEach((masalah, masalahIndex) => {
                                         let masalahEntry = {
@@ -328,7 +383,8 @@
                                             akar_masalahs: []
                                         };
 
-                                        const masalahRowspan = masalah.akar_masalahs
+                                        const masalahRowspan = masalah
+                                            .akar_masalahs
                                             .length;
 
                                         if (masalahIndex === 0) {
@@ -336,9 +392,9 @@
                                                 `<td rowspan="${masalahRowspan}">${masalah.masalah || ''}</td>`;
                                         } else {
                                             tableRows += `
-                            <tr>
-                                <td rowspan="${masalahRowspan}">${masalah.masalah || 'Data tidak tersedia'}</td>
-                        `;
+                                                    <tr>
+                                                        <td rowspan="${masalahRowspan}">${masalah.masalah || 'Data tidak tersedia'}</td>
+                                                  `;
                                         }
 
                                         masalah.akar_masalahs.forEach((akar,
@@ -348,19 +404,19 @@
                                                     `<td>${akar.akar_masalah || 'Data tidak tersedia'}</td></tr>`;
                                             } else {
                                                 tableRows += `
-                                <tr>
-                                    <td>${akar.akar_masalah || 'Data tidak tersedia'}</td>
-                                </tr>
-                            `;
+                                                            <tr>
+                                                                <td>${akar.akar_masalah || 'Data tidak tersedia'}</td>
+                                                            </tr>`;
                                             }
 
-                                            masalahEntry.akar_masalahs.push({
-                                                id_masalah: akar
-                                                    .id_masalah,
-                                                akar_masalah: akar
-                                                    .akar_masalah ||
-                                                    'Data tidak tersedia'
-                                            });
+                                            masalahEntry.akar_masalahs
+                                                .push({
+                                                    id_masalah: akar
+                                                        .id_masalah,
+                                                    akar_masalah: akar
+                                                        .akar_masalah ||
+                                                        'Data tidak tersedia'
+                                                });
                                         });
 
                                         pokokEntry.masalahs.push(masalahEntry);
@@ -376,38 +432,8 @@
                         .catch(error => {
                             console.error('Permasalahan Fetch Error:', error);
                         });
-
                 }
-
-                // if (kodeOpd && tahunAkhir) {
-                //     fetch(`/api/permasalahan/${tahunAkhir}/${kodeOpd}`)
-                //         .then(response => response.json())
-                //         .then(data => {
-                //             console.log('API Response:', data);
-                //             if (data.error) {
-                //                 console.error('API Error:', data.error);
-                //             } else {
-                //                 namaOpdInput.val(data.nama_opd || '');
-
-                //                 const isuStrategis = data.results || [];
-                //                 const isuStrategisText = isuStrategis.join(
-                //                     '\n');
-
-                //                 isuStrategisInput.summernote('code', isuStrategisText
-                //                     .replace(/\n/g, '<br>')
-                //                 );
-                //             }
-                //         })
-                //         .catch(error => {
-                //             console.error('Fetch Error:', error);
-                //         });
-                // }
             });
-            // });
-
-
-
-
 
             // Initialize Summernote
             $('.summernote').summernote({

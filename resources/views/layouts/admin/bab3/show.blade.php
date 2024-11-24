@@ -88,8 +88,8 @@
         }
 
         /* tr:hover {
-                background-color: #f1f1f1;
-            } */
+                            background-color: #f1f1f1;
+                        } */
     </style>
     <section class="section">
         <div class="section-header">
@@ -144,20 +144,20 @@
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($permasalahanList as $masalahPokok)
-                                    @php 
+                                    @php
                                         $masalahCount = count($masalahPokok['masalahs']);
                                         $rowspanMasalahPokok = 0;
                                     @endphp
                                     @foreach ($masalahPokok['masalahs'] as $masalah)
-                                        @php 
+                                        @php
                                             $akarMasalahCount = count($masalah['akar_masalahs']);
                                             $rowspanMasalahPokok += $akarMasalahCount;
                                         @endphp
                                     @endforeach
-                                    
+
                                     @php $firstMasalah = true; @endphp
                                     @foreach ($masalahPokok['masalahs'] as $masalah)
-                                        @php 
+                                        @php
                                             $firstAkarMasalah = true;
                                             $akarMasalahCount = count($masalah['akar_masalahs']);
                                         @endphp
@@ -168,21 +168,21 @@
                                                         {{ $no++ }}
                                                     </td>
                                                 @endif
-                                                
+
                                                 <!-- Display Masalah Pokok 1x once per masalah pokok -->
                                                 @if ($firstMasalah && $firstAkarMasalah)
                                                     <td rowspan="{{ $rowspanMasalahPokok }}">
                                                         {{ $masalahPokok['masalah_pokok'] ?? 'Data tidak tersedia' }}
                                                     </td>
                                                 @endif
-                            
+
                                                 <!-- Display Masalah 1x per masalah -->
                                                 @if ($firstAkarMasalah)
                                                     <td rowspan="{{ $akarMasalahCount }}">
                                                         {{ $masalah['masalah'] ?? 'Data tidak tersedia' }}
                                                     </td>
                                                 @endif
-                                                
+
                                                 <!-- Display Akar Masalah -->
                                                 <td>
                                                     {{ $akarMasalah['akar_masalah'] ?? 'Data tidak tersedia' }}
@@ -194,7 +194,6 @@
                                     @endforeach
                                 @endforeach
                             </tbody>
-                            
                         </table>
 
 
@@ -227,7 +226,8 @@
                                 style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan
                             ditangani dalam renstra selama {{ $bab3->lama_periode ?? 'N/A' }} tahun dan prioritas
                             penanganannya pada tahun rencana adalah:</p>
-                        <table>
+                            
+                        <table id="isu-strategis-table">
                             <thead>
                                 <tr>
                                     <th class="text-center">No.</th>
@@ -239,14 +239,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-center">1</td>
-                                    <td>A</td>
-                                    <td>b</td>
-                                    <td>c</td>
-                                    <td>d</td>
-                                    <td>e</td>
-                                </tr>
+                                @php $no = 1; @endphp
+                                @foreach ($isuStrategisList as $programs)
+                                    @php
+                                        $permasalahans = count($programs['permasalahans']);
+                                    @endphp
+
+                                    @foreach ($programs['permasalahans'] as $index => $permasalahan)
+                                        <tr>
+                                            @if ($index === 0)
+                                                <td class="text-center" rowspan="{{ $permasalahans }}">
+                                                    {{ $no++ }}
+                                                </td>
+                                                <td rowspan="{{ $permasalahans }}">
+                                                    ({{ $programs['kode_program'] ?? '-' }})
+                                                    <br>
+                                                    {{ $programs['program'] ?? '-' }}
+                                                </td>
+                                                <td rowspan="{{ $permasalahans }}">
+                                                    {{ $programs['isu_strategis'] ?? '-' }}
+                                                </td>
+                                            @endif
+                                            <td>
+                                                {{ $permasalahan ?? '-' }}
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
                             </tbody>
                         </table>
 

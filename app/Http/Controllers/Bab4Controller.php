@@ -66,14 +66,12 @@ class Bab4Controller extends Controller
     {
         $validatedData = $request->validate([
             'nama_bab' => 'required|string|max:255',
-            // 'jenis_id' => 'required|integer|exists:jenis,id',
             'tahun_id' => 'required|integer|exists:tahun_dokumen,id',
             'kode_opd' => 'required|string|max:50',
             'nama_opd' => 'nullable|string|max:255',
             'tujuan_opd' => 'nullable|string',
             'sasaran_opd' => 'nullable|string',
             'uraian' => 'nullable|string',
-
         ]);
 
         try {
@@ -148,11 +146,7 @@ class Bab4Controller extends Controller
         }
     }
 
-
-
-
     // Show form to edit an existing Bab4 record
-
     public function edit($id)
     {
         $api = new KakKotaMadiunApi();
@@ -177,10 +171,6 @@ class Bab4Controller extends Controller
 
         return view('layouts.admin.bab4.edit', compact('bab4', 'kodeOpds', 'jenis', 'tahun'));
     }
-
-
-
-
 
     // Update an existing Bab4 record in the database
     public function update(Request $request, $id)
