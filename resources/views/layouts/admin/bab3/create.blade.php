@@ -53,6 +53,7 @@
                                 <input type="text" name="lama_periode" class="form-control" required>
                             </div>
                         </div>
+                        
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
@@ -68,7 +69,7 @@
                         {{-- <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                         <div class="col-sm-12 col-md-4"> --}}
-                        <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly>
+                        {{-- <input type="hidden" name="nama_opd" id="nama_opd" class="form-control" readonly> --}}
                         {{-- </div>
                     </div> --}}
 
@@ -173,7 +174,7 @@
                             </div>
                         </div>
 
-                        <input type="text" name="isu_strategis" id="isu_strategis">
+                        <input type="hidden" name="isu_strategis" id="isu_strategis">
                         {{-- </div> --}}
 
                         {{-- <div id="urusan-strategis-container">

@@ -88,8 +88,8 @@
         }
 
         /* tr:hover {
-                            background-color: #f1f1f1;
-                        } */
+                                    background-color: #f1f1f1;
+                                } */
     </style>
     <section class="section">
         <div class="section-header">
@@ -206,19 +206,19 @@
                             yang mempengaruhi permasalahan pelayanan perangkat daerah ditinjau dari :</p>
                         <ol>
                             <li>Gambaran pelayanan perangkat daerah
-                                <pre style="color: rgb(244, 11, 11);">{{ $bab3->uraian1 }}</pre>
+                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian1 !!}</pre>
                             </li>
                             <li>Sasaran jangka menengah pada renstra Kementerian/Lembaga
-                                <pre style="color: rgb(244, 11, 11);">{{ $bab3->uraian2 }}</pre>
+                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian2 !!}</pre>
                             </li>
                             <li>Sasaran jangka menengah dari renstra Perangkat Daerah provinsi
-                                <pre style="color: rgb(244, 11, 11);">{{ $bab3->uraian3 }}</pre>
+                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian3 !!}</pre>
                             </li>
                             <li>Implikasi RTRW bagi pelayanan Perangkat Daerah
-                                <pre style="color: rgb(244, 11, 11);"> {{ $bab3->uraian4 }}</pre>
+                                <pre style="color: rgb(244, 11, 11);"> {!! $bab3->uraian4 !!}</pre>
                             </li>
                             <li>Implikasi KLHS bagi pelayanan Perangkat Daerah
-                                <pre style="color: rgb(244, 11, 11);">{{ $bab3->uraian5 }}</pre>
+                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian5 !!}</pre>
                             </li>
                         </ol>
                         <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis
@@ -226,7 +226,7 @@
                                 style="color: rgb(11, 242, 11);">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan
                             ditangani dalam renstra selama {{ $bab3->lama_periode ?? 'N/A' }} tahun dan prioritas
                             penanganannya pada tahun rencana adalah:</p>
-                            
+
                         <table id="isu-strategis-table">
                             <thead>
                                 <tr>

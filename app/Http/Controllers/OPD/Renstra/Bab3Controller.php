@@ -56,15 +56,12 @@ class Bab3Controller extends Controller
             // 'jenis_id' => 'required',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required',
-            'uraian1'  => 'nullable',
+            'uraian1' => 'nullable',
             'uraian2' => 'nullable',
             'uraian3' => 'nullable',
             'uraian4' => 'nullable',
             'uraian5' => 'nullable',
-            // 'isu_strategis1' => 'nullable',
-            // 'isu_strategis2' => 'nullable',
-            'isu_strategis' => 'array',
-            'isu_strategis.*' => 'nullable|string',
+            'lama_periode' => 'nullable',
         ]);
 
         Bab3::create([
@@ -77,10 +74,10 @@ class Bab3Controller extends Controller
             'uraian3' => $request->uraian3,
             'uraian4' => $request->uraian4,
             'uraian5' => $request->uraian5,
-            // 'isu_strategis1' => $request->isu_strategis1,
-            // 'isu_strategis2' => $request->isu_strategis2,
+            'lama_periode' => $request->lama_periode,
             'uraian' => $request->uraian,
-            'isu_strategis' => json_encode($request->isu_strategis),
+            'isu_strategis' => $request->isu_strategis,
+            'akar_masalah' => $request->akar_masalah,
         ]);
 
         return redirect()->route('layouts.opd.bab3.index')->with('success', 'BAB 3 created successfully');
@@ -101,7 +98,10 @@ class Bab3Controller extends Controller
 
         $data_opd = $response->successful() && isset($response->json()['results']) ? $response->json()['results'] : [];
 
-        return view('layouts.opd.renstra.bab3.edit', compact('bab3', 'jenis', 'data_opd', 'tahun','userKodeOpd'));
+        $permasalahanList = json_decode($bab3->akar_masalah, true);
+        $isuStrategisList = json_decode($bab3->isu_strategis, true);
+
+        return view('layouts.opd.renstra.bab3.edit', compact('bab3', 'jenis', 'data_opd', 'tahun', 'userKodeOpd', 'isuStrategisList', 'permasalahanList'));
     }
 
     public function update(Request $request, $id)
@@ -111,15 +111,14 @@ class Bab3Controller extends Controller
             // 'jenis_id' => 'required|exists:jenis,id',
             'kode_opd' => 'required|string',
             'tahun_id' => 'required|exists:tahun_dokumen,id',
-            'uraian1'  => 'required|string',
-            'uraian2' => 'required|string',
-            'uraian3' => 'required|string',
-            'uraian4' => 'required|string',
-            'uraian5' => 'required|string',
-            'isu_strategis1' => 'required|string',
-            'isu_strategis2' => 'required|string',
+            'uraian1' => 'nullable|string',
+            'uraian2' => 'nullable|string',
+            'uraian3' => 'nullable|string',
+            'uraian4' => 'nullable|string',
+            'uraian5' => 'nullable|string',
+            'lama_periode' => 'nullable',
             'uraian' => 'nullable|string',
-
+            'isu_strategis' => 'nullable'
         ]);
 
         $bab3 = Bab3::findOrFail($id);
@@ -134,8 +133,9 @@ class Bab3Controller extends Controller
             'uraian3' => $request->uraian3,
             'uraian4' => $request->uraian4,
             'uraian5' => $request->uraian5,
-            'isu_strategis1' => $request->isu_strategis1,
-            'isu_strategis2' => $request->isu_strategis2,
+            'lama_periode' => $request->lama_periode,
+            'isu_strategis' => $request->isu_strategis,
+            'akar_masalah' => $request->akar_masalah,
             'uraian' => $request->uraian,
         ]);
 
@@ -176,10 +176,15 @@ class Bab3Controller extends Controller
             }
         }
 
+        $permasalahanList = json_decode($bab3->akar_masalah, true);
+        $isuStrategisList = json_decode($bab3->isu_strategis, true);
+
         return view('layouts.opd.renstra.bab3.show', [
             'bab3' => $bab3,
             'urusan_opd' => $urusan_opd,
             'selectedBidangUrusan' => $selectedBidangUrusan,
+            'permasalahanList' => $permasalahanList,
+            'isuStrategisList' => $isuStrategisList,
         ]);
     }
 
@@ -200,8 +205,11 @@ class Bab3Controller extends Controller
             // Parse API response
             $urusan_opd = $response->json()['results'] ?? [];
 
+            $permasalahanList = json_decode($bab3->akar_masalah, true);
+            $isuStrategisList = json_decode($bab3->isu_strategis, true);
+
             // Render HTML view
-            $html = view('layouts.opd.renstra.bab3.pdf', compact('bab3', 'urusan_opd'))->render();
+            $html = view('layouts.opd.renstra.bab3.pdf', compact('bab3', 'urusan_opd', 'permasalahanList', 'isuStrategisList'))->render();
 
             // Initialize MPDF
             $mpdf = new \Mpdf\Mpdf([

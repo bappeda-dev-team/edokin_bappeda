@@ -51,7 +51,6 @@ class Bab3Controller extends Controller
             'uraian4' => 'nullable',
             'uraian5' => 'nullable',
             'lama_periode' => 'nullable',
-
         ]);
 
         Bab3::create([
@@ -122,6 +121,7 @@ class Bab3Controller extends Controller
             'uraian5' => $request->uraian5,
             'lama_periode' => $request->lama_periode,
             'isu_strategis' => $request->isu_strategis,
+            'akar_masalah' => $request->akar_masalah,
             'uraian' => $request->uraian,
         ]);
 
@@ -190,6 +190,7 @@ class Bab3Controller extends Controller
 
             // Parse API response
             $urusan_opd = $response->json()['results'] ?? [];
+            
             $permasalahanList = json_decode($bab3->akar_masalah, true);
             $isuStrategisList = json_decode($bab3->isu_strategis, true);
             // Render HTML view

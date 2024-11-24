@@ -325,7 +325,7 @@
                 const fetchTahun = tahunAkhir || lastTahun;
 
                 if (fetchKodeOpd && fetchTahun) {
-                // if (kodeOpd && tahunAkhir) {
+                    // if (kodeOpd && tahunAkhir) {
                     fetch(`/api/isu-strategis/${fetchTahun}/${fetchKodeOpd}`)
                         .then(response => {
                             if (!response.ok) {
