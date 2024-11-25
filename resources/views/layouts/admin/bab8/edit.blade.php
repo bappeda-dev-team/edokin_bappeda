@@ -88,6 +88,13 @@
                         </div>
 
                         <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Pangkat Kepala OPD</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" id="pangkat_kepala_opd" name="pangkat_kepala_opd" class="form-control" value="{{ old('pangkat_kepala_opd', $bab8->pangkat_kepala_opd) }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">NIP Kepala OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <input type="text" id="nip_kepala_opd" name="nip_kepala_opd" class="form-control" value="{{ old('nip_kepala_opd', $bab8->nip_kepala_opd) }}"

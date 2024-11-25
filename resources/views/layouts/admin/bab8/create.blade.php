@@ -88,13 +88,20 @@
                         </div>
 
                         <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Pangkat Kepala OPD</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" id="pangkat_kepala_opd" name="pangkat_kepala_opd" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">NIP Kepala OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <input type="text" id="nip_kepala_opd" name="nip_kepala_opd" class="form-control"
                                     readonly>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tanggal</label>
                             <div class="col-sm-12 col-md-4">
@@ -103,7 +110,8 @@
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir
+                                (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
