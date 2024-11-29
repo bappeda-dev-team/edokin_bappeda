@@ -107,7 +107,7 @@
                                         <span>({{$bab8->nama_kepala_opd}})</span>
                                     </p>
                                     <p style="text-align: center;margin-left:60%">
-                                        <span >pangkat</span>
+                                        <span>{{$bab8->pangkat_kepala_opd}}</span>
                                     </p>
                                     <p style="text-align: center;margin-left:60%">
                                         <span>({{$bab8->nip_kepala_opd}})</span>

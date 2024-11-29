@@ -88,6 +88,7 @@ class Bab8Controller extends Controller
             'tujuan_opd' => 'nullable|string',
             'sasaran_opd' => 'nullable|string',
             'uraian' => 'nullable|string',
+            'pangkat_kepala_opd' => 'nullable|string',
         ]);
 
         try {
@@ -172,6 +173,7 @@ class Bab8Controller extends Controller
             'nip_kepala_opd' => 'required|string|max:50',
             'tanggal' => 'required',
             'uraian' => 'nullable|string',
+            'pangkat_kepala_opd' => 'nullable|string',
         ]);
 
         try {

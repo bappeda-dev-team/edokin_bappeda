@@ -14,6 +14,7 @@ class Bab8 extends Model
         'kode_opd',
         'nama_kepala_opd',
         'nip_kepala_opd',
+        'pangkat_kepala_opd',
         'tanggal',
         'tahun_id',
         'uraian',

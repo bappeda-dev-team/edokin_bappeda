@@ -127,7 +127,7 @@
                                 <span style="color: rgb(11, 242, 11);">({{$bab8->nama_kepala_opd}})</span>
                             </p>
                             <p style="text-align: center;margin-left:60%">
-                                <span style="color: rgb(11, 242, 11);">pangkat</span>
+                                <span style="color: rgb(11, 242, 11);">{{$bab8->pangkat_kepala_opd}}</span>
                             </p>
                             <p style="text-align: center;margin-left:60%">
                                 <span style="color: rgb(11, 242, 11);">({{$bab8->nip_kepala_opd}})</span>

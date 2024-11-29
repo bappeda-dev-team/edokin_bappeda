@@ -36,6 +36,13 @@
                         </div>
 
                         <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Lama Periode</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" name="lama_periode" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
                             <div class="col-sm-12 col-md-4">
                                 <input type="hidden" name="kode_opd" id="kode_opd" class="form-control" required>
@@ -43,56 +50,93 @@
                             </div>
                         </div>
 
+                        <!-- Container for Akar Masalah -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Akar Masalah</label>
+                            <div class="col-sm-12 col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="masalah-table">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Masalah Pokok</th>
+                                                <th>Masalah</th>
+                                                <th>Akar Masalah</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="masalah-tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="akar_masalah" id="akar_masalah">
+
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                1)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Gambar Pelayanan Perangkat
+                                Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian1" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                2)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran Jangka Menengah
+                                pada Renstra Kementerian/Lembaga</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian2" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                3)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran Jangka Menengah
+                                dari Renstra Perangkat Daerah Provinsi</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian3" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                4)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Implikasi RTRW bagi
+                                Pelayanan Perangkat Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian4" class="summernote"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                5)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Implikasi KLHS bagi
+                                Pelayanan Perangkat Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian5" class="summernote"></textarea>
                             </div>
                         </div>
 
-                        {{-- <div id="urusan-strategis-container"> --}}
+                        <!-- Container for Isu Strategis -->
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Isu
-                                Strategis)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Permasalahan dan Isu
+                                Strategis</label>
                             <div class="col-sm-12 col-md-10">
-                                <textarea name="isu_strategis[]" id="isu_strategis" class="summernote" rows="4"></textarea>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="isu-strategis-table">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Program</th>
+                                                <th>Isu Strategis</th>
+                                                <th>Permasalahan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        {{-- </div> --}}
+
+                        <input type="hidden" name="isu_strategis" id="isu_strategis">
 
                         {{-- <div id="urusan-strategis-container">
 
@@ -128,7 +172,8 @@
                         </div> --}}
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir
+                                (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
@@ -162,71 +207,197 @@
 
             // Event listener for Select2 change event
             // $('.select2').on('change', function() {
-                const kodeOpd = $('#kode_opd').val();
-                const namaOpdInput = $('#nama_opd');
+            const kodeOpd = $('#kode_opd').val();
+            const namaOpdInput = $('#nama_opd');
 
-                if (kodeOpd) {
-                    // Fetch data from API using the selected kode_opd
-                    fetch(`/api/urusan_opd/${kodeOpd}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('API Response:', data); // Debug: log API response
-                            if (data.error) {
-                                console.error('API Error:', data.error);
-                                namaOpdInput.val('');
-                            } else {
-                                // Populate nama_opd
-                                namaOpdInput.val(data.nama_opd || '');
+            if (kodeOpd) {
+                // Fetch data from API using the selected kode_opd
+                fetch(`/api/urusan_opd/${kodeOpd}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('API Response:', data); // Debug: log API response
+                        if (data.error) {
+                            console.error('API Error:', data.error);
+                            namaOpdInput.val('');
+                        } else {
+                            // Populate nama_opd
+                            namaOpdInput.val(data.nama_opd || '');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        namaOpdInput.val('');
+                    });
+            } else {
+                // Clear fields if no kode_opd selected
+                namaOpdInput.val('');
+            }
+            // });
+
+            $('#tahun_id, #kode_opd').on('change', function() {
+                const kodeOpd = $('#kode_opd').val();
+                const tahun = $('#tahun_id').find(':selected').data('tahun');
+                const namaOpdInput = $('#nama_opd');
+                const isuStrategisInput = $('#isu_strategis');
+                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
+
+                if (kodeOpd && tahunAkhir) {
+                    fetch(`/api/isu-strategis/${tahunAkhir}/${kodeOpd}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
                             }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Isu Strategis API Response:', data);
+
+                            const isuStrategisTableBody = $('#isu-strategis-table tbody');
+                            isuStrategisTableBody.empty();
+                            if (data.error) {
+                                console.error('Isu Strategis API Error:', data.error);
+                                return;
+                            }
+
+                            const isuStrategisItems = data.results || [];
+                            let tableRows = '';
+                            let isuStrategisData = [];
+
+                            isuStrategisItems.forEach((item, index) => {
+                                const permasalahanList = Array.isArray(item.permasalahans) ?
+                                    item.permasalahans
+                                    .map((permasalahans) => `<li>${permasalahans}</li>`)
+                                    .join('') :
+                                    `<li>Data tidak tersedia</li>`;
+
+                                tableRows += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>(${item.kode_program})</br> ${item.program || 'Data tidak tersedia'}</td>
+                                    <td>${item.isu_strategis || 'Data tidak tersedia'}</td>
+                                    <td>
+                                        <ul>${permasalahanList}</ul>
+                                    </td>
+                                </tr>`;
+
+                                isuStrategisData.push({
+                                    kode_program: item.kode_program,
+                                    program: item.program,
+                                    isu_strategis: item.isu_strategis,
+                                    permasalahans: item.permasalahans
+                                });
+                            });
+
+                            if (tableRows) {
+                                isuStrategisTableBody.html(tableRows);
+                            } else {
+                                tableRows =
+                                    '<tr><td colspan="4" class="text-center">Data tidak tersedia</td></tr>';
+                                isuStrategisTableBody.html(tableRows);
+                            }
+                            document.getElementById('isu_strategis').value = JSON.stringify(
+                                isuStrategisData);
                         })
                         .catch(error => {
                             console.error('Fetch Error:', error);
-                            namaOpdInput.val('');
                         });
-                } else {
-                    // Clear fields if no kode_opd selected
-                    namaOpdInput.val('');
+
+                    // Fetch Permasalahan (Akar Masalah)
+                    fetch(
+                            `https://kak.madiunkota.go.id/api/substansi_renstra/akar_masalah?tahun=${tahunAkhir}&kode_opd=${kodeOpd}`
+                        )
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Permasalahan API Response:', data);
+
+                            if (data.error) {
+                                console.error('Permasalahan API Error:', data.error);
+                            } else {
+
+                                namaOpdInput.val(data.nama_opd || '');
+
+                                const masalahPokoks = data.masalah_pokoks || [];
+                                let tableRows = '';
+                                let permasalahanData = [];
+
+                                masalahPokoks.forEach((pokok, index) => {
+                                    let pokokEntry = {
+                                        masalah_pokok: pokok.masalah_pokok ||
+                                            'Data tidak tersedia',
+                                        masalahs: []
+                                    };
+
+                                    const masalahPokokRowspan = pokok.masalahs.reduce((
+                                            count, masalah) => count + masalah
+                                        .akar_masalahs
+                                        .length, 0);
+
+                                    tableRows += `
+                                        <tr>
+                                            <td rowspan="${masalahPokokRowspan}">${index + 1}</td>
+                                            <td rowspan="${masalahPokokRowspan}">${pokok.masalah_pokok || 'Data tidak tersedia'}</td>
+                                     
+                                        `;
+
+                                    pokok.masalahs.forEach((masalah, masalahIndex) => {
+                                        let masalahEntry = {
+                                            masalah: masalah.masalah ||
+                                                'Data tidak tersedia',
+                                            akar_masalahs: []
+                                        };
+
+                                        const masalahRowspan = masalah
+                                            .akar_masalahs
+                                            .length;
+
+                                        if (masalahIndex === 0) {
+                                            tableRows +=
+                                                `<td rowspan="${masalahRowspan}">${masalah.masalah || ''}</td>`;
+                                        } else {
+                                            tableRows += `
+                                                    <tr>
+                                                        <td rowspan="${masalahRowspan}">${masalah.masalah || 'Data tidak tersedia'}</td>
+                                                  `;
+                                        }
+
+                                        masalah.akar_masalahs.forEach((akar,
+                                            akarIndex) => {
+                                            if (akarIndex === 0) {
+                                                tableRows +=
+                                                    `<td>${akar.akar_masalah || 'Data tidak tersedia'}</td></tr>`;
+                                            } else {
+                                                tableRows += `
+                                                            <tr>
+                                                                <td>${akar.akar_masalah || 'Data tidak tersedia'}</td>
+                                                            </tr>`;
+                                            }
+
+                                            masalahEntry.akar_masalahs
+                                                .push({
+                                                    id_masalah: akar
+                                                        .id_masalah,
+                                                    akar_masalah: akar
+                                                        .akar_masalah ||
+                                                        'Data tidak tersedia'
+                                                });
+                                        });
+
+                                        pokokEntry.masalahs.push(masalahEntry);
+                                    });
+
+                                    permasalahanData.push(pokokEntry);
+                                });
+                                document.getElementById("masalah-tbody").innerHTML = tableRows;
+                                document.getElementById("akar_masalah").value = JSON.stringify(
+                                    permasalahanData);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Permasalahan Fetch Error:', error);
+                        });
                 }
-            // });
+            });
 
-            // $(document).ready(function() {
-                $('#isu_strategis').summernote({
-                    height: 200,
-                });
-
-                $('.select2').on('change', function() {
-                    const kodeOpd = $(this).val();
-                    const tahun = $('#tahun_id').find(':selected').data('tahun');
-                    const namaOpdInput = $('#nama_opd');
-                    const isuStrategisInput = $('#isu_strategis');
-                    namaOpdInput.val('');
-                    isuStrategisInput.summernote('code', '');
-
-                    if (kodeOpd && tahun) {
-                        fetch(`/api/isu-strategis/${tahun}/${kodeOpd}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log('API Response:', data);
-                                if (data.error) {
-                                    console.error('API Error:', data.error);
-                                } else {
-                                    namaOpdInput.val(data.nama_opd || '');
-
-                                    const isuStrategis = data.results || [];
-                                    const isuStrategisText = isuStrategis.join(
-                                        '\n');
-
-                                    isuStrategisInput.summernote('code', isuStrategisText
-                                        .replace(/\n/g, '<br>')
-                                    );
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Fetch Error:', error);
-                            });
-                    }
-                });
-           
             $('.summernote').summernote({
                 height: 300,
                 minHeight: null,

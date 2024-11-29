@@ -28,14 +28,22 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Periode</label>
                             <div class="col-sm-12 col-md-4">
-                                <select name="tahun_id" class="form-control selectric" required>
+                                <select name="tahun_id" id="tahun_id" class="form-control selectric" required>
                                     <option value="">Pilih Periode</option>
                                     @foreach ($tahun as $year)
-                                        <option value="{{ $year->id }}"
+                                        <option value="{{ $year->id }}" data-tahun="{{ $year->tahun }}"
                                             {{ $year->id == $bab3->tahun_id ? 'selected' : '' }}>{{ $year->tahun }}
                                         </option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Lama Periode</label>
+                            <div class="col-sm-12 col-md-4">
+                                <input type="text" name="lama_periode" class="form-control"
+                                    value="{{ old('lama_periode', $bab3->lama_periode) }}" required>
                             </div>
                         </div>
 
@@ -49,6 +57,82 @@
                             </div>
                         </div>
 
+                        <!-- Container for Akar Masalah -->
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Akar Masalah</label>
+                            <div class="col-sm-12 col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="masalah-table">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Masalah Pokok</th>
+                                                <th>Masalah</th>
+                                                <th>Akar Masalah</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="masalah-tbody">
+                                            @php $no = 1; @endphp
+                                            @foreach ($permasalahanList as $masalahPokok)
+                                                @php
+                                                    $masalahCount = count($masalahPokok['masalahs']);
+                                                    $rowspanMasalahPokok = 0;
+                                                @endphp
+                                                @foreach ($masalahPokok['masalahs'] as $masalah)
+                                                    @php
+                                                        $akarMasalahCount = count($masalah['akar_masalahs']);
+                                                        $rowspanMasalahPokok += $akarMasalahCount;
+                                                    @endphp
+                                                @endforeach
+
+                                                @php $firstMasalah = true; @endphp
+                                                @foreach ($masalahPokok['masalahs'] as $masalah)
+                                                    @php
+                                                        $firstAkarMasalah = true;
+                                                        $akarMasalahCount = count($masalah['akar_masalahs']);
+                                                    @endphp
+                                                    @foreach ($masalah['akar_masalahs'] as $akarMasalah)
+                                                        <tr>
+                                                            @if ($firstMasalah && $firstAkarMasalah)
+                                                                <td class="text-center"
+                                                                    rowspan="{{ $rowspanMasalahPokok }}">
+                                                                    {{ $no++ }}
+                                                                </td>
+                                                            @endif
+
+                                                            <!-- Display Masalah Pokok 1x once per masalah pokok -->
+                                                            @if ($firstMasalah && $firstAkarMasalah)
+                                                                <td rowspan="{{ $rowspanMasalahPokok }}">
+                                                                    {{ $masalahPokok['masalah_pokok'] ?? 'Data tidak tersedia' }}
+                                                                </td>
+                                                            @endif
+
+                                                            <!-- Display Masalah 1x per masalah -->
+                                                            @if ($firstAkarMasalah)
+                                                                <td rowspan="{{ $akarMasalahCount }}">
+                                                                    {{ $masalah['masalah'] ?? 'Data tidak tersedia' }}
+                                                                </td>
+                                                            @endif
+
+                                                            <!-- Display Akar Masalah -->
+                                                            <td>
+                                                                {{ $akarMasalah['akar_masalah'] ?? 'Data tidak tersedia' }}
+                                                            </td>
+                                                        </tr>
+                                                        @php $firstAkarMasalah = false; @endphp
+                                                    @endforeach
+                                                    @php $firstMasalah = false; @endphp
+                                                @endforeach
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="text" name="akar_masalah" id="akar_masalah"
+                            value="{{ old('akar_masalah', $bab3->akar_masalah) }}">
+
                         {{-- Uncomment if needed --}}
                         {{-- <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.1 Permasalahan Pelayanan Perangkat Daerah</label>
@@ -58,58 +142,102 @@
                 </div> --}}
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                1)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Gambar Pelayanan Perangkat
+                                Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian1" class="summernote">{{ old('uraian1', $bab3->uraian1) }}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                2)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran Jangka Menengah
+                                pada Renstra Kementerian/Lembaga</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian2" class="summernote">{{ old('uraian2', $bab3->uraian2) }}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                3)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran Jangka Menengah
+                                dari Renstra Perangkat Daerah Provinsi</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian3" class="summernote">{{ old('uraian3', $bab3->uraian3) }}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                4)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Implikasi RTRW bagi
+                                Pelayanan Perangkat Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian4" class="summernote">{{ old('uraian4', $bab3->uraian4) }}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Uraian
-                                5)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Implikasi KLHS bagi
+                                Pelayanan Perangkat Daerah</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian5" class="summernote">{{ old('uraian5', $bab3->uraian5) }}</textarea>
                             </div>
                         </div>
 
+                        <!-- Container for Isu Strategis -->
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Isu
-                                Strategis 1)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Permasalahan dan Isu
+                                Strategis</label>
                             <div class="col-sm-12 col-md-10">
-                                <textarea name="isu_strategis1" class="summernote">{{ old('isu_strategis1', $bab3->isu_strategis1) }}</textarea>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="isu-strategis-table">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Program</th>
+                                                <th>Isu Strategis</th>
+                                                <th>Permasalahan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php $no = 1; @endphp
+                                            @foreach ($isuStrategisList as $programs)
+                                                @php
+                                                    $permasalahans = count($programs['permasalahans']);
+                                                @endphp
+
+                                                @foreach ($programs['permasalahans'] as $index => $permasalahan)
+                                                    <tr>
+                                                        @if ($index === 0)
+                                                            <td class="text-center" rowspan="{{ $permasalahans }}">
+                                                                {{ $no++ }}
+                                                            </td>
+                                                            <td rowspan="{{ $permasalahans }}">
+                                                                ({{ $programs['kode_program'] ?? '-' }})
+                                                                <br>
+                                                                {{ $programs['program'] ?? '-' }}
+                                                            </td>
+                                                            <td rowspan="{{ $permasalahans }}">
+                                                                {{ $programs['isu_strategis'] ?? '-' }}
+                                                            </td>
+                                                        @endif
+                                                        <td>
+                                                            {{ $permasalahan ?? '-' }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
+                        <input type="text" name="isu_strategis" id="isu_strategis"
+                            value="{{ old('isu_strategis', $bab3->isu_strategis) }}">
+
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">3.2 Isu Strategis (Isu
-                                Strategis 2)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir
+                                (opsional)</label>
                             <div class="col-sm-12 col-md-10">
-                                <textarea name="isu_strategis2" class="summernote">{{ old('isu_strategis2', $bab3->isu_strategis2) }}</textarea>
+                                <textarea name="uraian" class="summernote">{{ old('uraian', $bab3->uraian) }}</textarea>
                             </div>
                         </div>
 
@@ -137,69 +265,201 @@
                 width: '100%'
             });
 
-            const kodeOpd = $('#kode_opd').val();
-            const namaOpdInput = $('#nama_opd');
+            // const kodeOpd = $('#kode_opd').val();
+            // const namaOpdInput = $('#nama_opd');
 
-            if (kodeOpd) {
-                // Fetch data from API using the selected kode_opd
-                fetch(`/api/urusan_opd/${kodeOpd}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('API Response:', data); // Debug: log API response
-                        if (data.error) {
-                            console.error('API Error:', data.error);
-                            namaOpdInput.val('');
-                        } else {
-                            // Populate nama_opd
-                            namaOpdInput.val(data.nama_opd || '');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Fetch Error:', error);
-                        namaOpdInput.val('');
-                    });
-            } else {
-                // Clear fields if no kode_opd selected
-                namaOpdInput.val('');
-            }
+            // if (kodeOpd) {
+            //     // Fetch data from API using the selected kode_opd
+            //     fetch(`/api/urusan_opd/${kodeOpd}`)
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             console.log('API Response:', data); // Debug: log API response
+            //             if (data.error) {
+            //                 console.error('API Error:', data.error);
+            //                 namaOpdInput.val('');
+            //             } else {
+            //                 // Populate nama_opd
+            //                 namaOpdInput.val(data.nama_opd || '');
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.error('Fetch Error:', error);
+            //             namaOpdInput.val('');
+            //         });
+            // } else {
+            //     // Clear fields if no kode_opd selected
+            //     namaOpdInput.val('');
+            // }
 
-            $('#isu_strategis').summernote({
-                height: 200,
-            });
-
-            $('.select2').on('change', function() {
-                const kodeOpd = $(this).val();
+            $('#tahun_id, #kode_opd').on('change', function() {
+                const kodeOpd = $('#kode_opd').val();
                 const tahun = $('#tahun_id').find(':selected').data('tahun');
-                const namaOpdInput = $('#nama_opd');
-                const isuStrategisInput = $('#isu_strategis');
-                namaOpdInput.val('');
-                isuStrategisInput.summernote('code', '');
 
-                if (kodeOpd && tahun) {
-                    fetch(`/api/isu-strategis/${tahun}/${kodeOpd}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('API Response:', data);
-                            if (data.error) {
-                                console.error('API Error:', data.error);
-                            } else {
-                                namaOpdInput.val(data.nama_opd || '');
+                const tahunAkhir = tahun ? tahun.split('-').pop().trim() : '';
 
-                                const isuStrategis = data.results || [];
-                                const isuStrategisText = isuStrategis.join(
-                                    '\n');
+                if (kodeOpd && tahunAkhir) {
+                    lastKodeOpd = kodeOpd;
+                    lastTahun = tahunAkhir;
+                }
 
-                                isuStrategisInput.summernote('code', isuStrategisText
-                                    .replace(/\n/g, '<br>')
-                                );
+                const fetchKodeOpd = kodeOpd || lastKodeOpd;
+                const fetchTahun = tahunAkhir || lastTahun;
+
+                if (fetchKodeOpd && fetchTahun) {
+                    // if (kodeOpd && tahunAkhir) {
+                    fetch(`/api/isu-strategis/${fetchTahun}/${fetchKodeOpd}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
                             }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Isu Strategis API Response:', data);
+
+                            const isuStrategisTableBody = $('#isu-strategis-table tbody');
+                            isuStrategisTableBody.empty();
+                            if (data.error) {
+                                console.error('Isu Strategis API Error:', data.error);
+                                return;
+                            }
+
+                            const isuStrategisItems = data.results || [];
+                            let tableRows = '';
+                            let isuStrategisData = [];
+
+                            isuStrategisItems.forEach((item, index) => {
+                                const permasalahanList = Array.isArray(item.permasalahans) ?
+                                    item.permasalahans
+                                    .map((permasalahans) => `<li>${permasalahans}</li>`)
+                                    .join('') :
+                                    `<li>Data tidak tersedia</li>`;
+
+                                tableRows += `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>(${item.kode_program})</br> ${item.program || 'Data tidak tersedia'}</td>
+                                    <td>${item.isu_strategis || 'Data tidak tersedia'}</td>
+                                    <td>
+                                        <ul>${permasalahanList}</ul>
+                                    </td>
+                                </tr>`;
+
+                                isuStrategisData.push({
+                                    kode_program: item.kode_program,
+                                    program: item.program,
+                                    isu_strategis: item.isu_strategis,
+                                    permasalahans: item.permasalahans
+                                });
+                            });
+
+                            if (tableRows) {
+                                isuStrategisTableBody.html(tableRows);
+                            } else {
+                                tableRows =
+                                    '<tr><td colspan="4" class="text-center">Data tidak tersedia</td></tr>';
+                                isuStrategisTableBody.html(tableRows);
+                            }
+                            document.getElementById('isu_strategis').value = JSON.stringify(
+                                isuStrategisData);
                         })
                         .catch(error => {
                             console.error('Fetch Error:', error);
                         });
+
+                    // Fetch Permasalahan (Akar Masalah)
+                    fetch(
+                            `https://kak.madiunkota.go.id/api/substansi_renstra/akar_masalah?tahun=${fetchTahun}&kode_opd=${fetchKodeOpd}`
+                        )
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Permasalahan API Response:', data);
+
+                            if (data.error) {
+                                console.error('Permasalahan API Error:', data.error);
+                            } else {
+
+                                const masalahPokoks = data.masalah_pokoks || [];
+                                let tableRows = '';
+                                let permasalahanData = [];
+
+                                masalahPokoks.forEach((pokok, index) => {
+                                    let pokokEntry = {
+                                        masalah_pokok: pokok.masalah_pokok ||
+                                            'Data tidak tersedia',
+                                        masalahs: []
+                                    };
+
+                                    const masalahPokokRowspan = pokok.masalahs.reduce((
+                                            count, masalah) => count + masalah
+                                        .akar_masalahs
+                                        .length, 0);
+
+                                    tableRows += `
+                                        <tr>
+                                            <td rowspan="${masalahPokokRowspan}">${index + 1}</td>
+                                            <td rowspan="${masalahPokokRowspan}">${pokok.masalah_pokok || 'Data tidak tersedia'}</td>
+                                     
+                                        `;
+
+                                    pokok.masalahs.forEach((masalah, masalahIndex) => {
+                                        let masalahEntry = {
+                                            masalah: masalah.masalah ||
+                                                'Data tidak tersedia',
+                                            akar_masalahs: []
+                                        };
+
+                                        const masalahRowspan = masalah
+                                            .akar_masalahs
+                                            .length;
+
+                                        if (masalahIndex === 0) {
+                                            tableRows +=
+                                                `<td rowspan="${masalahRowspan}">${masalah.masalah || ''}</td>`;
+                                        } else {
+                                            tableRows += `
+                                                    <tr>
+                                                        <td rowspan="${masalahRowspan}">${masalah.masalah || 'Data tidak tersedia'}</td>
+                                                  `;
+                                        }
+
+                                        masalah.akar_masalahs.forEach((akar,
+                                            akarIndex) => {
+                                            if (akarIndex === 0) {
+                                                tableRows +=
+                                                    `<td>${akar.akar_masalah || 'Data tidak tersedia'}</td></tr>`;
+                                            } else {
+                                                tableRows += `
+                                                            <tr>
+                                                                <td>${akar.akar_masalah || 'Data tidak tersedia'}</td>
+                                                            </tr>`;
+                                            }
+
+                                            masalahEntry.akar_masalahs
+                                                .push({
+                                                    id_masalah: akar
+                                                        .id_masalah,
+                                                    akar_masalah: akar
+                                                        .akar_masalah ||
+                                                        'Data tidak tersedia'
+                                                });
+                                        });
+
+                                        pokokEntry.masalahs.push(masalahEntry);
+                                    });
+
+                                    permasalahanData.push(pokokEntry);
+                                });
+                                document.getElementById("masalah-tbody").innerHTML = tableRows;
+                                document.getElementById("akar_masalah").value = JSON.stringify(
+                                    permasalahanData);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Permasalahan Fetch Error:', error);
+                        });
                 }
             });
-
             // Initialize Summernote
             $('.summernote').summernote({
                 height: 300, // Set the height of the editor
@@ -211,7 +471,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             var userKodeOpd = @json($userKodeOpd);
-            var urusanOpd = @json($urusan_opd);
+            var urusanOpd = @json($data_opd);
             if (userKodeOpd) {
                 var selectedOpd = urusanOpd.find(function(opd) {
                     return opd.kode_opd === userKodeOpd;
