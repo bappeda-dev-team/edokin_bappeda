@@ -28,25 +28,6 @@
                             </div>
                         </div>
 
-                        <!-- Jenis Field -->
-                        {{-- <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Jenis</label>
-                            <div class="col-sm-12 col-md-4">
-                                <select name="jenis_id" class="form-control selectric" required>
-                                    <option value="">Pilih Jenis</option>
-                                    @foreach ($jenis as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ old('jenis_id') == $item->id ? 'selected' : '' }}>
-                                            {{ $item->jenis }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('jenis_id')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div> --}}
-
                         <!-- Tahun Field -->
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Periode</label>
@@ -79,32 +60,75 @@
                             </div>
                         </div>
 
-                        <!-- Nama OPD Field -->
+
+                        <!-- Tabel IKU -->
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Nama OPD</label>
-                            <div class="col-sm-12 col-md-4">
-                                <input type="text" id="nama_opd" name="nama_opd" class="form-control" readonly>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tabel Rencana Program,
+                                Kegiatan, Sub Kegiatan, dan Pendanaan Perangkat Daerah
+                                Kota Madiun
+                            </label>
+                            <div class="col-sm-12 col-md-10">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="bab6-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tujuan</th>
+                                                <th>Sasaran</th>
+                                                <th>Kode</th>
+                                                <th>Program, Kegiatan dan Sub Kegiatan</th>
+                                                <th>Indikator Kinerja Tujuan, sasaran, Program, Kegiatan dan Sub Kegiatan</th>
+                                                <th>Data Capaian Awal Perencanaan (realisasi)</th>
+                                                <th colspan="12">Target Kinerja</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th colspan="2">Tahun</th>
+                                                <th colspan="2">Tahun</th>
+                                                <th colspan="2">Tahun</th>
+                                                <th colspan="2">Tahun</th>
+                                                <th colspan="2">Tahun</th>
+                                                <th colspan="2">Kondisi Kinerja pada Akhir Periode Renstra Perangkat Daerah</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Target</th>
+                                                <th>Rp</th>
+                                                <th>Target</th>
+                                                <th>Rp</th>
+                                                <th>Target</th>
+                                                <th>Rp</th>
+                                                <th>Target</th>
+                                                <th>Rp</th>
+                                                <th>Target</th>
+                                                <th>Rp</th>
+                                                <th>Target</th>
+                                                <th>Rp</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Tujuan OPD Field -->
-                        <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Tujuan OPD</label>
-                            <div class="col-sm-12 col-md-4">
-                                <textarea id="tujuan_opd" name="tujuan_opd" class="form-control" rows="4" readonly></textarea>
-                            </div>
-                        </div>
-
-                        <!-- Sasaran OPD Field -->
-                        <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Sasaran OPD</label>
-                            <div class="col-sm-12 col-md-4">
-                                <textarea id="sasaran_opd" name="sasaran_opd" class="form-control" rows="4" readonly></textarea>
-                            </div>
-                        </div>
 
                         <div class="form-group row mb-4">
-                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir (opsional)</label>
+                            <label class="col-form-label text-md-right col-12 col-md-2 col-lg-2">Uraian Paragraf Akhir
+                                (opsional)</label>
                             <div class="col-sm-12 col-md-10">
                                 <textarea name="uraian" class="summernote"></textarea>
                             </div>
@@ -153,10 +177,10 @@
                         const errorText = await response.text();
                         console.error(
                             `Network response was not ok. Status: ${response.status}, Response: ${errorText}`
-                            );
+                        );
                         throw new Error(
                             `Network response was not ok. Status: ${response.status}, Response: ${errorText}`
-                            );
+                        );
                     }
                     const data = await response.json();
                     console.log('Fetched data:', data);
