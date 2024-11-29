@@ -200,7 +200,6 @@
                             dan faktor-faktor yang mempengaruhi permasalahan tersebut yaitu:</p>
 
                         <h4>3.2. Isu Strategis</h4>
-<<<<<<< HEAD
                         <p class="indent">Identifikasi hasil reviu faktor-faktor pelayanan perangkat daerah
                             yang mempengaruhi permasalahan pelayanan perangkat daerah ditinjau dari :</p>
                         <ol>
@@ -226,34 +225,6 @@
                             ditangani dalam renstra selama {{ $bab3->lama_periode ?? 'N/A' }} tahun dan prioritas
                             penanganannya pada tahun rencana adalah:</p>
                         <table>
-=======
-                        <p class="indent">Identifikasi hasil reviu faktor-faktor pelayanan perangkat daerah yang
-                            mempengaruhi permasalahan pelayanan perangkat daerah ditinjau dari:</p>
-                        <ol>
-                            <li>Gambaran pelayanan perangkat daerah
-                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian1 !!}</pre>
-                            </li>
-                            <li>Sasaran jangka menengah pada renstra Kementerian/Lembaga
-                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian2 !!}</pre>
-                            </li>
-                            <li>Sasaran jangka menengah dari renstra Perangkat Daerah provinsi
-                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian3 !!}</pre>
-                            </li>
-                            <li>Implikasi RTRW bagi pelayanan Perangkat Daerah
-                                <pre style="color: rgb(244, 11, 11);"> {!! $bab3->uraian4 !!}</pre>
-                            </li>
-                            <li>Implikasi KLHS bagi pelayanan Perangkat Daerah
-                                <pre style="color: rgb(244, 11, 11);">{!! $bab3->uraian5 !!}</pre>
-                            </li>
-                        </ol>
-                        <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis
-                            dengan metode USG (Urgency, Seriousness dan Growth), maka isu strategis dinas/badan
-                            <span>{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> yang akan ditangani dalam renstra
-                            selama {{ $bab3->lama_periode ?? 'N/A' }} tahun dan prioritas penanganannya pada tahun
-                            rencana adalah:</p>
-            
-                            <table id="isu-strategis-table">
->>>>>>> 148dafde0746f8a62174b447deb5ab33f9ed6015
                             <thead>
                                 <tr>
                                     <th class="text-center">No.</th>

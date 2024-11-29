@@ -54,7 +54,7 @@ class LoginController extends Controller
                 return redirect()->route('layouts.admin.dashboard');
             } else if ($user->role == 'opd') {
                 session(['selected_kode_opd' => $user->kode_opd]);
-                return redirect()->route('layouts.opd.dashboard');
+                return redirect()->route('layouts.admin.dashboard');
             }
         } else {
             return redirect()->route('login')->with('error', 'Email atau password salah');
