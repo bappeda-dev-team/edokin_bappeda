@@ -171,19 +171,56 @@
                         <p class="indent">Sebagaimana tabel di atas maka terdapat permasalahan-permasalahan pelayanan dan faktor-faktor yang mempengaruhi permasalahan tersebut yaitu:</p>
 
                         <h4>3.2. Isu Strategis</h4>
-                        <p class="indent">Identifikasi hasil reviu faktor-faktor pelayanan perangkat daerah yang mempengaruhi permasalahan pelayanan perangkat daerah ditinjau dari:</p>
+                        <p class="indent">Identifikasi hasil reviu faktor-faktor pelayanan perangkat daerah
+                            yang mempengaruhi permasalahan pelayanan perangkat daerah ditinjau dari :</p>
                         <ol>
-                            <li>Gambaran pelayanan perangkat daerah <strong>{!! $bab3->uraian1 !!}</strong></li>
-                            <li>Sasaran jangka menengah pada renstra Kementerian/Lembaga <strong>{!! $bab3->uraian2 !!}</strong></li>
-                            <li>Sasaran jangka menengah dari renstra Perangkat Daerah provinsi <strong>{!! $bab3->uraian3 !!}</strong></li>
-                            <li>Implikasi RTRW bagi pelayanan Perangkat Daerah <strong>{!! $bab3->uraian4 !!}</strong></li>
-                            <li>Implikasi KLHS bagi pelayanan Perangkat Daerah <strong>{!! $bab3->uraian5 !!}</strong></li>
+                            <li>Gambaran pelayanan perangkat daerah
+                                <pre style="">{{ $bab3->uraian1 }}</pre>
+                            </li>
+                            <li>Sasaran jangka menengah pada renstra Kementerian/Lembaga
+                                <pre style="">{{ $bab3->uraian2 }}</pre>
+                            </li>
+                            <li>Sasaran jangka menengah dari renstra Perangkat Daerah provinsi
+                                <pre style="">{{ $bab3->uraian3 }}</pre>
+                            </li>
+                            <li>Implikasi RTRW bagi pelayanan Perangkat Daerah
+                                <pre style=""> {{ $bab3->uraian4 }}</pre>
+                            </li>
+                            <li>Implikasi KLHS bagi pelayanan Perangkat Daerah
+                                <pre style="">{{ $bab3->uraian5 }}</pre>
+                            </li>
                         </ol>
-                        <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis dengan metode USG (Urgency, Seriousness dan Growth), maka isu strategis dinas/badan <span>{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> yang akan ditangani dalam renstra selama 2 tahun dan prioritas penanganannya pada tahun rencana adalah:</p>    
-                        <ol>
-                            <li>{!! $bab3->isu_strategis1 !!}</li>
-                            <li>{!! $bab3->isu_strategis2 !!}</li>
-                        </ol>
+                        <p class="indent">Sehingga teridentifikasi isu-isu strategis, dan hasil penentuan isu strategis
+                            dengan metode USG (Urgency, Seriousness dan Growth), maka isu strategis dinas/badan <span
+                                style="">{{ $selectedOpd['nama_opd'] ?? 'N/A' }}</span> Yang akan
+                            ditangani dalam renstra selama {{ $bab3->lama_periode ?? 'N/A' }} tahun dan prioritas
+                            penanganannya pada tahun rencana adalah:</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th>Bidang Urusan</th>
+                                    <th>Isu Strategis</th>
+                                    <th>Permasalahan</th>
+                                    <th>Nama Data Dukung</th>
+                                    <th>Narasi Data Dukung</th> <!-- Kolom Tahun ditambahkan di sini -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td>A</td>
+                                    <td>b</td>
+                                    <td>c</td>
+                                    <td>d</td>
+                                    <td>e</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="indent">
+                            <span style="color: rgb(250, 5, 5);">{!! $bab3->uraian !!}</span>
+                        </div>
                     </div>
                 </div>
             </div>

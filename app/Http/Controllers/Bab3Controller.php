@@ -221,6 +221,58 @@ class Bab3Controller extends Controller
         }
     }
 
+    public function exportPdf2($id)
+    {
+        try {
+            // Fetch the Bab3 record
+            $bab3 = Bab3::findOrFail($id);
+
+            // API URL and fetching data
+            $apiUrl = 'https://kak.madiunkota.go.id/api/opd/urusan_opd';
+            $response = Http::withHeaders(['Accept' => 'application/json'])->post($apiUrl);
+
+            if (!$response->successful()) {
+                throw new \Exception('Failed to fetch data from API');
+            }
+
+            // Parse API response
+            $urusan_opd = $response->json()['results'] ?? [];
+            $permasalahanList = json_decode($bab3->akar_masalah, true);
+            // Render HTML view
+            $html = view('layouts.admin.bab3.pdf2', compact('bab3', 'urusan_opd', 'permasalahanList'))->render();
+
+            // Initialize MPDF
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                // Custom F4 (HVS) paper size: 210mm x 330mm
+                'format' => [210, 330],
+                'orientation' => 'L',
+                'tempDir' => storage_path('app/temp'),
+                'margin_left' => 25, // Tambahkan margin kiri untuk penjilidan
+                'margin_right' => 15, // Margin kanan standar
+                'margin_top' => 20, // Margin atas
+                'margin_bottom' => 20, // Margin bawah
+            ]);
+
+            $mpdf->SetHTMLFooter('
+                <div style="font-size: 10pt; border-top: 1px solid #000; padding-top: 5px; text-align: left;">
+                    Renstra Elektronik Pemerintah Kota Madiun
+                </div>
+            ');
+
+            // Write HTML to PDF
+            $mpdf->WriteHTML($html);
+            $fileName = 'bab3-' . $id . '.pdf';
+
+            // Return PDF response
+            return $mpdf->Output($fileName, 'I');
+        } catch (\Exception $e) {
+            // Log error and return JSON response
+            \Log::error('PDF generation error: ' . $e->getMessage());
+            return response()->json(['error' => 'Unable to generate PDF: ' . $e->getMessage()], 500);
+        }
+    }
+
     public function getPermasalahanOpd($tahun, $kode_opd)
     {
         try {

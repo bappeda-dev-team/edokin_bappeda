@@ -38,8 +38,9 @@ Route::get('/', function () {
 // Authentication routes
 Auth::routes();
 // Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('layouts.admin.dashboard')->middleware('auth');
 Route::middleware(['auth', 'user-access:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('layouts.admin.dashboard');
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('layouts.admin.dashboard');
 
     Route::get('/dashboard/perangkat', [OPDController::class, 'perangkat'])->name('layouts.admin.perangkat.index');
     Route::get('/dashboard/pegawai', [PegawaiController::class, 'pegawai'])->name('layouts.admin.pegawai.index');
@@ -116,6 +117,7 @@ Route::middleware(['auth', 'user-access:admin'])->prefix('admin')->group(functio
     Route::get('/dashboard/bab2/export-pdf/{id}', [Bab2Controller::class, 'exportPdf'])->name('bab2.exportPdf');
 
     Route::get('/dashboard/bab3/export-pdf/{id}', [Bab3Controller::class, 'exportPdf'])->name('bab3.exportPdf');
+    Route::get('/dashboard/bab3/export-pdf-table/{id}', [Bab3Controller::class, 'exportPdf2'])->name('bab3.exportPdf2');
     Route::get('/dashboard/bab4/export-pdf/{id}', [Bab4Controller::class, 'exportPdf'])->name('bab4.exportPdf');
     Route::get('/dashboard/bab5/export-pdf/{id}', [Bab5Controller::class, 'exportPdf'])->name('bab5.exportPdf');
     Route::get('/dashboard/bab6/export-pdf/{id}', [Bab6Controller::class, 'exportPdf'])->name('bab6.exportPdf');
@@ -124,7 +126,7 @@ Route::middleware(['auth', 'user-access:admin'])->prefix('admin')->group(functio
 });
 
 Route::middleware(['auth', 'user-access:opd'])->prefix('opd')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'dashboardOpd'])->name('layouts.opd.dashboard');
+    // Route::get('/dashboard', [DashboardController::class, 'dashboardOpd'])->name('layouts.opd.dashboard');
 
     Route::get('/dashboard/create-bab1', [OpdBab1sController::class, 'create'])->name('opd.bab1.create');
     Route::post('/dashboard/store-bab1', [OpdBab1sController::class, 'store'])->name('opd.bab1.store');

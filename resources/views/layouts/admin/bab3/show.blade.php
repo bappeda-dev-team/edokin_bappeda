@@ -104,6 +104,9 @@
                     <a href="{{ route('bab3.exportPdf', $bab3->id) }} "target="_blank">
                         <button class="btn btn-danger mb-3"><i class="fa fa-file-pdf"></i> Export to PDF </button>
                     </a>
+                    <a href="{{ route('bab3.exportPdf2', $bab3->id) }} "target="_blank">
+                        <button class="btn btn-danger mb-3"><i class="fa fa-file-pdf"></i> Export table </button>
+                    </a>
                     {{-- <a href="{{ route('bab3.exportWord', $bab3->id) }}">
                     <button class="btn btn-success mb-3"><i class="fa fa-file-word"></i> Export to Word </button>
                 </a> --}}
