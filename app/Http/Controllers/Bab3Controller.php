@@ -227,8 +227,6 @@ class Bab3Controller extends Controller
             return response()->json(['error' => 'Unable to generate PDF: ' . $e->getMessage()], 500);
         }
     }
-<<<<<<< HEAD
-
     public function exportPdf2($id)
     {
         try {
@@ -281,8 +279,6 @@ class Bab3Controller extends Controller
         }
     }
 
-=======
->>>>>>> 148dafde0746f8a62174b447deb5ab33f9ed6015
     public function getPermasalahanOpd($tahun, $kode_opd)
     {
         try {

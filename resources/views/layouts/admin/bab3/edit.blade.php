@@ -153,7 +153,7 @@
                             </div>
                         </div>
 
-                        <input type="text" name="akar_masalah" id="akar_masalah"
+                        <input type="hidden" name="akar_masalah" id="akar_masalah"
                             value="{{ old('akar_masalah', $bab3->akar_masalah) }}">
 
                         <div class="form-group row mb-4">
@@ -245,7 +245,7 @@
                             </div>
                         </div>
 
-                        <input type="text" name="isu_strategis" id="isu_strategis"
+                        <input type="hidden" name="isu_strategis" id="isu_strategis"
                             value="{{ old('isu_strategis', $bab3->isu_strategis) }}">
 
                         <div class="form-group row mb-4">
